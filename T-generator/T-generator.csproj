@@ -159,21 +159,34 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AmazonAccountController.cs" />
-    <Compile Include="Controllers\AmazonColorVariationController.cs" />
-    <Compile Include="Controllers\AmazonProductController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DAL\AmazonContext.cs" />
     <Compile Include="DAL\AmazonInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AmazonAccount.cs" />
+    <Compile Include="Models\Amazon\Basic\AmazonAccount.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\AmazonColorVariation.cs" />
-    <Compile Include="Models\AmazonProduct.cs" />
+    <Compile Include="Models\Amazon\Basic\AmazonCountry.cs" />
+    <Compile Include="Models\Amazon\Basic\AmazonSizeTable.cs" />
+    <Compile Include="Models\Amazon\Basic\AmazonType.cs" />
+    <Compile Include="Models\Amazon\Basic\AmazonVariation.cs" />
+    <Compile Include="Models\Amazon\Basic\AmazonColor.cs" />
+    <Compile Include="Models\Amazon\Basic\AmazonDesign.cs" />
+    <Compile Include="Models\Amazon\Basic\AmazonMarketplace.cs" />
+    <Compile Include="Models\Amazon\Basic\AmazonProduct.cs" />
+    <Compile Include="Models\Amazon\Basic\AmazonSize.cs" />
+    <Compile Include="Models\Amazon\Basic\AmazonVariationThemes.cs" />
+    <Compile Include="Models\Amazon\Final\AmazonChildListing.cs" />
+    <Compile Include="Models\Amazon\Final\AmazonChild.cs" />
+    <Compile Include="Models\Amazon\Templates\Items\AmazonChildTemplate.cs" />
+    <Compile Include="Models\Amazon\Templates\Items\AmazonParentTemplate.cs" />
+    <Compile Include="Models\Amazon\Final\AmazonVariationTemplate.cs" />
+    <Compile Include="Models\Amazon\Templates\Variations\SizeVariationTemplate.cs" />
+    <Compile Include="Models\Amazon\Templates\Variations\ColorVariationTemplate.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SiteWide\ViewFolderStructure.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -224,21 +237,6 @@
     <Content Include="Views\Account\Manage.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\AmazonAccount\Create.cshtml" />
-    <Content Include="Views\AmazonAccount\Delete.cshtml" />
-    <Content Include="Views\AmazonAccount\Details.cshtml" />
-    <Content Include="Views\AmazonAccount\Edit.cshtml" />
-    <Content Include="Views\AmazonAccount\Index.cshtml" />
-    <Content Include="Views\AmazonProduct\Create.cshtml" />
-    <Content Include="Views\AmazonProduct\Delete.cshtml" />
-    <Content Include="Views\AmazonProduct\Details.cshtml" />
-    <Content Include="Views\AmazonProduct\Edit.cshtml" />
-    <Content Include="Views\AmazonProduct\Index.cshtml" />
-    <Content Include="Views\AmazonColorVariation\Create.cshtml" />
-    <Content Include="Views\AmazonColorVariation\Delete.cshtml" />
-    <Content Include="Views\AmazonColorVariation\Details.cshtml" />
-    <Content Include="Views\AmazonColorVariation\Edit.cshtml" />
-    <Content Include="Views\AmazonColorVariation\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\images\designs\" />

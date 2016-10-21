@@ -13,6 +13,11 @@ namespace T_generator
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+
+            ViewEngines.Engines.Clear();
+            var viewEngine = new ViewFolderStructure();
+            ViewEngines.Engines.Add(viewEngine);
+
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);

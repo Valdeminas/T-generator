@@ -10,10 +10,6 @@ namespace T_generator.DAL
         {
         }
 
-        public DbSet<AmazonAccount> AmazonAccounts { get; set; }
-        public DbSet<AmazonProduct> AmazonProducts { get; set; }
-        public DbSet<AmazonColorVariation> AmazonColorVariations { get; set; }
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

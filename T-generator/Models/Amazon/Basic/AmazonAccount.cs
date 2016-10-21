@@ -5,9 +5,9 @@ namespace T_generator.Models
 {
     public class AmazonAccount
     {
-        public int ID { get; set; }
+        public int AmazonAccountID { get; set; }
+
         public string Name { get; set; }
-        public string BrandName { get; set; }
-        public string SKUPrefix { get; set; }
+        public string Prefix { get; set; }
     }
 }
