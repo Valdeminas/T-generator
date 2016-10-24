@@ -172,8 +172,7 @@
     <Compile Include="Models\Amazon\Data\Basic\AmazonType.cs" />
     <Compile Include="Models\Amazon\Data\Basic\AmazonVariation.cs" />
     <Compile Include="Models\Amazon\Data\Basic\AmazonColor.cs" />
-    <Compile Include="Models\Amazon\Data\Basic\AmazonDesign.cs" />
-    <Compile Include="Models\Amazon\Data\Basic\AmazonMarketplace.cs" />
+    <Compile Include="Models\Amazon\Data\Composite\AmazonMarketplace.cs" />
     <Compile Include="Models\Amazon\Data\Composite\AmazonProduct.cs" />
     <Compile Include="Models\Amazon\Data\Basic\AmazonSize.cs" />
     <Compile Include="Models\Amazon\Data\Dump\AmazonBulletPoint.cs" />
