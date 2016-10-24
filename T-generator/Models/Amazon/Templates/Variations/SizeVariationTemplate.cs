@@ -12,7 +12,7 @@ namespace T_generator.Models.Amazon.Variations
         public string SizeMap { get; set; }
         public string SizeName { get; set; }
 
-        public int AmazonSizeID { get; set; }
-        public int AmazonMarketplaceID { get; set; }
+        public virtual AmazonSize AmazonSize { get; set; }
+        public virtual AmazonMarketplace AmazonMarketplace { get; set; }
     }
 }

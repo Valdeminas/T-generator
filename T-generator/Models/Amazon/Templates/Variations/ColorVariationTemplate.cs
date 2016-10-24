@@ -12,7 +12,7 @@ namespace T_generator.Models.Amazon.Variations
         public string ColorMap { get; set; }
         public string ColorName { get; set; }
 
-        public int AmazonColorID { get; set; }
-        public int AmazonMarketplaceID { get; set; }
+        public virtual AmazonColor AmazonColor { get; set; }
+        public virtual AmazonMarketplace AmazonMarketplace { get; set; }
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using T_generator.Models.Amazon.Basic;
+using T_generator.Models.Amazon.Data.Dump;
 
 namespace T_generator.Models.Amazon.Templates.Items
 {
@@ -9,17 +11,14 @@ namespace T_generator.Models.Amazon.Templates.Items
     {
         public int AmazonStandAloneItemID { get; set; }
 
-        public int AmazonMarketplaceID { get; set; }
-        public int AmazonProductID { get; set; }
+        public virtual AmazonProduct AmazonProduct { get; set; }
+        public virtual AmazonCountry AmazonCountry { get; set; }
 
         public double Price { get; set; }
         public int Quantity { get; set; }
 
-        public List<string> Keywords { get; set; }
-        public List<string> BulletPoints { get; set; }
-        public List<string> ImageURL { get; set; }
-
-        public int AmazonCountryID { get; set; }
-
+        public virtual ICollection<AmazonBulletPoint> AmazonBulletPoint { get; set; }
+        public virtual ICollection<AmazonKeyword> AmazonKeyword { get; set; }
+        public virtual ICollection<AmazonImageURL> AmazonImageURL { get; set; }
     }
 }

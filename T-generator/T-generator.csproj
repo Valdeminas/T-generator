@@ -176,6 +176,9 @@
     <Compile Include="Models\Amazon\Data\Basic\AmazonMarketplace.cs" />
     <Compile Include="Models\Amazon\Data\Composite\AmazonProduct.cs" />
     <Compile Include="Models\Amazon\Data\Basic\AmazonSize.cs" />
+    <Compile Include="Models\Amazon\Data\Dump\AmazonBulletPoint.cs" />
+    <Compile Include="Models\Amazon\Data\Dump\AmazonImageURL.cs" />
+    <Compile Include="Models\Amazon\Data\Dump\AmazonKeyword.cs" />
     <Compile Include="Models\Amazon\Templates\Items\Group\AmazonChildItem.cs" />
     <Compile Include="Models\Amazon\Templates\Items\Group\AmazonParentTemplate.cs" />
     <Compile Include="Models\Amazon\Templates\Items\Single\AmazonStandAloneItem.cs" />

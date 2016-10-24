@@ -52,4 +52,3 @@ d:\users\gediminas-zi\documents\visual studio 2013\Projects\T-generator\T-genera
 d:\users\gediminas-zi\documents\visual studio 2013\Projects\T-generator\T-generator\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 d:\users\gediminas-zi\documents\visual studio 2013\Projects\T-generator\T-generator\obj\Debug\T-generator.dll
 d:\users\gediminas-zi\documents\visual studio 2013\Projects\T-generator\T-generator\obj\Debug\T-generator.pdb
-D:\Users\gediminas-zi\Documents\Visual Studio 2013\Projects\T-generator\T-generator\obj\Debug\T-generator.csprojResolveAssemblyReference.cache

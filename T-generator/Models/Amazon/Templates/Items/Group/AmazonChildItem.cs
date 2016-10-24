@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using T_generator.Models.Amazon.Data.Dump;
 
 namespace T_generator.Models.Amazon.Intermediate
 {
@@ -12,9 +13,9 @@ namespace T_generator.Models.Amazon.Intermediate
         public double Price { get; set; }
         public int Quantity { get; set; }
 
-        public List<string> Keywords { get; set; }
-        public List<string> ImageURL { get; set; }
+        public virtual ICollection<AmazonKeyword> AmazonKeyword { get; set; }
+        public virtual ICollection<AmazonImageURL> AmazonImageURL { get; set; }
 
-        public int AmazonParentTemplateID { get; set; }
+        public virtual AmazonParentTemplate AmazonParentTemplate { get; set; }
     }
 }
