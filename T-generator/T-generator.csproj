@@ -165,27 +165,25 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Amazon\Basic\AmazonAccount.cs" />
+    <Compile Include="Models\Amazon\Data\Basic\AmazonAccount.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Amazon\Basic\AmazonCountry.cs" />
-    <Compile Include="Models\Amazon\Basic\AmazonSizeTable.cs" />
-    <Compile Include="Models\Amazon\Basic\AmazonType.cs" />
-    <Compile Include="Models\Amazon\Basic\AmazonVariation.cs" />
-    <Compile Include="Models\Amazon\Basic\AmazonColor.cs" />
-    <Compile Include="Models\Amazon\Basic\AmazonDesign.cs" />
-    <Compile Include="Models\Amazon\Basic\AmazonMarketplace.cs" />
-    <Compile Include="Models\Amazon\Basic\AmazonProduct.cs" />
-    <Compile Include="Models\Amazon\Basic\AmazonSize.cs" />
-    <Compile Include="Models\Amazon\Basic\AmazonVariationThemes.cs" />
-    <Compile Include="Models\Amazon\Final\AmazonChildListing.cs" />
-    <Compile Include="Models\Amazon\Final\AmazonChild.cs" />
-    <Compile Include="Models\Amazon\Templates\Items\AmazonChildTemplate.cs" />
-    <Compile Include="Models\Amazon\Templates\Items\AmazonParentTemplate.cs" />
-    <Compile Include="Models\Amazon\Final\AmazonVariationTemplate.cs" />
+    <Compile Include="Models\Amazon\Data\Basic\AmazonCountry.cs" />
+    <Compile Include="Models\Amazon\Data\Basic\AmazonCurrency.cs" />
+    <Compile Include="Models\Amazon\Data\Basic\AmazonType.cs" />
+    <Compile Include="Models\Amazon\Data\Basic\AmazonVariation.cs" />
+    <Compile Include="Models\Amazon\Data\Basic\AmazonColor.cs" />
+    <Compile Include="Models\Amazon\Data\Basic\AmazonDesign.cs" />
+    <Compile Include="Models\Amazon\Data\Basic\AmazonMarketplace.cs" />
+    <Compile Include="Models\Amazon\Data\Composite\AmazonProduct.cs" />
+    <Compile Include="Models\Amazon\Data\Basic\AmazonSize.cs" />
+    <Compile Include="Models\Amazon\Templates\Items\Group\AmazonChildItem.cs" />
+    <Compile Include="Models\Amazon\Templates\Items\Group\AmazonParentTemplate.cs" />
+    <Compile Include="Models\Amazon\Templates\Items\Single\AmazonStandAloneItem.cs" />
     <Compile Include="Models\Amazon\Templates\Variations\SizeVariationTemplate.cs" />
     <Compile Include="Models\Amazon\Templates\Variations\ColorVariationTemplate.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\DataStructures\DataStructures.cs" />
     <Compile Include="SiteWide\ViewFolderStructure.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

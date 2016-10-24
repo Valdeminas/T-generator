@@ -11,5 +11,8 @@ namespace T_generator.Models
         public string Prefix { get; set; }
 
         public string Description { get; set; }
+        public List<string> Keywords { get; set; }
+
+        public int AmazonTypeID { get; set; }
     }
 }
