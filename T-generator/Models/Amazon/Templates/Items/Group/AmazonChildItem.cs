@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using T_generator.Models.Amazon.Data.Dump;
+using T_generator.Models.Amazon.Intermediate;
 
-namespace T_generator.Models.Amazon.Intermediate
+namespace T_generator.Models.Amazon.Templates.Items.Group
 {
     public class AmazonChildItem
     {

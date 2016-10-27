@@ -26,13 +26,39 @@
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            Basic
+                            Data
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Accounts", "Index", "AmazonListingParent")</li>
-                            <li>@Html.ActionLink("Marketplaces", "Index", "AmazonListingParent")</li>
-                            <li>@Html.ActionLink("Products", "Index", "AmazonListingParent")</li>                          
+                            <li>@Html.ActionLink("Accounts", "Index", "AmazonAccount")</li>                           
+                            <li>@Html.ActionLink("Color", "Index", "AmazonColor")</li>
+                            <li>@Html.ActionLink("Country", "Index", "AmazonCountry")</li>   
+                            <li>@Html.ActionLink("Currency", "Index", "AmazonCurrency")</li>   
+                            <li>@Html.ActionLink("Size", "Index", "AmazonSize")</li>   
+                            <li>@Html.ActionLink("Type", "Index", "AmazonType")</li>   
+                            <li>@Html.ActionLink("Variation", "Index", "AmazonVariation")</li>                             
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Dump
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("BrowseNodes", "Index", "AmazonBrowseNode")</li>
+                            <li>@Html.ActionLink("BulletPoints", "Index", "AmazonBulletPoint")</li>
+                            <li>@Html.ActionLink("Images", "Index", "AmazonImageURL")</li>
+                            <li>@Html.ActionLink("Keywords", "Index", "AmazonKeyword")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Intermediate
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Products", "Index", "AmazonProduct")</li>
+                            <li>@Html.ActionLink("Marketplaces", "Index", "AmazonMarketplace")</li>
                         </ul>
                     </li>
                 </ul>

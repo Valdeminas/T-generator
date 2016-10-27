@@ -5,16 +5,15 @@ using T_generator.Models.Amazon.Data.Dump;
 
 namespace T_generator.Models
 {
-    public class AmazonProduct
+    public class AmazonMarketplace
     {
-        public int AmazonProductID { get; set; }
+        public int AmazonMarketplaceID { get; set; }
 
         public string Name { get; set; }
         public string Prefix { get; set; }
 
-        public string Description { get; set; }
+        public int AmazonCurrencyID { get; set; }
 
-        public virtual ICollection<AmazonKeyword> Keywords { get; set; }
-        public virtual AmazonType AmazonType { get; set; }
+        public virtual AmazonCurrency AmazonCurrency { get; set; }
     }
 }

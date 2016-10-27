@@ -1,0 +1,26 @@
+﻿@model T_generator.Models.Amazon.Data.Dump.AmazonKeyword
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>AmazonKeyword</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Keyword)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Keyword)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AmazonKeywordID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

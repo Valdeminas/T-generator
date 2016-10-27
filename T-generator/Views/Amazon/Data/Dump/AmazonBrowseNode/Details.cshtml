@@ -1,0 +1,26 @@
+﻿@model T_generator.Models.AmazonBrowseNode
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>AmazonBrowseNode</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BrowseNode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BrowseNode)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AmazonBrowseNodeID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

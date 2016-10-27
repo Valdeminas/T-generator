@@ -1,0 +1,26 @@
+﻿@model T_generator.Models.Amazon.Data.Dump.AmazonBulletPoint
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>AmazonBulletPoint</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BulletPoint)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BulletPoint)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AmazonBulletPointID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

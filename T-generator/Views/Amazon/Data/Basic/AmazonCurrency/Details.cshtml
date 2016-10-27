@@ -1,0 +1,26 @@
+﻿@model T_generator.Models.Amazon.Basic.AmazonCurrency
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>AmazonCurrency</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Currency)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Currency)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AmazonCurrencyID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
