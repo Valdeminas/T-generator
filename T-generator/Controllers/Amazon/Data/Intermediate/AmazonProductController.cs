@@ -52,11 +52,13 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "AmazonProductID,Name,Prefix,Description,AmazonTypeID,Keywords")] AmazonProduct amazonproduct)
+        public ActionResult Create([Bind(Include = "AmazonProductID,Name,Prefix,Description,AmazonTypeID,Keywords")] AmazonProduct amazonproduct, string[] selectedKeywords)
         {
             if (ModelState.IsValid)
             {
-                db.AmazonProducts.Add(amazonproduct);
+                amazonproduct.Keywords=new List<AmazonKeyword>();
+                UpdateProductKeywords(selectedKeywords, amazonproduct);
+                db.AmazonProducts.Add(amazonproduct);               
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -84,29 +86,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             PopulateAssignedKeywordData(amazonproduct);
             PopulateTypeDropDownList(amazonproduct.AmazonTypeID);
             return View(amazonproduct);
-        }
-
-        private void PopulateAssignedKeywordData(AmazonProduct amazonproduct=null)
-        {
-            var productKeywords = new HashSet<int>();
-            if (amazonproduct != null && amazonproduct.Keywords!=null)
-            {
-                productKeywords = new HashSet<int>(amazonproduct.Keywords.Select(c => c.AmazonKeywordID));
-            }
-
-            var allKeywords = db.AmazonKeywords;   
-            var viewModel = new List<AssignedKeywordsData>();
-            foreach (var keyword in allKeywords)
-            {
-                viewModel.Add(new AssignedKeywordsData
-                {
-                    AmazonKeywordID = keyword.AmazonKeywordID,
-                    Keyword = keyword.Keyword,
-                    Assigned = productKeywords.Contains(keyword.AmazonKeywordID)
-                });
-            }
-            ViewBag.Keywords = viewModel;
-        }
+        }        
 
         // POST: /AmazonProduct/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -144,37 +124,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             PopulateTypeDropDownList(productToUpdate.AmazonTypeID);
             PopulateAssignedKeywordData(productToUpdate);
             return View(productToUpdate);
-        }
-
-        private void UpdateProductKeywords(string[] selectedKeywords, AmazonProduct productToUpdate)
-        {
-            if (selectedKeywords == null)
-            {
-                productToUpdate.Keywords = new List<AmazonKeyword>();
-                return;
-            }
-
-            var selectedKeywordsHS = new HashSet<string>(selectedKeywords);
-            var productKeywords = new HashSet<int>
-                (productToUpdate.Keywords.Select(c => c.AmazonKeywordID));
-            foreach (var keyword in db.AmazonKeywords)
-            {
-                if (selectedKeywordsHS.Contains(keyword.AmazonKeywordID.ToString()))
-                {
-                    if (!productKeywords.Contains(keyword.AmazonKeywordID))
-                    {
-                        productToUpdate.Keywords.Add(keyword);
-                    }
-                }
-                else
-                {
-                    if (productKeywords.Contains(keyword.AmazonKeywordID))
-                    {
-                        productToUpdate.Keywords.Remove(keyword);
-                    }
-                }
-            }
-        }
+        }       
 
         // GET: /AmazonProduct/Delete/5
         public ActionResult Delete(int? id)
@@ -217,6 +167,57 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                                   orderby d.Name
                                   select d;
             ViewBag.AmazonTypeID = new SelectList(typesQuery, "AmazonTypeID", "Name", selectedTypeID);
-        } 
+        }
+
+        private void PopulateAssignedKeywordData(AmazonProduct amazonproduct = null)
+        {
+            var productKeywords = new HashSet<int>();
+            if (amazonproduct != null && amazonproduct.Keywords != null)
+            {
+                productKeywords = new HashSet<int>(amazonproduct.Keywords.Select(c => c.AmazonKeywordID));
+            }
+
+            var allKeywords = db.AmazonKeywords;
+            var viewModel = new List<AssignedKeywordsData>();
+            foreach (var keyword in allKeywords)
+            {
+                viewModel.Add(new AssignedKeywordsData
+                {
+                    AmazonKeywordID = keyword.AmazonKeywordID,
+                    Keyword = keyword.Keyword,
+                    Assigned = productKeywords.Contains(keyword.AmazonKeywordID)
+                });
+            }
+            ViewBag.Keywords = viewModel;
+        }
+
+        private void UpdateProductKeywords(string[] selectedKeywords, AmazonProduct productToUpdate)
+        {
+            if (selectedKeywords == null)
+            {
+                productToUpdate.Keywords = new List<AmazonKeyword>();
+                return;
+            }
+
+            var selectedKeywordsHS = new HashSet<string>(selectedKeywords);
+            var productKeywords = new HashSet<int>(productToUpdate.Keywords.Select(c => c.AmazonKeywordID));
+            foreach (var keyword in db.AmazonKeywords)
+            {
+                if (selectedKeywordsHS.Contains(keyword.AmazonKeywordID.ToString()))
+                {
+                    if (!productKeywords.Contains(keyword.AmazonKeywordID))
+                    {
+                        productToUpdate.Keywords.Add(keyword);
+                    }
+                }
+                else
+                {
+                    if (productKeywords.Contains(keyword.AmazonKeywordID))
+                    {
+                        productToUpdate.Keywords.Remove(keyword);
+                    }
+                }
+            }
+        }
     }
 }

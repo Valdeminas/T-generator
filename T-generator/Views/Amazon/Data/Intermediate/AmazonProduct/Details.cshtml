@@ -42,6 +42,19 @@
             @Html.DisplayFor(model => model.AmazonType.Name)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.Keywords)
+        </dt>
+
+        <dd>
+            @{
+                foreach (var keyword in Model.Keywords)
+                {
+                      @keyword.Keyword @:<br />
+                }
+            }
+        </dd>
+
     </dl>
 </div>
 <p>
