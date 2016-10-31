@@ -4506,7 +4506,7 @@
     "Microsoft.NETCore.App/1.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-CDYULoenxs0qzuEnIsE/qJF76ENsTdDj9GWmmdZsuOvmHsXiHbGEjeIlJtg26wG7XpCYlMhVrRepoFC8nQftlw=="
+      "sha512": "sha512-M3iH7u95LntTkJtI/DqN/96MRlb8Wa0SjnXldxHA4FjlvEqghOhwK087bDZAZaTN9C4YHckvaYH3ka9eYWZZZw=="
     },
     "Microsoft.NETCore.DotNetHost/1.0.1": {
       "type": "package",
@@ -4526,7 +4526,7 @@
     "Microsoft.NETCore.Jit/1.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-pr8fj4Ht8KEw4WUCDtVzh9QcV+p/i+TokCdqio8WGikUIYvo7ewajFWBda0R/M9eK45P2uumVCJ2tRndV89New=="
+      "sha512": "sha512-IcHTGj+vTFcOu7/flwNg+CWIfTsxqHWgj08MKOtYwS5k0EuLvx6PrYsn7vHCV0SUTk1zbQ1l0EJj1UdxTMyx4w=="
     },
     "Microsoft.NETCore.Platforms/1.0.1": {
       "type": "package",
@@ -4536,7 +4536,7 @@
     "Microsoft.NETCore.Runtime.CoreCLR/1.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-pcE0rXQMvlsPtODemdWGAulvll48tUvL7BnqGD/nPHt6FdgwnVrXEZF7EvMY0yxnNn/7sZNm8luCYLZUgz6f9w=="
+      "sha512": "sha512-r4/aP7VYcJ+W/rJVFU+jAdjF4KrsHRDYQJ+p8weUP5n65yLzWXlQTVY6OsR560aV5EF7jc65dqsNXIryUCrEkQ=="
     },
     "Microsoft.NETCore.Targets/1.0.1": {
       "type": "package",

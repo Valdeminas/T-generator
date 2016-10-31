@@ -6,6 +6,7 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
+    <UseGlobalApplicationHostFile>True</UseGlobalApplicationHostFile>
     <ProjectGuid>597d1d7a-5700-46a5-a657-3c9837cd0b0e</ProjectGuid>
     <RootNamespace>T_generator</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
