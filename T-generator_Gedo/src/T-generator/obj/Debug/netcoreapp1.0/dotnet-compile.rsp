@@ -235,8 +235,12 @@ D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-gen
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\AccountController.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\HomeController.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\ManageController.cs
-D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Data\AmazonContext.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\Amazon\Data\Basic\AmazonAccountsController.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\Amazon\Data\Basic\AmazonCurrenciesController.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\Amazon\Data\Basic\AmazonTypesController.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Data\ApplicationDbContext.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Data\Amazon\AmazonContext.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Data\Amazon\AmazonDbInitializer.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Data\Migrations\00000000000000_CreateIdentitySchema.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Data\Migrations\00000000000000_CreateIdentitySchema.Designer.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Data\Migrations\ApplicationDbContextModelSnapshot.cs
@@ -248,6 +252,7 @@ D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-gen
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\AccountViewModels\ResetPasswordViewModel.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\AccountViewModels\SendCodeViewModel.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\AccountViewModels\VerifyCodeViewModel.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\AmazonViewModel\AssignedKeywordsViewModel.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Basic\AmazonAccount.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Basic\AmazonColor.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Basic\AmazonCountry.cs
@@ -261,6 +266,7 @@ D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-gen
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Dump\AmazonKeyword.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Intermediate\AmazonMarketplace.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Intermediate\AmazonProduct.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\JoinTables\AmazonKeywordAssignment.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Objects\Item\AmazonItem.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Objects\Item\Children\AmazonItemParent.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Objects\Item\Children\AmazonItemSingle.cs
@@ -270,7 +276,6 @@ D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-gen
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Templates\Items\Single\AmazonStandAloneItem.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Templates\Variations\ColorVariationTemplate.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Templates\Variations\SizeVariationTemplate.cs
-D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\AmazonViewModel\AssignedKeywordsViewModel.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\ManageViewModels\AddPhoneNumberViewModel.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\ManageViewModels\ChangePasswordViewModel.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\ManageViewModels\ConfigureTwoFactorViewModel.cs
@@ -283,3 +288,4 @@ D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-gen
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Services\IEmailSender.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Services\ISmsSender.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Services\MessageServices.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Services\Amazon\ViewLocationExpander.cs

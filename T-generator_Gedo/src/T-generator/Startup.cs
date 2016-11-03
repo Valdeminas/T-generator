@@ -12,6 +12,9 @@ using Microsoft.Extensions.Logging;
 using T_generator.Data;
 using T_generator.Models;
 using T_generator.Services;
+using T_generator.Data.Amazon;
+using Microsoft.AspNetCore.Mvc.Razor;
+using T_generator.Services.Amazon;
 
 namespace T_generator
 {
@@ -57,13 +60,17 @@ namespace T_generator
 
             services.AddMvc();
 
+            services.Configure<RazorViewEngineOptions>(options => {
+                options.ViewLocationExpanders.Add(new ViewLocationExpander());
+            });
+
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, AmazonContext context)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -95,6 +102,8 @@ namespace T_generator
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            AmazonDbInitializer.Initialize(context);
         }
     }
 }
