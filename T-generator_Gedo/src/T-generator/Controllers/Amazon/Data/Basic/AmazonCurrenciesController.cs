@@ -138,14 +138,29 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var amazonCurrency = await _context.AmazonCurrencies.SingleOrDefaultAsync(m => m.AmazonCurrencyID == id);
-            _context.AmazonCurrencies.Remove(amazonCurrency);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            if (!RelatedMarketplaceExists(id))
+            {               
+                _context.AmazonCurrencies.Remove(amazonCurrency);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewData["RelatedEntriesExistError"] = "This object has other entries using it."
+                    + Environment.NewLine
+                    +"Delete the entries using this object first, and then try to delete this object.";
+                return View(amazonCurrency);
+            }
         }
 
         private bool AmazonCurrencyExists(int id)
         {
             return _context.AmazonCurrencies.Any(e => e.AmazonCurrencyID == id);
+        }
+
+        private bool RelatedMarketplaceExists(int id)
+        {
+            return _context.AmazonMarketplaces.Any(e => e.AmazonCurrencyID == id);
         }
     }
 }
