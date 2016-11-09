@@ -138,14 +138,29 @@ namespace T_generator.Controllers.Amazon.Data.Dump
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var amazonKeyword = await _context.AmazonKeywords.SingleOrDefaultAsync(m => m.AmazonKeywordID == id);
-            _context.AmazonKeywords.Remove(amazonKeyword);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            if (!RelatedProductExists(id))
+            {
+                _context.AmazonKeywords.Remove(amazonKeyword);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewData["RelatedEntriesExistError"] = "This object has other entries using it."
+                    + Environment.NewLine
+                    + "Delete the entries using this object first, and then try to delete this object.";
+                return View(amazonKeyword);
+            }
         }
 
         private bool AmazonKeywordExists(int id)
         {
             return _context.AmazonKeywords.Any(e => e.AmazonKeywordID == id);
+        }
+
+        private bool RelatedProductExists(int id)
+        {
+            return _context.KeywordAssignment.Any(e => e.KeywordID == id);
         }
     }
 }

@@ -8,7 +8,7 @@
 
 <form asp-action="Edit">
     <div class="form-horizontal">
-        <h4>AmazonProduct</h4>
+        <h4>Product</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="AmazonProductID" />
@@ -38,6 +38,41 @@
             <div class="col-md-10">
                 <input asp-for="Prefix" class="form-control" />
                 <span asp-validation-for="Prefix" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Keywords" class="col-md-2 control-label">Keywords 1</label>
+            <div class="col-md-10">
+                <input class="form-control" name="[0].Keyword" value="@(ViewData["0"])" data-autocomplete-url="@Url.Action("UpdateKeywords")" data-label-member="keyword" data-value-member="amazonKeywordID" />
+                <span asp-validation-for="Keywords" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Keywords" class="col-md-2 control-label">Keywords 2</label>
+            <div class="col-md-10">
+                <input class="form-control" name="[1].Keyword" value="@(ViewData["1"])" data-autocomplete-url="@Url.Action("UpdateKeywords")" data-label-member="keyword" data-value-member="amazonKeywordID" />
+                <span asp-validation-for="Keywords" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Keywords" class="col-md-2 control-label">Keywords 3</label>
+            <div class="col-md-10">
+                <input class="form-control" name="[2].Keyword" value="@(ViewData["2"])" data-autocomplete-url="@Url.Action("UpdateKeywords")" data-label-member="keyword" data-value-member="amazonKeywordID" />
+                <span asp-validation-for="Keywords" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Keywords" class="col-md-2 control-label">Keywords 4</label>
+            <div class="col-md-10">
+                <input class="form-control" name="[3].Keyword" value="@(ViewData["3"])" data-autocomplete-url="@Url.Action("UpdateKeywords")" data-label-member="keyword" data-value-member="amazonKeywordID" />
+                <span asp-validation-for="Keywords" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Keywords" class="col-md-2 control-label">Keywords 5</label>
+            <div class="col-md-10">
+                <input class="form-control" name="[4].Keyword" value="@(ViewData["4"])" data-autocomplete-url="@Url.Action("UpdateKeywords")" data-label-member="keyword" data-value-member="amazonKeywordID" />
+                <span asp-validation-for="Keywords" class="text-danger" />
             </div>
         </div>
         <div class="form-group">

@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using T_generator.Data;
 using T_generator.Models.Amazon.Data.Intermediate;
+using T_generator.AmazonViewModel;
+using T_generator.Models.Amazon.Data.Dump;
+using Microsoft.CodeAnalysis;
+using T_generator.Models.Amazon.Data.JoinTables;
 
 namespace T_generator.Controllers.Amazon.Data.Intermediate
 {
@@ -34,36 +38,57 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                 return NotFound();
             }
 
-            var amazonProduct = await _context.AmazonProducts.SingleOrDefaultAsync(m => m.AmazonProductID == id);
+            var amazonProduct = await _context.AmazonProducts
+                .Include(i=>i.AmazonType)
+                .Include(i => i.Keywords)
+                .ThenInclude(i => i.Keyword)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.AmazonProductID == id);
             if (amazonProduct == null)
             {
                 return NotFound();
             }
-
+            PopulateAssignedKeywordData(amazonProduct);
             return View(amazonProduct);
         }
 
         // GET: AmazonProducts/Create
         public IActionResult Create()
         {
-            ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "AmazonTypeID");
+            var amazonProduct = new AmazonProduct();
+            amazonProduct.Keywords = new List<KeywordAssignment>();
+            ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "Name");
             return View();
         }
+
 
         // POST: AmazonProducts/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AmazonProductID,AmazonTypeID,Description,Name,Prefix")] AmazonProduct amazonProduct)
+        public async Task<IActionResult> Create([Bind("AmazonTypeID,Description,Name,Prefix")] AmazonProduct amazonProduct, IList<AssignedKeywordsViewModel> keywords)
         {
-            if (ModelState.IsValid)
+            amazonProduct.Keywords = new List<KeywordAssignment>();
+            UpdateProductKeywords(keywords, amazonProduct);
+            try
             {
-                _context.Add(amazonProduct);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    _context.Add(amazonProduct);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
             }
-            ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "AmazonTypeID", amazonProduct.AmazonTypeID);
+            catch(DbUpdateException  ex )
+            {
+                //Log the error (uncomment ex variable name and write a log.
+                ModelState.AddModelError(ex.ToString(), "Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator.");
+            }
+
+            ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "Name", amazonProduct.AmazonTypeID);
             return View(amazonProduct);
         }
 
@@ -75,12 +100,17 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                 return NotFound();
             }
 
-            var amazonProduct = await _context.AmazonProducts.SingleOrDefaultAsync(m => m.AmazonProductID == id);
+            var amazonProduct = await _context.AmazonProducts
+                .Include(i => i.Keywords)
+                .ThenInclude(i=>i.Keyword)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.AmazonProductID == id);
             if (amazonProduct == null)
             {
                 return NotFound();
             }
-            ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "AmazonTypeID", amazonProduct.AmazonTypeID);
+            ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "Name", amazonProduct.AmazonTypeID);
+            PopulateAssignedKeywordData(amazonProduct);
             return View(amazonProduct);
         }
 
@@ -89,35 +119,40 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AmazonProductID,AmazonTypeID,Description,Name,Prefix")] AmazonProduct amazonProduct)
+        public async Task<IActionResult> Edit(int? id, IList<AssignedKeywordsViewModel> keywords)
         {
-            if (id != amazonProduct.AmazonProductID)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var productToUpdate = await _context.AmazonProducts
+                .Include(i => i.AmazonType)
+                .Include(i => i.Keywords)
+                .SingleOrDefaultAsync(m => m.AmazonProductID == id);
+
+            if (await TryUpdateModelAsync<AmazonProduct>(
+                    productToUpdate,
+                    "",
+                    i => i.Name, i => i.Prefix, i => i.Description, i => i.AmazonTypeID))
             {
+                UpdateProductKeywords(keywords, productToUpdate);
                 try
                 {
-                    _context.Update(amazonProduct);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateException /* ex */)
                 {
-                    if (!AmazonProductExists(amazonProduct.AmazonProductID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "AmazonTypeID", amazonProduct.AmazonTypeID);
-            return View(amazonProduct);
+
+            ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "Name", productToUpdate.AmazonTypeID);
+            return View(productToUpdate);
         }
 
         // GET: AmazonProducts/Delete/5
@@ -128,12 +163,17 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                 return NotFound();
             }
 
-            var amazonProduct = await _context.AmazonProducts.SingleOrDefaultAsync(m => m.AmazonProductID == id);
+            var amazonProduct = await _context.AmazonProducts
+                .Include(i => i.AmazonType)
+                .Include(i => i.Keywords)
+                .ThenInclude(i => i.Keyword)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.AmazonProductID == id);
             if (amazonProduct == null)
             {
                 return NotFound();
             }
-
+            PopulateAssignedKeywordData(amazonProduct);
             return View(amazonProduct);
         }
 
@@ -142,8 +182,16 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var amazonProduct = await _context.AmazonProducts.SingleOrDefaultAsync(m => m.AmazonProductID == id);
+            var amazonProduct = await _context.AmazonProducts.Include(i=>i.Keywords).SingleOrDefaultAsync(m => m.AmazonProductID == id);
             _context.AmazonProducts.Remove(amazonProduct);
+            foreach(var keyword in amazonProduct.Keywords)
+            {
+                if (_context.KeywordAssignment.Where(a=>a.ProductID!=amazonProduct.AmazonProductID).Count(m => m.KeywordID == keyword.KeywordID) == 0)
+                {
+                    var keywordToRemove = await _context.AmazonKeywords.SingleOrDefaultAsync(m => m.AmazonKeywordID == keyword.KeywordID);
+                    _context.AmazonKeywords.Remove(keywordToRemove);
+                }
+            }
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -152,5 +200,71 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         {
             return _context.AmazonProducts.Any(e => e.AmazonProductID == id);
         }
+
+        public IActionResult UpdateKeywords(string term)
+        {
+            List<AmazonKeyword> KeywordList = new List<AmazonKeyword>();
+            foreach (AmazonKeyword keyword in _context.AmazonKeywords)
+            {
+                if (keyword.Keyword.ToLower().Contains(term.ToLower()))
+                {
+                    KeywordList.Add(keyword);
+                }
+
+            }
+            return Json(KeywordList);
+        }
+
+        private void PopulateAssignedKeywordData(AmazonProduct amazonProduct)
+        {
+            var productKeywords =  amazonProduct
+                                        .Keywords
+                                        .ToDictionary(c => c.Order,
+                                                    c => c.Keyword.Keyword);
+            for (int i= 0;i<5;i++)
+            {
+                if (productKeywords.Keys.Contains(i))
+                {
+                    ViewData[i.ToString()] = productKeywords[i];
+                }
+                else
+                {
+                    ViewData[i.ToString()] = "";
+                }
+            }
+        }
+
+        private void UpdateProductKeywords(IList<AssignedKeywordsViewModel> selectedKeywords, AmazonProduct productToUpdate)
+        {
+            var keywordsFromDb = _context.AmazonKeywords
+                                .ToDictionary(c => c.Keyword,
+                                              c => c.AmazonKeywordID);
+            for (int i = 0; i < selectedKeywords.Count; i++)
+            {
+                KeywordAssignment keywordToRemove = productToUpdate.Keywords.SingleOrDefault(a => a.Order == i);
+                if (keywordToRemove != null)
+                {
+                    _context.Remove(keywordToRemove);
+                    _context.SaveChanges();
+                }
+
+                if (selectedKeywords[i].Keyword != null)
+                {                  
+                    if (keywordsFromDb.Keys.Contains(selectedKeywords[i].Keyword))
+                    {
+                        productToUpdate.Keywords.Add(new KeywordAssignment { ProductID = productToUpdate.AmazonProductID, KeywordID = keywordsFromDb[selectedKeywords[i].Keyword], Order = i });
+                    }
+                    else
+                    {
+                        AmazonKeyword newKeyword = new AmazonKeyword { Keyword = selectedKeywords[i].Keyword };
+                        _context.AmazonKeywords.Add(newKeyword);
+                        _context.SaveChanges();
+                        productToUpdate.Keywords.Add(new KeywordAssignment { ProductID = productToUpdate.AmazonProductID, KeywordID = newKeyword.AmazonKeywordID, Order = i });
+                        keywordsFromDb[newKeyword.Keyword] = newKeyword.AmazonKeywordID;
+                    }
+                }
+            }
+        }
+
     }
 }

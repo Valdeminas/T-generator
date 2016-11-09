@@ -7,7 +7,7 @@
 <h2>Details</h2>
 
 <div>
-    <h4>AmazonProduct</h4>
+    <h4>Product</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -27,6 +27,42 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Prefix)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AmazonType.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AmazonType.Name)
+        </dd>
+        <dt>
+            Keyword 1
+        </dt>
+        <dd>
+            @(ViewData["0"])
+        </dd>
+        <dt>
+            Keyword 2
+        </dt>
+        <dd>
+            @(ViewData["1"])
+        </dd>
+        <dt>
+            Keyword 3
+        </dt>
+        <dd>
+            @(ViewData["2"])
+        </dd>
+        <dt>
+            Keyword 4
+        </dt>
+        <dd>
+            @(ViewData["3"])
+        </dd>
+        <dt>
+            Keyword 5
+        </dt>
+        <dd>
+           @(ViewData["4"])
         </dd>
     </dl>
 </div>

@@ -138,14 +138,29 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var amazonType = await _context.AmazonTypes.SingleOrDefaultAsync(m => m.AmazonTypeID == id);
-            _context.AmazonTypes.Remove(amazonType);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            if (!RelatedProductExists(id))
+            {
+                _context.AmazonTypes.Remove(amazonType);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewData["RelatedEntriesExistError"] = "This object has other entries using it."
+                    + Environment.NewLine
+                    + "Delete the entries using this object first, and then try to delete this object.";
+                return View(amazonType);
+            }
         }
 
         private bool AmazonTypeExists(int id)
         {
             return _context.AmazonTypes.Any(e => e.AmazonTypeID == id);
+        }
+
+        private bool RelatedProductExists(int id)
+        {
+            return _context.AmazonProducts.Any(e => e.AmazonTypeID == id);
         }
     }
 }

@@ -2,6 +2,8 @@
 using T_generator.Models.Amazon.Data.Dump;
 using T_generator.Models.Amazon.Data.Intermediate;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using Microsoft.EntityFrameworkCore.Metadata;
 using T_generator.Models.Amazon.Data.JoinTables;
 
 namespace T_generator.Data
@@ -40,9 +42,9 @@ namespace T_generator.Data
 
         public DbSet<AmazonProduct> AmazonProducts { get; set; }
 
-        public DbSet<AmazonKeywordAssignment> AmazonKeywordAssignments { get; set; }
-
         public DbSet<AmazonMarketplace> AmazonMarketplaces { get; set; }
+
+        public DbSet<KeywordAssignment> KeywordAssignment { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -59,10 +61,10 @@ namespace T_generator.Data
             modelBuilder.Entity<AmazonKeyword>().ToTable("AmazonKeyword");
             modelBuilder.Entity<AmazonProduct>().ToTable("AmazonProduct");
             modelBuilder.Entity<AmazonMarketplace>().ToTable("AmazonMarketplace");
-            modelBuilder.Entity<AmazonKeywordAssignment>().ToTable("AmazonKeywordAssignment");
+            modelBuilder.Entity<KeywordAssignment>().ToTable("KeywordAssignment");
 
-            modelBuilder.Entity<AmazonKeywordAssignment>()
-                .HasKey(c => new { c.AmazonKeywordID, c.AmazonProductID });
+            modelBuilder.Entity<KeywordAssignment>()
+                .HasKey(c => new { c.KeywordID, c.ProductID, c.Order });
         }
 
     }

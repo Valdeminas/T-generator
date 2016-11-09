@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Product</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -21,6 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Prefix)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmazonType.Name)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -35,6 +38,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Prefix)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AmazonType.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.AmazonProductID">Edit</a> |

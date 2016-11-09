@@ -269,7 +269,7 @@ D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-gen
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Dump\AmazonKeyword.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Intermediate\AmazonMarketplace.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Intermediate\AmazonProduct.cs
-D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\JoinTables\AmazonKeywordAssignment.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\JoinTables\KeywordAssignment.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Objects\Item\AmazonItem.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Objects\Item\Children\AmazonItemParent.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Objects\Item\Children\AmazonItemSingle.cs
