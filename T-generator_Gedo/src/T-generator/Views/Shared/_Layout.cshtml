@@ -10,15 +10,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - T_generator</title>
 
+
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     </environment>
     @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
 </head>
@@ -39,11 +42,44 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+<<<<<<< HEAD
                     @if (SignInManager.IsSignedIn(User) &&
                          UserManager.Users.First(x => x.UserName == UserManager.GetUserName(User)).IsAdmin)
                         {
                         <li><a asp-area="" asp-controller="Account" asp-action="Users">Users</a></li>
                         }
+=======
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Basic 
+                            <span class="caret"></span>
+                        </a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-area="" asp-controller="AmazonAccounts" asp-action="Index">Accounts</a></li>
+                                <li><a asp-area="" asp-controller="AmazonTypes" asp-action="Index">Types</a></li>
+                                <li><a asp-area="" asp-controller="AmazonCurrencies" asp-action="Index">Currencies</a></li>
+                            </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Dump
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-area="" asp-controller="AmazonKeywords" asp-action="Index">Keywords</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Intermediate
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-area="" asp-controller="AmazonMarketplaces" asp-action="Index">Marketplaces</a></li>
+                            <li><a asp-area="" asp-controller="AmazonProducts" asp-action="Index">Products</a></li>
+                        </ul>
+                    </li>
+>>>>>>> 2ece3ae610bdcbcb5ba5719814ad407260cb38d0
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
@@ -60,6 +96,7 @@
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" asp-append-version="true"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
@@ -71,9 +108,11 @@
                 asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
         </script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" asp-append-version="true"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
     @RenderSection("scripts", required: false)
+
 </body>
 </html>

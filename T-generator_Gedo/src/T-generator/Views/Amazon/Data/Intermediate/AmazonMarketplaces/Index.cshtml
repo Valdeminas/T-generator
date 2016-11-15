@@ -1,0 +1,47 @@
+@model IEnumerable<T_generator.Models.Amazon.Data.Intermediate.AmazonMarketplace>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Marketplace</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prefix)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmazonCurrency.Currency)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prefix)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AmazonCurrency.Currency)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AmazonMarketplaceID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AmazonMarketplaceID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AmazonMarketplaceID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

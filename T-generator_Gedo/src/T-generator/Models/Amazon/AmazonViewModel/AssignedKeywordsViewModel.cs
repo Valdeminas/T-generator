@@ -2,8 +2,6 @@
 {
     public class AssignedKeywordsViewModel
     {
-        public int AmazonKeywordID { get; set; }
         public string Keyword { get; set; }
-        public bool Assigned { get; set; }
     }
 }

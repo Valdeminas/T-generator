@@ -41,6 +41,10 @@ textarea {
     width: 100%;
 }
 
+.line-breaks{
+    white-space:pre-line;
+}
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
   /* Hide captions */
