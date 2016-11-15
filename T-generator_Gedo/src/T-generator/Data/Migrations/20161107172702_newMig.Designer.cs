@@ -8,9 +8,10 @@ using T_generator.Data;
 namespace Tgenerator.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161107172702_newMig")]
+    partial class newMig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -138,8 +139,6 @@ namespace Tgenerator.Migrations
                     b.Property<bool>("EmailConfirmed");
 
                     b.Property<bool>("IsAdmin");
-
-                    b.Property<bool>("IsPowerAdmin");
 
                     b.Property<bool>("LockoutEnabled");
 

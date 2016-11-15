@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace T_generator.Models
-{
+    {
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
-    {
+        {
+        public bool IsPowerAdmin {get; set; }
+        public bool IsAdmin {get; set; }
+        }
     }
-}
