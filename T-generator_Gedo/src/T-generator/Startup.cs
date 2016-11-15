@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -11,22 +7,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using T_generator.Data;
 using T_generator.Models;
-<<<<<<< HEAD
 using Microsoft.AspNetCore.Mvc;
 using T_generator.Controllers.Helpers;
 using Microsoft.AspNetCore.Authorization;
-
-namespace T_generator
-=======
-using T_generator.Services;
 using T_generator.Data.Amazon;
 using Microsoft.AspNetCore.Mvc.Razor;
 using T_generator.Services.Amazon;
 
 namespace T_generator
-{
-    public class Startup
->>>>>>> 2ece3ae610bdcbcb5ba5719814ad407260cb38d0
     {
     public class Startup
         {
@@ -70,31 +58,32 @@ namespace T_generator
 
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>
                 {
-                config.Password.RequiredLength = 6;
-                config.Password.RequireDigit = false;
-                config.Password.RequireLowercase = false;
-                config.Password.RequireUppercase = false;
-                config.Password.RequireNonAlphanumeric = false;
-                config.User.RequireUniqueEmail = true;
+                    config.Password.RequiredLength = 6;
+                    config.Password.RequireDigit = false;
+                    config.Password.RequireLowercase = false;
+                    config.Password.RequireUppercase = false;
+                    config.Password.RequireNonAlphanumeric = false;
+                    config.User.RequireUniqueEmail = true;
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddMvc(config =>
                 {
-                // [BK] padeployinus isitikinti, kad ant https vaziuoja
-                //if (_env.IsProduction())
+                    // [BK] padeployinus isitikinti, kad ant https vaziuoja
+                    //if (_env.IsProduction())
                     config.Filters.Add(new RequireHttpsAttribute());
                 });
 
             services.AddAuthorization(options =>
                 {
-                options.AddPolicy(AdminRequirement.ADMIN_POLICY, policy => policy.Requirements.Add(new AdminRequirement(true)));
+                    options.AddPolicy(AdminRequirement.ADMIN_POLICY, policy => policy.Requirements.Add(new AdminRequirement(true)));
                 });
 
             services.AddSingleton<IAuthorizationHandler, AdminHandler>();
 
-            services.Configure<RazorViewEngineOptions>(options => {
+            services.Configure<RazorViewEngineOptions>(options =>
+            {
                 options.ViewLocationExpanders.Add(new ViewLocationExpander());
             });
 
@@ -103,13 +92,8 @@ namespace T_generator
             }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-<<<<<<< HEAD
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, DefaultUsersSeedData seeder)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, AmazonContext context, DefaultUsersSeedData seeder)
             {
-=======
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, AmazonContext context)
-        {
->>>>>>> 2ece3ae610bdcbcb5ba5719814ad407260cb38d0
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -138,17 +122,11 @@ namespace T_generator
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-<<<<<<< HEAD
+                    template: "{controller=Account}/{action=Login}/{id?}");
             });
 
             seeder.AddDefaultUsers().Wait();
+            AmazonDbInitializer.Initialize(context);
             }
         }
-=======
-            });
-
-            AmazonDbInitializer.Initialize(context);
-        }
->>>>>>> 2ece3ae610bdcbcb5ba5719814ad407260cb38d0
     }

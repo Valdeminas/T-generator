@@ -20,10 +20,14 @@
 x64/
 x86/
 debug/
+Debug/
+Bin/
+bin/
 bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+.vs/
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -49,6 +53,7 @@ project.fragment.lock.json
 artifacts/
 Properties/launchSettings.json
 
+*.suo
 *_i.c
 *_p.c
 *_i.h
