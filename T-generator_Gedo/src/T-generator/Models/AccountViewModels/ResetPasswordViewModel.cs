@@ -9,8 +9,7 @@ namespace T_generator.Models.AccountViewModels
     public class ResetPasswordViewModel
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -22,6 +21,13 @@ namespace T_generator.Models.AccountViewModels
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        public string Code { get; set; }
+        public ResetPasswordViewModel(ApplicationUser userToResetPassword)
+            {
+            Name = userToResetPassword.UserName;
+            }
+
+        public ResetPasswordViewModel()
+            {
+            }
     }
 }
