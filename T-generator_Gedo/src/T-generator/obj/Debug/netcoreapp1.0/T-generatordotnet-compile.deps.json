@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.0/",
-    "signature": "ba74a80877e7be270dd1ad2e3f968c12be116014"
+    "signature": "6fe715a8e6eb64812f36851d79e27732b7a41615"
   },
   "compilationOptions": {
     "defines": [
@@ -36,10 +36,36 @@
           "Microsoft.Extensions.Logging.Debug": "1.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
           "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
-          "Microsoft.CodeAnalysis.CSharp": "1.3.0"
+          "Microsoft.CodeAnalysis.CSharp": "1.3.0",
+          "ImageSharp": "1.0.0-alpha-000052"
         },
         "compile": {
           "T-generator.dll": {}
+        }
+      },
+      "ImageSharp/1.0.0-alpha-000052": {
+        "dependencies": {
+          "System.Buffers": "4.0.0",
+          "System.Collections": "4.0.11",
+          "System.Diagnostics.Debug": "4.0.11",
+          "System.Diagnostics.Tools": "4.0.1",
+          "System.IO": "4.1.0",
+          "System.IO.Compression": "4.1.0",
+          "System.Linq": "4.1.0",
+          "System.Numerics.Vectors": "4.1.1",
+          "System.ObjectModel": "4.0.12",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime.CompilerServices.Unsafe": "4.0.0",
+          "System.Runtime.Extensions": "4.1.0",
+          "System.Runtime.InteropServices": "4.1.0",
+          "System.Runtime.Numerics": "4.0.1",
+          "System.Text.Encoding.Extensions": "4.0.11",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11",
+          "System.Threading.Tasks.Parallel": "4.0.1"
+        },
+        "compile": {
+          "lib/netstandard1.1/ImageSharp.dll": {}
         }
       },
       "Libuv/1.9.0": {
@@ -2377,6 +2403,14 @@
           "ref/netstandard1.5/System.Runtime.dll": {}
         }
       },
+      "System.Runtime.CompilerServices.Unsafe/4.0.0": {
+        "dependencies": {
+          "System.Runtime": "4.1.0"
+        },
+        "compile": {
+          "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+        }
+      },
       "System.Runtime.Extensions/4.1.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.0.1",
@@ -2897,10 +2931,36 @@
           "Microsoft.Extensions.Logging.Debug": "1.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
           "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
-          "Microsoft.CodeAnalysis.CSharp": "1.3.0"
+          "Microsoft.CodeAnalysis.CSharp": "1.3.0",
+          "ImageSharp": "1.0.0-alpha-000052"
         },
         "runtime": {
           "T-generator.dll": {}
+        }
+      },
+      "ImageSharp/1.0.0-alpha-000052": {
+        "dependencies": {
+          "System.Buffers": "4.0.0",
+          "System.Collections": "4.0.11",
+          "System.Diagnostics.Debug": "4.0.11",
+          "System.Diagnostics.Tools": "4.0.1",
+          "System.IO": "4.1.0",
+          "System.IO.Compression": "4.1.0",
+          "System.Linq": "4.1.0",
+          "System.Numerics.Vectors": "4.1.1",
+          "System.ObjectModel": "4.0.12",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime.CompilerServices.Unsafe": "4.0.0",
+          "System.Runtime.Extensions": "4.1.0",
+          "System.Runtime.InteropServices": "4.1.0",
+          "System.Runtime.Numerics": "4.0.1",
+          "System.Text.Encoding.Extensions": "4.0.11",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11",
+          "System.Threading.Tasks.Parallel": "4.0.1"
+        },
+        "runtime": {
+          "lib/netstandard1.1/ImageSharp.dll": {}
         }
       },
       "Libuv/1.9.0": {
@@ -5160,6 +5220,14 @@
           "Microsoft.NETCore.Targets": "1.0.1"
         }
       },
+      "System.Runtime.CompilerServices.Unsafe/4.0.0": {
+        "dependencies": {
+          "System.Runtime": "4.1.0"
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+        }
+      },
       "System.Runtime.Extensions/4.1.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.0.1",
@@ -5639,6 +5707,11 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "ImageSharp/1.0.0-alpha-000052": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-C1Wm0CzgdgECJW66/YpRCFbWm6KwbioOaPA8cr81vvUdOGLvcAyK6GcmECfpYtD/eiHDFKmNziYy8JhIP+/QYw=="
     },
     "Libuv/1.9.0": {
       "type": "package",
@@ -6509,6 +6582,11 @@
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-v6c/4Yaa9uWsq+JMhnOFewrYkgdNHNG2eMKuNqRn8P733rNXeRCGvV5FkkjBXn2dbVkPXOsO0xjsEeM1q2zC0g=="
+    },
+    "System.Runtime.CompilerServices.Unsafe/4.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LDvjxLx2fkThOFo/SC+901fJrh5artALmgzeSqnVxzvFp4q3HO8BkeLyshPdcbs5zpN7Xh9G23M6sDhgIPbG9A=="
     },
     "System.Runtime.Extensions/4.1.0": {
       "type": "package",

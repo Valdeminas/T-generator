@@ -9,8 +9,11 @@ namespace T_generator.Models.Amazon.Objects.Item
     {
         public int AmazonItemID { get; set; }
 
+        public int AmazonProductID { get; set; }
         public virtual AmazonProduct AmazonProduct { get; set; }
+        public int AmazonCountryID { get; set; }
         public virtual AmazonCountry AmazonCountry { get; set; }
+        public int AmazonBrowseNodeID { get; set; }
         public virtual AmazonBrowseNode AmazonBrowseNode { get; set; }
 
         public virtual ICollection<AmazonBulletPoint> AmazonBulletPoint { get; set; }

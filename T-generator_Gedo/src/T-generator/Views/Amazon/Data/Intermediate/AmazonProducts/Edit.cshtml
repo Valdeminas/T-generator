@@ -41,6 +41,12 @@
             </div>
         </div>
         <div class="form-group">
+            <label asp-for="Sizes" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="Sizes" class="form-control" asp-items="ViewBag.AmazonSizeID"></select>
+            </div>
+        </div>
+        <div class="form-group">
             <label asp-for="Keywords" class="col-md-2 control-label">Keywords 1</label>
             <div class="col-md-10">
                 <input class="form-control" name="[0].Keyword" value="@(ViewData["0"])" data-autocomplete-url="@Url.Action("UpdateKeywords")" data-label-member="keyword" data-value-member="amazonKeywordID" />

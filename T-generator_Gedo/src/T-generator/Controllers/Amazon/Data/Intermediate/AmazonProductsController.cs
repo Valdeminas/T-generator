@@ -11,6 +11,7 @@ using T_generator.AmazonViewModel;
 using T_generator.Models.Amazon.Data.Dump;
 using Microsoft.CodeAnalysis;
 using T_generator.Models.Amazon.Data.JoinTables;
+using T_generator.Models.Amazon.Data.Basic;
 
 namespace T_generator.Controllers.Amazon.Data.Intermediate
 {
@@ -57,6 +58,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         {
             var amazonProduct = new AmazonProduct();
             amazonProduct.Keywords = new List<KeywordAssignment>();
+            ViewData["AmazonSizeID"] = new MultiSelectList(_context.AmazonSizes, "AmazonSizeID", "Name");
             ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "Name");
             return View();
         }
@@ -67,9 +69,11 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AmazonTypeID,Description,Name,Prefix")] AmazonProduct amazonProduct, IList<AssignedKeywordsViewModel> keywords)
+        public async Task<IActionResult> Create([Bind("AmazonTypeID,Description,Name,Prefix")] AmazonProduct amazonProduct, IList<AssignedKeywordsViewModel> keywords, List<int> Sizes)
         {
+            amazonProduct.Sizes = new List<ProductSizes>();
             amazonProduct.Keywords = new List<KeywordAssignment>();
+            UpdateProductSizes(Sizes,amazonProduct);
             UpdateProductKeywords(keywords, amazonProduct);
             try
             {
@@ -87,7 +91,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                     "Try again, and if the problem persists " +
                     "see your system administrator.");
             }
-
+            ViewData["AmazonSizeID"] = new MultiSelectList(_context.AmazonSizes, "AmazonSizeID", "Name");
             ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "Name", amazonProduct.AmazonTypeID);
             return View(amazonProduct);
         }
@@ -101,6 +105,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             }
 
             var amazonProduct = await _context.AmazonProducts
+                .Include(i=>i.Sizes)
                 .Include(i => i.Keywords)
                 .ThenInclude(i=>i.Keyword)
                 .AsNoTracking()
@@ -109,6 +114,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             {
                 return NotFound();
             }
+            ViewData["AmazonSizeID"] = new MultiSelectList(_context.AmazonSizes, "AmazonSizeID", "Name", new[] { "1", "2" });// amazonProduct.Sizes.Select(i=>i.SizeID).ToArray());
             ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "Name", amazonProduct.AmazonTypeID);
             PopulateAssignedKeywordData(amazonProduct);
             return View(amazonProduct);
@@ -263,6 +269,14 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                         keywordsFromDb[newKeyword.Keyword] = newKeyword.AmazonKeywordID;
                     }
                 }
+            }
+        }
+
+        private void UpdateProductSizes(List<int> Sizes,AmazonProduct productToUpdate)
+        {
+            foreach(var sizeid in Sizes)
+            {
+                productToUpdate.Sizes.Add(new ProductSizes { ProductID=productToUpdate.AmazonProductID,SizeID=sizeid});
             }
         }
 

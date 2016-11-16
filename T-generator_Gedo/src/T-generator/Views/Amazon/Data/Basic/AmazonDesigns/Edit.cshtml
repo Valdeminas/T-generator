@@ -1,0 +1,52 @@
+@model T_generator.Models.Amazon.Data.Basic.AmazonDesign
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit"  method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+        <h4>AmazonDesign</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="AmazonDesignID" />
+        <div class="form-group">
+            <label asp-for="DesignURL" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <img src="../../@(Model.DesignURL)" alt="@(Model.Name)" width="60" />
+                <input asp-for="DesignURL" class="form-control" type="file"/>
+                <span asp-validation-for="DesignURL" class="text-danger" />
+                <input name="oldURL" type="hidden" value="@(Model.DesignURL)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Prefix" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Prefix" class="form-control" />
+                <span asp-validation-for="Prefix" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

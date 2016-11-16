@@ -13,6 +13,7 @@
 --version:1.0.0.0
 --informational-version:1.0.0
 --target-framework:.NETCoreApp,Version=v1.0
+--reference:D:\Users\gediminas-zi\.nuget\packages\ImageSharp\1.0.0-alpha-000052\lib\netstandard1.1\ImageSharp.dll
 --reference:D:\Users\gediminas-zi\.nuget\packages\Microsoft.ApplicationInsights\2.1.0\lib\dotnet5.4\Microsoft.ApplicationInsights.dll
 --reference:D:\Users\gediminas-zi\.nuget\packages\Microsoft.ApplicationInsights.AspNetCore\1.0.0\lib\netstandard1.6\Microsoft.ApplicationInsights.AspNetCore.dll
 --reference:D:\Users\gediminas-zi\.nuget\packages\Microsoft.AspNetCore.Antiforgery\1.0.1\lib\netstandard1.3\Microsoft.AspNetCore.Antiforgery.dll
@@ -201,6 +202,7 @@
 --reference:D:\Users\gediminas-zi\.nuget\packages\System.Resources.Reader\4.0.0\lib\netstandard1.0\System.Resources.Reader.dll
 --reference:D:\Users\gediminas-zi\.nuget\packages\System.Resources.ResourceManager\4.0.1\ref\netstandard1.0\System.Resources.ResourceManager.dll
 --reference:D:\Users\gediminas-zi\.nuget\packages\System.Runtime\4.1.0\ref\netstandard1.5\System.Runtime.dll
+--reference:D:\Users\gediminas-zi\.nuget\packages\System.Runtime.CompilerServices.Unsafe\4.0.0\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll
 --reference:D:\Users\gediminas-zi\.nuget\packages\System.Runtime.Extensions\4.1.0\ref\netstandard1.5\System.Runtime.Extensions.dll
 --reference:D:\Users\gediminas-zi\.nuget\packages\System.Runtime.Handles\4.0.1\ref\netstandard1.3\System.Runtime.Handles.dll
 --reference:D:\Users\gediminas-zi\.nuget\packages\System.Runtime.InteropServices\4.1.0\ref\netstandard1.5\System.Runtime.InteropServices.dll
@@ -236,9 +238,16 @@ D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-gen
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\HomeController.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\ManageController.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\Amazon\Data\Basic\AmazonAccountsController.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\Amazon\Data\Basic\AmazonCountriesController.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\Amazon\Data\Basic\AmazonCurrenciesController.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\Amazon\Data\Basic\AmazonDesignsController.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\Amazon\Data\Basic\AmazonSizesController.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\Amazon\Data\Basic\AmazonTypesController.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\Amazon\Data\Dump\AmazonBrowseNodesController.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\Amazon\Data\Dump\AmazonBulletPointsController.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\Amazon\Data\Dump\AmazonImageURLsController.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\Amazon\Data\Dump\AmazonKeywordsController.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\Amazon\Data\Intermediate\AmazonItemSinglesController.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\Amazon\Data\Intermediate\AmazonMarketplacesController.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Controllers\Amazon\Data\Intermediate\AmazonProductsController.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Data\ApplicationDbContext.cs
@@ -260,6 +269,7 @@ D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-gen
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Basic\AmazonColor.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Basic\AmazonCountry.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Basic\AmazonCurrency.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Basic\AmazonDesign.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Basic\AmazonSize.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Basic\AmazonType.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Basic\AmazonVariation.cs
@@ -270,6 +280,7 @@ D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-gen
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Intermediate\AmazonMarketplace.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\Intermediate\AmazonProduct.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\JoinTables\KeywordAssignment.cs
+D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Data\JoinTables\ProductSizes.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Objects\Item\AmazonItem.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Objects\Item\Children\AmazonItemParent.cs
 D:\Users\gediminas-zi\Documents\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\Models\Amazon\Objects\Item\Children\AmazonItemSingle.cs

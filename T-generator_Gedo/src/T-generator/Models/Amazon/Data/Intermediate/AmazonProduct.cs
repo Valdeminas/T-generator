@@ -20,6 +20,8 @@ namespace T_generator.Models.Amazon.Data.Intermediate
         public int AmazonTypeID { get; set; }
 
         public ICollection<KeywordAssignment> Keywords { get; set; }
+        [Display(Name = "Possible Sizes")]
+        public ICollection<ProductSizes> Sizes { get; set; }
 
     }
 }

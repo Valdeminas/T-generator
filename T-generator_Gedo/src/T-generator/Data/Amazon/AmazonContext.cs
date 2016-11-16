@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Metadata;
 using T_generator.Models.Amazon.Data.JoinTables;
+using T_generator.Models.Amazon.Objects.Item;
+using T_generator.Models.Amazon.Objects.Item.Children;
 
 namespace T_generator.Data
 {
@@ -44,7 +46,15 @@ namespace T_generator.Data
 
         public DbSet<AmazonMarketplace> AmazonMarketplaces { get; set; }
 
+        public DbSet<AmazonDesign> AmazonDesigns { get; set; }
+
+        public DbSet<AmazonItem> AmazonItems { get; set; }
+
         public DbSet<KeywordAssignment> KeywordAssignment { get; set; }
+
+        public DbSet<AmazonItemSingle> AmazonItemSingles { get; set; }
+
+        public DbSet<ProductSizes> ProductSizes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -61,11 +71,20 @@ namespace T_generator.Data
             modelBuilder.Entity<AmazonKeyword>().ToTable("AmazonKeyword");
             modelBuilder.Entity<AmazonProduct>().ToTable("AmazonProduct");
             modelBuilder.Entity<AmazonMarketplace>().ToTable("AmazonMarketplace");
+            modelBuilder.Entity<AmazonDesign>().ToTable("AmazonDesign");
             modelBuilder.Entity<KeywordAssignment>().ToTable("KeywordAssignment");
+            modelBuilder.Entity<ProductSizes>().ToTable("ProductSizes");
+            modelBuilder.Entity<AmazonItem>().ToTable("AmazonItem");
+            modelBuilder.Entity<AmazonItemSingle>().ToTable("AmazonItemSingle");
+            
 
             modelBuilder.Entity<KeywordAssignment>()
                 .HasKey(c => new { c.KeywordID, c.ProductID, c.Order });
+            modelBuilder.Entity<ProductSizes>()
+                .HasKey(c => new { c.SizeID, c.ProductID });
         }
+
+        
 
     }
 }

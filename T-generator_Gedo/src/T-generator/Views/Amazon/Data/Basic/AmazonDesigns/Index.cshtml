@@ -1,0 +1,47 @@
+@model IEnumerable<T_generator.Models.Amazon.Data.Basic.AmazonDesign>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DesignURL)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prefix)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <img src="@(item.DesignURL)" alt="@(item.Name)" width="60" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prefix)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AmazonDesignID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AmazonDesignID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AmazonDesignID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
