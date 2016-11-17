@@ -243,3 +243,12 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+T-generator_Beno
+oldSolutionCopy
+T-generator
+.vs
+.vs
+obj
+bin
+/T-generator_Gedo/src/T-generator/T-generator.xproj
+/T-generator_Gedo/src/T-generator/T-generator.xproj.user
