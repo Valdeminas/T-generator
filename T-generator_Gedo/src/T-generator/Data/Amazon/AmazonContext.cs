@@ -12,7 +12,8 @@ namespace T_generator.Data
 {
     public class AmazonContext : DbContext
     {
-        public AmazonContext(DbContextOptions<AmazonContext> options) : base(options)
+        public AmazonContext(DbContextOptions<AmazonContext> options) 
+            : base(options)
         {
         }
 

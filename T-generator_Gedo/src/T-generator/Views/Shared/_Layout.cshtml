@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using T_generator.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+    
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -21,6 +26,9 @@
     @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
 </head>
 <body>
+@if (SignInManager.IsSignedIn(User) &&
+                                 UserManager.Users.First(x => x.UserName == UserManager.GetUserName(User)).IsAdmin)
+{
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -30,56 +38,59 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">T_generator</a>
+                <a asp-controller="Home" asp-action="Index" class="navbar-brand">T_generator</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            Basic 
-                            <span class="caret"></span>
-                        </a>
+                
+                    <ul class="nav navbar-nav">
+                        <li><a asp-area="" asp-controller="Account" asp-action="Users">Users</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Basic
+                                <span class="caret"></span>
+                            </a>
                             <ul class="dropdown-menu">
                                 <li><a asp-area="" asp-controller="AmazonAccounts" asp-action="Index">Accounts</a></li>
                                 <li><a asp-area="" asp-controller="AmazonTypes" asp-action="Index">Types</a></li>
                                 <li><a asp-area="" asp-controller="AmazonCurrencies" asp-action="Index">Currencies</a></li>
-                                <li><a asp-area="" asp-controller="AmazonCountries" asp-action="Index">Countries</a></li>
-                                <li><a asp-area="" asp-controller="AmazonDesigns" asp-action="Index">Designs</a></li>
-                                <li><a asp-area="" asp-controller="AmazonSizes" asp-action="Index">Sizes</a></li>
                             </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Dump
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-area="" asp-controller="AmazonKeywords" asp-action="Index">Keywords</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Intermediate
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-area="" asp-controller="AmazonMarketplaces" asp-action="Index">Marketplaces</a></li>
+                                <li><a asp-area="" asp-controller="AmazonProducts" asp-action="Index">Products</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            Dump
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a asp-area="" asp-controller="AmazonKeywords" asp-action="Index">Keywords</a></li>
-                            <li><a asp-area="" asp-controller="AmazonBrowseNodes" asp-action="Index">Browse Nodes</a></li>
-                            <li><a asp-area="" asp-controller="AmazonImageURLs" asp-action="Index">Images</a></li>
-                            <li><a asp-area="" asp-controller="AmazonBulletPoints" asp-action="Index">Bullet Points</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            Intermediate
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a asp-area="" asp-controller="AmazonMarketplaces" asp-action="Index">Marketplaces</a></li>
-                            <li><a asp-area="" asp-controller="AmazonProducts" asp-action="Index">Products</a></li>
-                            <li><a asp-area="" asp-controller="AmazonItems" asp-action="Index">Items</a></li>
-                            <li><a asp-area="" asp-controller="AmazonItemSingles" asp-action="Index">Single Items</a></li>
-                        </ul>
-                    </li>
+                    <li><a asp-area="" asp-controller="Account" asp-action="LogOff">Log off</a></li>
+                    @if (UserManager.Users.First(x => x.UserName == UserManager.GetUserName(User)).IsAdmin)
+                {
+                        <li><a asp-area="" asp-controller="Account" asp-action="Register">Register new user</a></li>
+                    }
                 </ul>
-                @await Html.PartialAsync("_LoginPartial")
+                
+                @*@await Html.PartialAsync("_LoginPartial")*@
             </div>
         </div>
     </div>
+}
     <div class="container body-content">
         @RenderBody()
         <hr />
