@@ -8,10 +8,62 @@
     @{
         ViewData["Title"] = "Users";
     }
+@{
+    var currentUser = UserManager.GetUserAsync(User).Result; 
+    }
+
     <h2>@ViewData["Title"].</h2>
     <h3>@ViewData["Message"]</h3>
 
-@if (Model != null &&
+<p>
+    <a asp-action="Register">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                Is Admin
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            @if (!item.IsPowerAdmin)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @(item.IsAdmin ? "Yes" : "No")
+                </td>
+                @if (item.UserName==currentUser.UserName ||
+                    currentUser.IsPowerAdmin ||
+                    (currentUser.IsAdmin && !item.IsAdmin)) {
+                <td>
+                    <a asp-action="ResetPassword" asp-route-userName="@item.UserName">Reset Password</a> |
+                    <a asp-action="Modify" asp-route-userName="@item.UserName">Edit</a> |                   
+                    <a asp-action="Delete" asp-route-userName="@item.UserName">Delete</a>
+                </td>
+                }
+            </tr>
+                }
+            }
+    </tbody>
+</table>
+
+@*@if (Model != null &&
      Model.Count(x => x.IsPowerAdmin == false) != 0)
     {
     var currentUser = UserManager.GetUserAsync(User).Result;
@@ -67,6 +119,6 @@
 else
     {
     <h4>There are no users to show.</h4>
-    }
+    }*@
 
 

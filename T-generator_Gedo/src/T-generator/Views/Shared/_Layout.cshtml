@@ -26,9 +26,6 @@
     @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
 </head>
 <body>
-@if (SignInManager.IsSignedIn(User) &&
-                                 UserManager.Users.First(x => x.UserName == UserManager.GetUserName(User)).IsAdmin)
-{
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -42,8 +39,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 
-                    <ul class="nav navbar-nav">
-                        <li><a asp-area="" asp-controller="Account" asp-action="Users">Users</a></li>
+                    <ul class="nav navbar-nav">                       
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                 Basic
@@ -76,21 +72,30 @@
                         </li>
                     </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-                    </li>
-                    <li><a asp-area="" asp-controller="Account" asp-action="LogOff">Log off</a></li>
                     @if (UserManager.Users.First(x => x.UserName == UserManager.GetUserName(User)).IsAdmin)
-                {
-                        <li><a asp-area="" asp-controller="Account" asp-action="Register">Register new user</a></li>
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Hello @UserManager.GetUserName(User)!
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-area="" asp-controller="Manage" asp-action="ChangePassword">Manage @UserManager.GetUserName(User)</a></li>
+                                <li><a asp-area="" asp-controller="Account" asp-action="Users">Users</a></li>
+                            </ul>
+                        </li>
                     }
-                </ul>
-                
-                @*@await Html.PartialAsync("_LoginPartial")*@
+                    else
+                    {
+                    <li>
+                        <a asp-area="" asp-controller="Manage" asp-action="ChangePassword">Hello @UserManager.GetUserName(User)!</a>
+                    </li>
+                    }
+                    <li><a asp-area="" asp-controller="Account" asp-action="LogOff">Log off</a></li>                   
+                </ul>               
             </div>
         </div>
     </div>
-}
     <div class="container body-content">
         @RenderBody()
         <hr />

@@ -28,9 +28,9 @@ namespace T_generator.Controllers
             }
 
         //
-        // GET: /Manage/Index
+        // GET: /Manage/ChangePassword
         [HttpGet]
-        public async Task<IActionResult> Index(ManageMessageId? message = null)
+        public IActionResult ChangePassword(ManageMessageId? message = null)
             {
             ViewData["StatusMessage"] =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
@@ -40,28 +40,6 @@ namespace T_generator.Controllers
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
-
-            var user = await GetCurrentUserAsync();
-            if (user == null)
-                {
-                return View("Error");
-                }
-            var model = new IndexViewModel
-                {
-                HasPassword = await _userManager.HasPasswordAsync(user),
-                PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
-                TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
-                Logins = await _userManager.GetLoginsAsync(user),
-                BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user)
-                };
-            return View(model);
-            }
-
-        //
-        // GET: /Manage/ChangePassword
-        [HttpGet]
-        public IActionResult ChangePassword()
-            {
             return View();
             }
 
@@ -69,7 +47,7 @@ namespace T_generator.Controllers
         // POST: /Manage/ChangePassword
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
-            {
+            {           
             if (!ModelState.IsValid)
                 {
                 return View(model);
@@ -82,12 +60,12 @@ namespace T_generator.Controllers
                     {
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User changed their password successfully.");
-                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangePasswordSuccess });
+                    return RedirectToAction(nameof(ChangePassword), new { Message = ManageMessageId.ChangePasswordSuccess });
                     }
                 AddErrors(result);
                 return View(model);
                 }
-            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+            return RedirectToAction(nameof(ChangePassword), new { Message = ManageMessageId.Error });
             }
 
         #region Helpers

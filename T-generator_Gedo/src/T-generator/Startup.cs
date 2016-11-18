@@ -92,10 +92,15 @@ namespace T_generator
 
             services.AddAuthorization(options =>
                 {
-                    options.AddPolicy(AdminRequirement.ADMIN_POLICY, policy => policy.Requirements.Add(new AdminRequirement(true)));
+                    options.AddPolicy(AdminRequirement.ADMIN_POLICY, policy => policy.Requirements.Add(new AdminRequirement(true)));                   
                 });
 
             services.AddSingleton<IAuthorizationHandler, AdminHandler>();
+
+            new AuthorizationOptions()
+            {
+                
+            };
 
             services.Configure<RazorViewEngineOptions>(options =>
             {
@@ -107,7 +112,7 @@ namespace T_generator
             }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, AmazonContext context, DefaultUsersSeedData seeder, ApplicationDbContext appContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, AmazonContext amazonContext, DefaultUsersSeedData seeder, ApplicationDbContext appContext)
             {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -124,6 +129,8 @@ namespace T_generator
                 {
                 app.UseExceptionHandler("/Home/Error");
                 }
+
+            app.UseStatusCodePagesWithRedirects("~/Home/Index");
 
             app.UseApplicationInsightsExceptionTelemetry();
 
@@ -142,9 +149,10 @@ namespace T_generator
             });
 
             ApplicationDbInitializer.Initialize(appContext);
-            AmazonDbInitializer.Initialize(context);
+            AmazonDbInitializer.Initialize(amazonContext);
+
             seeder.AddDefaultUsers().Wait();
-            
-            }
+
+        }
         }
     }

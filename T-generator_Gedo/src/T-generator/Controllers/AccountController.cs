@@ -134,7 +134,14 @@ namespace T_generator.Controllers
         public IActionResult Login(string returnUrl = null)
             {
             ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToLocal(returnUrl);
+            }
             }
 
         //
@@ -148,7 +155,7 @@ namespace T_generator.Controllers
                 {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Name, model.Password, true, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.Name, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                     {
                     _logger.LogInformation(1, "User logged in.");
@@ -188,7 +195,7 @@ namespace T_generator.Controllers
                 if (result.Succeeded)
                     {
                     _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Users");
                     }
                 AddErrors(result);
                 }
@@ -263,7 +270,12 @@ namespace T_generator.Controllers
             AddErrors(result);
             return View();
             }
-        
+
+        public IActionResult AccessDenied(string returnUrl = null)
+        {
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
         #region Helpers
         private void AddErrors(IdentityResult result)
             {

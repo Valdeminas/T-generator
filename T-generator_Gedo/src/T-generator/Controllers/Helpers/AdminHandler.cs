@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,13 @@ namespace T_generator.Controllers.Helpers
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AdminRequirement requirement)
             {
             if (_userManager.GetUserAsync(context.User).Result.IsAdmin)
+            {
                 context.Succeed(requirement);
+            }
             else
+            {
                 context.Fail();
+            }         
 
             return Task.CompletedTask;
             }
