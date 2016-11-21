@@ -89,13 +89,14 @@ namespace T_generator
                         //config.Filters.Add(new RequireHttpsAttribute());
                     }
                 });
-
             services.AddAuthorization(options =>
                 {
-                    options.AddPolicy(AdminRequirement.ADMIN_POLICY, policy => policy.Requirements.Add(new AdminRequirement(true)));                   
+                    options.AddPolicy(AdminRequirement.ADMIN_POLICY, policy => policy.Requirements.Add(new AdminRequirement(true)));
+                    options.AddPolicy(IsNotSelfRequirement.ISNOTSELF_POLICY,policy=>policy.Requirements.Add(new IsNotSelfRequirement()));
                 });
 
             services.AddSingleton<IAuthorizationHandler, AdminHandler>();
+            services.AddSingleton<IAuthorizationHandler, IsNotSelfHandler>();
 
             new AuthorizationOptions()
             {

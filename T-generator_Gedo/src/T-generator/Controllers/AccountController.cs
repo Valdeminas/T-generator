@@ -64,7 +64,8 @@ namespace T_generator.Controllers
         //
         // GET: /Account/Modify
         [HttpGet]
-        [Authorize(Policy = AdminRequirement.ADMIN_POLICY)]
+        [Authorize(Policy = IsNotSelfRequirement.ISNOTSELF_POLICY)]
+        [Authorize(Policy = AdminRequirement.ADMIN_POLICY)]        
         public IActionResult Modify(string userName)
             {
             ApplicationUser userToModify;
