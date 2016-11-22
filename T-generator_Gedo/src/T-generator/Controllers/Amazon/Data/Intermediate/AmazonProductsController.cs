@@ -73,7 +73,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         {
             amazonProduct.Sizes = new List<ProductSizes>();
             amazonProduct.Keywords = new List<KeywordAssignment>();
-            UpdateProductSizes(Sizes,amazonProduct);
+            UpdateProductSizes(Sizes, amazonProduct);
             UpdateProductKeywords(keywords, amazonProduct);
             try
             {
@@ -113,8 +113,8 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             if (amazonProduct == null)
             {
                 return NotFound();
-            }
-            ViewData["AmazonSizeID"] = new MultiSelectList(_context.AmazonSizes, "AmazonSizeID", "Name", new[] { "1", "2" });// amazonProduct.Sizes.Select(i=>i.SizeID).ToArray());
+            }            
+            ViewData["AmazonSizeID"] = new MultiSelectList(_context.AmazonSizes, "AmazonSizeID", "Name", amazonProduct.Sizes.Select(i=>i.SizeID).ToArray());
             ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "Name", amazonProduct.AmazonTypeID);
             PopulateAssignedKeywordData(amazonProduct);
             return View(amazonProduct);
@@ -125,7 +125,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, IList<AssignedKeywordsViewModel> keywords)
+        public async Task<IActionResult> Edit(int? id, IList<AssignedKeywordsViewModel> keywords, List<int> Sizes)
         {
             if (id == null)
             {
@@ -135,6 +135,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             var productToUpdate = await _context.AmazonProducts
                 .Include(i => i.AmazonType)
                 .Include(i => i.Keywords)
+                .Include(i=>i.Sizes)
                 .SingleOrDefaultAsync(m => m.AmazonProductID == id);
 
             if (await TryUpdateModelAsync<AmazonProduct>(
@@ -143,6 +144,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                     i => i.Name, i => i.Prefix, i => i.Description, i => i.AmazonTypeID))
             {
                 UpdateProductKeywords(keywords, productToUpdate);
+                UpdateProductSizes(Sizes, productToUpdate);
                 try
                 {
                     await _context.SaveChangesAsync();
@@ -158,6 +160,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             }
 
             ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "Name", productToUpdate.AmazonTypeID);
+            ViewData["AmazonSizeID"] = new MultiSelectList(_context.AmazonSizes, "AmazonSizeID", "Name", productToUpdate.Sizes.Select(i => i.SizeID).ToArray());
             return View(productToUpdate);
         }
 
@@ -171,6 +174,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
 
             var amazonProduct = await _context.AmazonProducts
                 .Include(i => i.AmazonType)
+                .Include(i=>i.Sizes)
                 .Include(i => i.Keywords)
                 .ThenInclude(i => i.Keyword)
                 .AsNoTracking()
@@ -272,7 +276,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             }
         }
 
-        private void UpdateProductSizes(List<int> Sizes,AmazonProduct productToUpdate)
+        private void UpdateProductSizes(List<int> Sizes, AmazonProduct productToUpdate)
         {
             foreach(var sizeid in Sizes)
             {

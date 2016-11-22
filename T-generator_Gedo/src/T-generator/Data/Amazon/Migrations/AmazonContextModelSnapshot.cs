@@ -70,6 +70,22 @@ namespace Tgenerator.Migrations
                     b.ToTable("AmazonCurrency");
                 });
 
+            modelBuilder.Entity("T_generator.Models.Amazon.Data.Basic.AmazonDesign", b =>
+                {
+                    b.Property<int>("AmazonDesignID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("DesignURL");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Prefix");
+
+                    b.HasKey("AmazonDesignID");
+
+                    b.ToTable("AmazonDesign");
+                });
+
             modelBuilder.Entity("T_generator.Models.Amazon.Data.Basic.AmazonSize", b =>
                 {
                     b.Property<int>("AmazonSizeID")
@@ -129,9 +145,13 @@ namespace Tgenerator.Migrations
                     b.Property<int>("AmazonBulletPointID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("AmazonItemID");
+
                     b.Property<string>("BulletPoint");
 
                     b.HasKey("AmazonBulletPointID");
+
+                    b.HasIndex("AmazonItemID");
 
                     b.ToTable("AmazonBulletPoint");
                 });
@@ -141,9 +161,13 @@ namespace Tgenerator.Migrations
                     b.Property<int>("AmazonImageURLID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("AmazonItemID");
+
                     b.Property<string>("ImageURL");
 
                     b.HasKey("AmazonImageURLID");
+
+                    b.HasIndex("AmazonItemID");
 
                     b.ToTable("AmazonImageURL");
                 });
@@ -153,9 +177,13 @@ namespace Tgenerator.Migrations
                     b.Property<int>("AmazonKeywordID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("AmazonItemID");
+
                     b.Property<string>("Keyword");
 
                     b.HasKey("AmazonKeywordID");
+
+                    b.HasIndex("AmazonItemID");
 
                     b.ToTable("AmazonKeyword");
                 });
@@ -215,6 +243,82 @@ namespace Tgenerator.Migrations
                     b.ToTable("KeywordAssignment");
                 });
 
+            modelBuilder.Entity("T_generator.Models.Amazon.Data.JoinTables.ProductSizes", b =>
+                {
+                    b.Property<int>("SizeID");
+
+                    b.Property<int>("ProductID");
+
+                    b.HasKey("SizeID", "ProductID");
+
+                    b.HasIndex("ProductID");
+
+                    b.HasIndex("SizeID");
+
+                    b.ToTable("ProductSizes");
+                });
+
+            modelBuilder.Entity("T_generator.Models.Amazon.Objects.Item.AmazonItem", b =>
+                {
+                    b.Property<int>("AmazonItemID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AmazonBrowseNodeID");
+
+                    b.Property<int>("AmazonCountryID");
+
+                    b.Property<int>("AmazonProductID");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.HasKey("AmazonItemID");
+
+                    b.HasIndex("AmazonBrowseNodeID");
+
+                    b.HasIndex("AmazonCountryID");
+
+                    b.HasIndex("AmazonProductID");
+
+                    b.ToTable("AmazonItem");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("AmazonItem");
+                });
+
+            modelBuilder.Entity("T_generator.Models.Amazon.Objects.Item.Children.AmazonItemSingle", b =>
+                {
+                    b.HasBaseType("T_generator.Models.Amazon.Objects.Item.AmazonItem");
+
+                    b.Property<double>("Price");
+
+                    b.Property<int>("Quantity");
+
+                    b.ToTable("AmazonItemSingle");
+
+                    b.HasDiscriminator().HasValue("AmazonItemSingle");
+                });
+
+            modelBuilder.Entity("T_generator.Models.Amazon.Data.Dump.AmazonBulletPoint", b =>
+                {
+                    b.HasOne("T_generator.Models.Amazon.Objects.Item.AmazonItem")
+                        .WithMany("AmazonBulletPoint")
+                        .HasForeignKey("AmazonItemID");
+                });
+
+            modelBuilder.Entity("T_generator.Models.Amazon.Data.Dump.AmazonImageURL", b =>
+                {
+                    b.HasOne("T_generator.Models.Amazon.Objects.Item.AmazonItem")
+                        .WithMany("AmazonImageURL")
+                        .HasForeignKey("AmazonItemID");
+                });
+
+            modelBuilder.Entity("T_generator.Models.Amazon.Data.Dump.AmazonKeyword", b =>
+                {
+                    b.HasOne("T_generator.Models.Amazon.Objects.Item.AmazonItem")
+                        .WithMany("AmazonKeyword")
+                        .HasForeignKey("AmazonItemID");
+                });
+
             modelBuilder.Entity("T_generator.Models.Amazon.Data.Intermediate.AmazonMarketplace", b =>
                 {
                     b.HasOne("T_generator.Models.Amazon.Data.Basic.AmazonCurrency", "AmazonCurrency")
@@ -241,6 +345,37 @@ namespace Tgenerator.Migrations
                     b.HasOne("T_generator.Models.Amazon.Data.Intermediate.AmazonProduct", "Product")
                         .WithMany("Keywords")
                         .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("T_generator.Models.Amazon.Data.JoinTables.ProductSizes", b =>
+                {
+                    b.HasOne("T_generator.Models.Amazon.Data.Intermediate.AmazonProduct", "Product")
+                        .WithMany("Sizes")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("T_generator.Models.Amazon.Data.Basic.AmazonSize", "Size")
+                        .WithMany()
+                        .HasForeignKey("SizeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("T_generator.Models.Amazon.Objects.Item.AmazonItem", b =>
+                {
+                    b.HasOne("T_generator.Models.Amazon.Data.Dump.AmazonBrowseNode", "AmazonBrowseNode")
+                        .WithMany()
+                        .HasForeignKey("AmazonBrowseNodeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("T_generator.Models.Amazon.Data.Basic.AmazonCountry", "AmazonCountry")
+                        .WithMany()
+                        .HasForeignKey("AmazonCountryID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("T_generator.Models.Amazon.Data.Intermediate.AmazonProduct", "AmazonProduct")
+                        .WithMany()
+                        .HasForeignKey("AmazonProductID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }
