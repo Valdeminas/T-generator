@@ -3,17 +3,17 @@
 @using T_generator.Data
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-    
-@model IEnumerable<T_generator.Models.ApplicationUser>
-    @{
-        ViewData["Title"] = "Users";
-    }
-@{
-    var currentUser = UserManager.GetUserAsync(User).Result; 
-    }
 
-    <h2>@ViewData["Title"].</h2>
-    <h3>@ViewData["Message"]</h3>
+@model IEnumerable<T_generator.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Users";
+}
+@{
+    var currentUser = UserManager.GetUserAsync(User).Result;
+}
+
+<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>
 
 <p>
     <a asp-action="Register">Create New</a>
@@ -35,90 +35,90 @@
     </thead>
     <tbody>
         @foreach (var item in Model)
-        {
-            @if (!item.IsPowerAdmin)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @(item.IsAdmin ? "Yes" : "No")
-                </td>
-                @if (item.UserName==currentUser.UserName ||
-                    currentUser.IsPowerAdmin ||
-                    (currentUser.IsAdmin && !item.IsAdmin)) {
-                <td>
-                    <a asp-action="ResetPassword" asp-route-userName="@item.UserName">Reset Password</a> |
-                    <a asp-action="Modify" asp-route-userName="@item.UserName">Edit</a> |                   
-                    <a asp-action="Delete" asp-route-userName="@item.UserName">Delete</a>
-                </td>
-                }
-            </tr>
+            @if (!item.IsPowerAdmin)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @(item.IsAdmin ? "Yes" : "No")
+                    </td>
+                    @if (currentUser.IsPowerAdmin ||
+                        (currentUser.IsAdmin && !item.IsAdmin))
+                        {
+                        <td>
+                            <a asp-action="ResetPassword" asp-route-userName="@item.UserName">Reset Password</a> |
+                            <a asp-action="Modify" asp-route-userName="@item.UserName">Edit</a> |
+                            <a asp-action="Delete" asp-route-userName="@item.UserName">Delete</a>
+                        </td>
+                        }
+                </tr>
                 }
             }
     </tbody>
 </table>
 
 @*@if (Model != null &&
-     Model.Count(x => x.IsPowerAdmin == false) != 0)
-    {
-    var currentUser = UserManager.GetUserAsync(User).Result;
-    bool powerAdmin = currentUser.IsPowerAdmin;
-    bool admin = currentUser.IsAdmin;
-
-    <table class="table">
-    <tr class="tab-pane">
-        <th>User name</th>
-        <th>User email</th>
-        <th>User status</th>
-    </tr>
-
-    @foreach (var item in Model)
+         Model.Count(x => x.IsPowerAdmin == false) != 0)
         {
-        @if (!item.IsPowerAdmin)
+        var currentUser = UserManager.GetUserAsync(User).Result;
+        bool powerAdmin = currentUser.IsPowerAdmin;
+        bool admin = currentUser.IsAdmin;
+
+        <table class="table">
+        <tr class="tab-pane">
+            <th>User name</th>
+            <th>User email</th>
+            <th>User status</th>
+        </tr>
+
+        @foreach (var item in Model)
             {
-            bool checkUserIsAdmin = @item.IsAdmin;
-            string checkUserName = @item.UserName;
-
-            string isAdmin;
-            if (checkUserIsAdmin)
+            @if (!item.IsPowerAdmin)
                 {
-                isAdmin = "Admin";
-                }
-            else
-                {
-                isAdmin = "Not admin";
-                }
+                bool checkUserIsAdmin = @item.IsAdmin;
+                string checkUserName = @item.UserName;
 
-            <tr>
-                <td scope="row">@item.UserName</td>
-                <td>@item.Email</td>
-                <td>@isAdmin</td>
+                string isAdmin;
+                if (checkUserIsAdmin)
+                    {
+                    isAdmin = "Admin";
+                    }
+                else
+                    {
+                    isAdmin = "Not admin";
+                    }
 
-                @if (checkUserName == currentUser.UserName)
-                    {
-                    continue;
-                    }
-                
-                @if (powerAdmin ||
-                    (admin && !checkUserIsAdmin))
-                    {
-                    <td><a class="btn btn-info" asp-action="Modify" asp-route-userName="@item.UserName">Modify</a></td>
-                    <td><a class="btn btn-info" asp-action="Delete" asp-route-userName="@item.UserName">Delete</a></td>
-                    <td><a class="btn btn-info" asp-action="ResetPassword" asp-route-userName="@item.UserName">Reset password</a></td>
-                    }
-            </tr>
+                <tr>
+                    <td scope="row">@item.UserName</td>
+                    <td>@item.Email</td>
+                    <td>@isAdmin</td>
+
+                    @if (checkUserName == currentUser.UserName)
+                        {
+                        continue;
+                        }
+
+                    @if (powerAdmin ||
+                        (admin && !checkUserIsAdmin))
+                        {
+                        <td><a class="btn btn-info" asp-action="Modify" asp-route-userName="@item.UserName">Modify</a></td>
+                        <td><a class="btn btn-info" asp-action="Delete" asp-route-userName="@item.UserName">Delete</a></td>
+                        <td><a class="btn btn-info" asp-action="ResetPassword" asp-route-userName="@item.UserName">Reset password</a></td>
+                        }
+                </tr>
+                }
             }
+        </table>
         }
-    </table>
-    }
-else
-    {
-    <h4>There are no users to show.</h4>
-    }*@
+    else
+        {
+        <h4>There are no users to show.</h4>
+        }*@
 
 

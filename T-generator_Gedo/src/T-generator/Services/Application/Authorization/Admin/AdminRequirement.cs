@@ -10,11 +10,8 @@ namespace T_generator.Controllers.Helpers
         {
         public const string ADMIN_POLICY = "Admin";
 
-        protected bool ShouldBeAdmin { get; set; }
-
-        public AdminRequirement(bool shouldBeAdmin)
+        public AdminRequirement()
             {
-                ShouldBeAdmin = shouldBeAdmin;
             }
         }
     }

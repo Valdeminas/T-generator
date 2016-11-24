@@ -91,7 +91,7 @@ namespace T_generator
                 });
             services.AddAuthorization(options =>
                 {
-                    options.AddPolicy(AdminRequirement.ADMIN_POLICY, policy => policy.Requirements.Add(new AdminRequirement(true)));
+                    options.AddPolicy(AdminRequirement.ADMIN_POLICY, policy => policy.Requirements.Add(new AdminRequirement()));
                     options.AddPolicy(IsNotSelfRequirement.ISNOTSELF_POLICY,policy=>policy.Requirements.Add(new IsNotSelfRequirement()));
                 });
 

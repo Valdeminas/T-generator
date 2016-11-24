@@ -20,6 +20,7 @@ namespace T_generator.Controllers
         private const string PERMISSION_DENIED = "~/Views/Shared/PermissionDenied.cshtml";
         private const string ERROR_OCCURED = "~/Views/Shared/Error.cshtml";
         private const string RESET_PASSWORD_CONFIRMATION = "~/Account/ResetPasswordConfirmation";
+        private const string USERS_VIEW = "~/Account/Users";
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -33,6 +34,7 @@ namespace T_generator.Controllers
             }
 
         //[HttpDelete]
+        [Authorize(Policy = IsNotSelfRequirement.ISNOTSELF_POLICY)]
         [Authorize(Policy = AdminRequirement.ADMIN_POLICY)]
         public IActionResult Delete(string userName, string returnUrl = null)
             {
@@ -50,7 +52,7 @@ namespace T_generator.Controllers
             if (DeleteUser(userToDelete).Result.Succeeded)
                 {
                 if (returnUrl == null)
-                    returnUrl = "~/Account/Users";
+                    returnUrl = USERS_VIEW;
                 ViewData["ReturnUrl"] = returnUrl;
 
                 _logger.LogInformation(8, "User account was deleted.");
@@ -65,7 +67,7 @@ namespace T_generator.Controllers
         // GET: /Account/Modify
         [HttpGet]
         [Authorize(Policy = IsNotSelfRequirement.ISNOTSELF_POLICY)]
-        [Authorize(Policy = AdminRequirement.ADMIN_POLICY)]        
+        [Authorize(Policy = AdminRequirement.ADMIN_POLICY)]
         public IActionResult Modify(string userName)
             {
             ApplicationUser userToModify;
@@ -85,6 +87,7 @@ namespace T_generator.Controllers
         //
         // POST: /Account/Modify
         [HttpPost]
+        [Authorize(Policy = IsNotSelfRequirement.ISNOTSELF_POLICY)]
         [Authorize(Policy = AdminRequirement.ADMIN_POLICY)]
         public async Task<IActionResult> Modify(ModifyViewModel model, string returnUrl = null)
             {
@@ -97,7 +100,7 @@ namespace T_generator.Controllers
                 ViewData["Message"] = ex.Message;
                 return View(ERROR_OCCURED);
                 }
-               
+
             if (ModelState.IsValid)
                 {
                 ApplicationUser user = await _userManager.FindByEmailAsync(model.Email);
@@ -107,7 +110,7 @@ namespace T_generator.Controllers
                 if (result.Succeeded)
                     {
                     if (returnUrl == null)
-                        returnUrl = "~/Account/Users";
+                        returnUrl = USERS_VIEW;
                     ViewData["ReturnUrl"] = returnUrl;
 
                     _logger.LogInformation(7, "User account was modified.");
@@ -127,7 +130,7 @@ namespace T_generator.Controllers
             ViewData["Message"] = "Existing users";
             return View(_userManager.Users.ToList());
             }
-    
+
         //
         // GET: /Account/Login
         [HttpGet]
@@ -136,13 +139,13 @@ namespace T_generator.Controllers
             {
             ViewData["ReturnUrl"] = returnUrl;
             if (!_signInManager.IsSignedIn(User))
-            {
+                {
                 return View();
-            }
+                }
             else
-            {
+                {
                 return RedirectToLocal(returnUrl);
-            }
+                }
             }
 
         //
@@ -196,7 +199,7 @@ namespace T_generator.Controllers
                 if (result.Succeeded)
                     {
                     _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToAction("Users");
+                    return RedirectToAction(USERS_VIEW);
                     }
                 AddErrors(result);
                 }
@@ -218,6 +221,7 @@ namespace T_generator.Controllers
         //
         // GET: /Account/ResetPassword
         [HttpGet]
+        [Authorize(Policy = IsNotSelfRequirement.ISNOTSELF_POLICY)]
         [Authorize(Policy = AdminRequirement.ADMIN_POLICY)]
         public IActionResult ResetPassword(string userName, string returnUrl = null)
             {
@@ -238,6 +242,7 @@ namespace T_generator.Controllers
         //
         // POST: /Account/ResetPassword
         [HttpPost]
+        [Authorize(Policy = IsNotSelfRequirement.ISNOTSELF_POLICY)]
         [Authorize(Policy = AdminRequirement.ADMIN_POLICY)]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
             {
@@ -266,16 +271,16 @@ namespace T_generator.Controllers
             if (result.Succeeded)
                 {
                 ViewData["ResetUser"] = model.Name;
-                return RedirectToAction(RESET_PASSWORD_CONFIRMATION);
+                return RedirectToLocal(USERS_VIEW);
                 }
             AddErrors(result);
             return View();
             }
 
         public IActionResult AccessDenied(string returnUrl = null)
-        {
+            {
             return RedirectToAction(nameof(HomeController.Index), "Home");
-        }
+            }
 
         #region Helpers
         private void AddErrors(IdentityResult result)
@@ -313,24 +318,7 @@ namespace T_generator.Controllers
             string outMessage = "";
 
             ApplicationUser logedUser = GetCurrentUserAsync().Result;
-            if (changeUserName == logedUser.UserName)
-                {
-                switch (action)
-                    {
-                    case UserActions.Delete:
-                        outMessage = "Brace yourself - winter is coming. And do not try to delete yourself.";
-                        break;
-                    case UserActions.Modify:
-                        outMessage = "Brace yourself - winter is coming. And do not try to modify yourself.";
-                        break;
-                    case UserActions.ResetPassword:
-                        outMessage = "Brace yourself - winter is coming. And do not try to reset password for yourself.";
-                        break;
-                    }
 
-                throw new ArgumentException(outMessage);
-                }
-                
             ApplicationUser userToChange = _userManager.Users.First(x => x.UserName == changeUserName);
             if (null == userToChange)
                 {
@@ -349,7 +337,7 @@ namespace T_generator.Controllers
 
                 throw new ArgumentException(outMessage);
                 }
-                
+
             if (userToChange.IsPowerAdmin)
                 {
                 switch (action)
@@ -367,7 +355,7 @@ namespace T_generator.Controllers
 
                 throw new ArgumentException(outMessage);
                 }
-                
+
             if (!(logedUser.IsPowerAdmin ||
                  (logedUser.IsAdmin && !userToChange.IsAdmin)))
                 {

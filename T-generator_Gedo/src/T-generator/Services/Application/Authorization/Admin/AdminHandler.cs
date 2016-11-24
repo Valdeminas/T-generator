@@ -18,15 +18,16 @@ namespace T_generator.Controllers.Helpers
             _userManager = userManager;
             }
 
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AdminRequirement requirement) { 
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AdminRequirement requirement)
+            {
             if (_userManager.GetUserAsync(context.User).Result.IsAdmin)
-            {
+                {
                 context.Succeed(requirement);
-            }
+                }
             else
-            {
+                {
                 context.Fail();
-            }         
+                }
 
             return Task.CompletedTask;
             }
