@@ -28,6 +28,8 @@ namespace T_generator
 
         public Startup(IHostingEnvironment env)
             {
+            ImageCollider.ImageCollider.Test();
+
             _env = env;
 
             var builder = new ConfigurationBuilder()
