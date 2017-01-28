@@ -26,6 +26,9 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/Login.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/Login.css" />
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     </environment>
     @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
 </head>
@@ -40,7 +43,7 @@
         <div class="container">
                 <section>
                     <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-signin">
-                        <h2 form-signin-heading>@ViewData["Title"].</h2>
+                        <h2 form-signin-heading>@ViewData["Title"]</h2>
                         <div class="form-group">
                             <label asp-for="Name" class="col-md-2 control-label sr-only"></label>
                                 <input asp-for="Name" class="form-control" placeholder="Username"/>
@@ -69,7 +72,7 @@
             @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
         }
 </div>
-<environment names="Development">
+@*<environment names="Development">
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" asp-append-version="true"></script>
@@ -86,6 +89,6 @@
     </script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" asp-append-version="true"></script>
     <script src="~/js/site.min.js" asp-append-version="true"></script>
-</environment>
+</environment>*@
 </body>
 </html>

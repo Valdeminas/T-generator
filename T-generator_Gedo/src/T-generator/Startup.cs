@@ -56,13 +56,24 @@ namespace T_generator
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
-            services.AddDbContext<AmazonContext>(options =>
+            if (_env.IsProduction())
+            {
+                services.AddDbContext<AmazonContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
+
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
+        }
+            else
+            {
+                services.AddDbContext<AmazonContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            }
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+    services.AddIdentity<ApplicationUser, IdentityRole>(config =>
                 {
                     config.Password.RequiredLength = 6;
                     config.Password.RequireDigit = false;
@@ -81,10 +92,10 @@ namespace T_generator
                      .Build();
 
                     config.Filters.Add(new AuthorizeFilter(policy));
-                    // [BK] padeployinus isitikinti, kad ant https vaziuoja
+                    // [TODO] [BK] padeployinus isitikinti, kad ant https vaziuoja
                     if (_env.IsProduction())
                     {
-                        config.Filters.Add(new RequireHttpsAttribute());
+                        //config.Filters.Add(new RequireHttpsAttribute());
                     }
                     else
                     {
@@ -130,7 +141,9 @@ namespace T_generator
                 }
             else
                 {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+                app.UseBrowserLink();
                 }
 
             app.UseStatusCodePagesWithRedirects("~/Home/Index");

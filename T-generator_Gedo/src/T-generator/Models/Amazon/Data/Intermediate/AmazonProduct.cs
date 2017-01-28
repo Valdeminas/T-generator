@@ -25,5 +25,10 @@ namespace T_generator.Models.Amazon.Data.Intermediate
         [Display(Name = "Possible Sizes")]
         public ICollection<ProductSizes> Sizes { get; set; }
 
+        [Display(Name = "Account")]
+        public int AmazonAccountID { get; set; }
+
+        public virtual AmazonAccount AmazonAccount { get; set; }
+
     }
 }

@@ -12,7 +12,7 @@
     var currentUser = UserManager.GetUserAsync(User).Result;
 }
 
-<h2>@ViewData["Title"].</h2>
+<h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
 
 <p>
@@ -62,63 +62,5 @@
             }
     </tbody>
 </table>
-
-@*@if (Model != null &&
-         Model.Count(x => x.IsPowerAdmin == false) != 0)
-        {
-        var currentUser = UserManager.GetUserAsync(User).Result;
-        bool powerAdmin = currentUser.IsPowerAdmin;
-        bool admin = currentUser.IsAdmin;
-
-        <table class="table">
-        <tr class="tab-pane">
-            <th>User name</th>
-            <th>User email</th>
-            <th>User status</th>
-        </tr>
-
-        @foreach (var item in Model)
-            {
-            @if (!item.IsPowerAdmin)
-                {
-                bool checkUserIsAdmin = @item.IsAdmin;
-                string checkUserName = @item.UserName;
-
-                string isAdmin;
-                if (checkUserIsAdmin)
-                    {
-                    isAdmin = "Admin";
-                    }
-                else
-                    {
-                    isAdmin = "Not admin";
-                    }
-
-                <tr>
-                    <td scope="row">@item.UserName</td>
-                    <td>@item.Email</td>
-                    <td>@isAdmin</td>
-
-                    @if (checkUserName == currentUser.UserName)
-                        {
-                        continue;
-                        }
-
-                    @if (powerAdmin ||
-                        (admin && !checkUserIsAdmin))
-                        {
-                        <td><a class="btn btn-info" asp-action="Modify" asp-route-userName="@item.UserName">Modify</a></td>
-                        <td><a class="btn btn-info" asp-action="Delete" asp-route-userName="@item.UserName">Delete</a></td>
-                        <td><a class="btn btn-info" asp-action="ResetPassword" asp-route-userName="@item.UserName">Reset password</a></td>
-                        }
-                </tr>
-                }
-            }
-        </table>
-        }
-    else
-        {
-        <h4>There are no users to show.</h4>
-        }*@
 
 

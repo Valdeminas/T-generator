@@ -21,11 +21,15 @@ namespace Tgenerator.Migrations
                     b.Property<int>("AmazonAccountID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("AmazonMarketplaceID");
+
                     b.Property<string>("Name");
 
                     b.Property<string>("Prefix");
 
                     b.HasKey("AmazonAccountID");
+
+                    b.HasIndex("AmazonMarketplaceID");
 
                     b.ToTable("AmazonAccount");
                 });
@@ -75,6 +79,8 @@ namespace Tgenerator.Migrations
                     b.Property<int>("AmazonDesignID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("AmazonAccountID");
+
                     b.Property<string>("DesignURL");
 
                     b.Property<string>("Name");
@@ -82,6 +88,8 @@ namespace Tgenerator.Migrations
                     b.Property<string>("Prefix");
 
                     b.HasKey("AmazonDesignID");
+
+                    b.HasIndex("AmazonAccountID");
 
                     b.ToTable("AmazonDesign");
                 });
@@ -211,6 +219,8 @@ namespace Tgenerator.Migrations
                     b.Property<int>("AmazonProductID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("AmazonAccountID");
+
                     b.Property<int>("AmazonTypeID");
 
                     b.Property<string>("Description");
@@ -220,6 +230,8 @@ namespace Tgenerator.Migrations
                     b.Property<string>("Prefix");
 
                     b.HasKey("AmazonProductID");
+
+                    b.HasIndex("AmazonAccountID");
 
                     b.HasIndex("AmazonTypeID");
 
@@ -298,6 +310,22 @@ namespace Tgenerator.Migrations
                     b.HasDiscriminator().HasValue("AmazonItemSingle");
                 });
 
+            modelBuilder.Entity("T_generator.Models.Amazon.Data.Basic.AmazonAccount", b =>
+                {
+                    b.HasOne("T_generator.Models.Amazon.Data.Intermediate.AmazonMarketplace", "AmazonMarketplace")
+                        .WithMany()
+                        .HasForeignKey("AmazonMarketplaceID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("T_generator.Models.Amazon.Data.Basic.AmazonDesign", b =>
+                {
+                    b.HasOne("T_generator.Models.Amazon.Data.Basic.AmazonAccount", "AmazonAccount")
+                        .WithMany()
+                        .HasForeignKey("AmazonAccountID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("T_generator.Models.Amazon.Data.Dump.AmazonBulletPoint", b =>
                 {
                     b.HasOne("T_generator.Models.Amazon.Objects.Item.AmazonItem")
@@ -329,6 +357,11 @@ namespace Tgenerator.Migrations
 
             modelBuilder.Entity("T_generator.Models.Amazon.Data.Intermediate.AmazonProduct", b =>
                 {
+                    b.HasOne("T_generator.Models.Amazon.Data.Basic.AmazonAccount", "AmazonAccount")
+                        .WithMany()
+                        .HasForeignKey("AmazonAccountID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("T_generator.Models.Amazon.Data.Basic.AmazonType", "AmazonType")
                         .WithMany()
                         .HasForeignKey("AmazonTypeID")

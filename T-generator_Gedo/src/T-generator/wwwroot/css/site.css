@@ -45,6 +45,14 @@ textarea {
     white-space:pre-line;
 }
 
+.vertical-center {
+  min-height: 75%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 75vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
   /* Hide captions */

@@ -16,6 +16,8 @@ namespace T_generator.Controllers.Amazon.Data.Basic
 {
     public class AmazonDesignsController : Controller
     {
+        private const string DESIGN_DIR= "uploads/Designs";
+
         private readonly AmazonContext _context;
         private IHostingEnvironment _environment;
 
@@ -28,6 +30,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         // GET: AmazonDesigns
         public async Task<IActionResult> Index()
         {
+            
             return View(await _context.AmazonDesigns.ToListAsync());
         }
 
@@ -63,8 +66,8 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         {           
             if (ModelState.IsValid)
             {                            
-                var uploadDir = "Designs";
-                var fullUploadPath = Path.Combine(_environment.WebRootPath, uploadDir);
+                
+                var fullUploadPath = Path.Combine(_environment.WebRootPath, DESIGN_DIR);
                 var extension = DesignURL.FileName.Split('.').Last();
                 var filename = amazonDesign.AmazonDesignID + "." + extension;
                 fullUploadPath = Path.Combine(fullUploadPath, filename);
@@ -73,7 +76,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
                     using (var fileStream = new FileStream(fullUploadPath, FileMode.Create))
                     {
                         await DesignURL.CopyToAsync(fileStream);
-                        amazonDesign.DesignURL = Path.Combine(uploadDir, filename);
+                        amazonDesign.DesignURL = Path.Combine(DESIGN_DIR, filename);
                     }
 
                 }
@@ -115,8 +118,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
             {
                 try
                 {
-                    var uploadDir = "Designs";
-                    var fullUploadPath = Path.Combine(_environment.WebRootPath, uploadDir);
+                    var fullUploadPath = Path.Combine(_environment.WebRootPath, DESIGN_DIR);
                     var extension = DesignURL.FileName.Split('.').Last();
                     var filename = amazonDesign.AmazonDesignID + "." + extension;
                     fullUploadPath = Path.Combine(fullUploadPath, filename);
@@ -126,7 +128,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
                         {
                             System.IO.File.Delete(Path.Combine(_environment.WebRootPath, oldURL));
                             await DesignURL.CopyToAsync(fileStream);
-                            amazonDesign.DesignURL = Path.Combine(uploadDir, filename);
+                            amazonDesign.DesignURL = Path.Combine(DESIGN_DIR, filename);
                         }
 
                     }

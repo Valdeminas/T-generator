@@ -14,5 +14,10 @@ namespace T_generator.Models.Amazon.Data.Basic
         public string Prefix { get; set; }
 
         public string DesignURL { get; set; }
+
+        [Display(Name = "Account")]
+        public int AmazonAccountID { get; set; }
+
+        public virtual AmazonAccount AmazonAccount { get; set; }
     }
 }
