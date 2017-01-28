@@ -81,15 +81,23 @@ namespace Tgenerator.Migrations
 
                     b.Property<int>("AmazonAccountID");
 
+                    b.Property<int>("AmazonCategoryID");
+
                     b.Property<string>("DesignURL");
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("Prefix");
+                    b.Property<string>("SearchTags1");
+
+                    b.Property<string>("SearchTags2");
+
+                    b.Property<string>("SearchTags3");
 
                     b.HasKey("AmazonDesignID");
 
                     b.HasIndex("AmazonAccountID");
+
+                    b.HasIndex("AmazonCategoryID");
 
                     b.ToTable("AmazonDesign");
                 });
@@ -162,6 +170,18 @@ namespace Tgenerator.Migrations
                     b.HasIndex("AmazonItemID");
 
                     b.ToTable("AmazonBulletPoint");
+                });
+
+            modelBuilder.Entity("T_generator.Models.Amazon.Data.Dump.AmazonCategory", b =>
+                {
+                    b.Property<int>("AmazonCategoryID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Category");
+
+                    b.HasKey("AmazonCategoryID");
+
+                    b.ToTable("AmazonCategory");
                 });
 
             modelBuilder.Entity("T_generator.Models.Amazon.Data.Dump.AmazonImageURL", b =>
@@ -323,6 +343,11 @@ namespace Tgenerator.Migrations
                     b.HasOne("T_generator.Models.Amazon.Data.Basic.AmazonAccount", "AmazonAccount")
                         .WithMany()
                         .HasForeignKey("AmazonAccountID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("T_generator.Models.Amazon.Data.Dump.AmazonCategory", "AmazonCategory")
+                        .WithMany()
+                        .HasForeignKey("AmazonCategoryID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

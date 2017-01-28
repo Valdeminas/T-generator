@@ -11,6 +11,7 @@ namespace T_generator.Models.Amazon.Data.Basic
     {
         public int AmazonAccountID { get; set; }
 
+        [Display(Name = "Account")]
         public string Name { get; set; }
         public string Prefix { get; set; }
 

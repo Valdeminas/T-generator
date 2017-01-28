@@ -54,6 +54,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         // GET: AmazonDesigns/Create
         public IActionResult Create()
         {
+            ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name");
             return View();
         }
 
@@ -62,7 +63,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AmazonDesignID,DesignURL,Name,Prefix")] AmazonDesign amazonDesign,IFormFile DesignURL)
+        public async Task<IActionResult> Create([Bind("AmazonDesignID,AmazonAccountID,DesignURL,Name,SearchTags1,SearchTags2,SearchTags3")] AmazonDesign amazonDesign,IFormFile DesignURL)
         {           
             if (ModelState.IsValid)
             {                            
@@ -84,6 +85,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+            ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name", amazonDesign.AmazonAccountID);
             return View(amazonDesign);
         }
 
@@ -100,6 +102,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
             {
                 return NotFound();
             }
+            ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name", amazonDesign.AmazonAccountID);
             return View(amazonDesign);
         }
 
@@ -108,7 +111,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AmazonDesignID,DesignURL,Name,Prefix")] AmazonDesign amazonDesign, IFormFile DesignURL,string oldURL)
+        public async Task<IActionResult> Edit(int id, [Bind("AmazonDesignID,AmazonAccountID,DesignURL,Name,SearchTags1,SearchTags2,SearchTags3")] AmazonDesign amazonDesign, IFormFile DesignURL,string oldURL)
         {
             if (id != amazonDesign.AmazonDesignID)
             {
@@ -148,6 +151,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
                 }               
                 return RedirectToAction("Index");
             }
+            ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name", amazonDesign.AmazonAccountID);
             return View(amazonDesign);
         }
 
@@ -159,7 +163,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
                 return NotFound();
             }
 
-            var amazonDesign = await _context.AmazonDesigns.SingleOrDefaultAsync(m => m.AmazonDesignID == id);
+            var amazonDesign = await _context.AmazonDesigns.Include(a => a.AmazonAccount).SingleOrDefaultAsync(m => m.AmazonDesignID == id);
             if (amazonDesign == null)
             {
                 return NotFound();

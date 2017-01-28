@@ -29,10 +29,30 @@
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Prefix" class="col-md-2 control-label"></label>
+            <label asp-for="AmazonAccountID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Prefix" class="form-control" />
-                <span asp-validation-for="Prefix" class="text-danger" />
+                <select asp-for="AmazonAccountID" class="form-control" asp-items="ViewBag.AmazonAccountID"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SearchTags1" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="SearchTags1" class="form-control" />
+                <span asp-validation-for="SearchTags1" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SearchTags2" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="SearchTags2" class="form-control" />
+                <span asp-validation-for="SearchTags2" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SearchTags3" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="SearchTags3" class="form-control" />
+                <span asp-validation-for="SearchTags3" class="text-danger" />
             </div>
         </div>
         <div class="form-group">

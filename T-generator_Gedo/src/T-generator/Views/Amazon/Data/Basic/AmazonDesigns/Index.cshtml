@@ -19,7 +19,16 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Prefix)
+                @Html.DisplayNameFor(model => model.AmazonAccount.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SearchTags1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SearchTags2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SearchTags3)
             </th>
             <th></th>
         </tr>
@@ -34,7 +43,16 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Prefix)
+                @Html.DisplayFor(modelItem => item.AmazonAccount.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SearchTags1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SearchTags2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SearchTags3)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.AmazonDesignID">Edit</a> |
