@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Net.Http.Headers;
+using T_generator.Models.Amazon.Data.Dump;
 
 namespace T_generator.Controllers.Amazon.Data.Basic
 {
@@ -63,8 +64,9 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AmazonDesignID,AmazonAccountID,DesignURL,Name,SearchTags1,SearchTags2,SearchTags3")] AmazonDesign amazonDesign,IFormFile DesignURL)
-        {           
+        public async Task<IActionResult> Create([Bind("AmazonDesignID,AmazonAccountID,DesignURL,Name,SearchTags1,SearchTags2,SearchTags3")] AmazonDesign amazonDesign,AmazonCategory amazonCategory,IFormFile DesignURL)
+        {
+            UpdateDesignCategories(amazonCategory, amazonDesign);
             if (ModelState.IsValid)
             {                            
                 
@@ -111,12 +113,13 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AmazonDesignID,AmazonAccountID,DesignURL,Name,SearchTags1,SearchTags2,SearchTags3")] AmazonDesign amazonDesign, IFormFile DesignURL,string oldURL)
+        public async Task<IActionResult> Edit(int id, [Bind("AmazonDesignID,AmazonAccountID,DesignURL,Name,SearchTags1,SearchTags2,SearchTags3")] AmazonDesign amazonDesign, AmazonCategory amazonCategory, IFormFile DesignURL,string oldURL)
         {
             if (id != amazonDesign.AmazonDesignID)
             {
                 return NotFound();
-            }                       
+            }
+            UpdateDesignCategories(amazonCategory, amazonDesign);
             if (ModelState.IsValid)
             {
                 try
@@ -182,6 +185,43 @@ namespace T_generator.Controllers.Amazon.Data.Basic
             await _context.SaveChangesAsync();
             System.IO.File.Delete(Path.Combine(_environment.WebRootPath, amazonDesign.DesignURL));
             return RedirectToAction("Index");
+        }
+
+        public IActionResult UpdateKCategories(string term)
+        {
+            List<AmazonCategory> CategoryList = new List<AmazonCategory>();
+            foreach (AmazonCategory category in _context.AmazonCategories)
+            {
+                if (category.Category.ToLower().Contains(term.ToLower()))
+                {
+                    CategoryList.Add(category);
+                }
+
+            }
+            return Json(CategoryList);
+        }
+
+        private void UpdateDesignCategories(AmazonCategory amazonCategory, AmazonDesign amazonDesign)
+        {
+            var keywordsFromDb = _context.AmazonCategories
+                                .ToDictionary(c => c.Category,
+                                              c => c.AmazonCategoryID);
+
+                if (amazonCategory.Category != null)
+                {
+                    if (keywordsFromDb.Keys.Contains(amazonCategory.Category))
+                    {
+                        amazonDesign.AmazonCategoryID=keywordsFromDb[amazonCategory.Category];
+                    }
+                    else
+                    {
+                        AmazonCategory newKeyword = new AmazonCategory { Category = amazonCategory.Category };
+                        _context.AmazonCategories.Add(newKeyword);
+                        _context.SaveChanges();
+                        amazonDesign.AmazonCategoryID = keywordsFromDb[amazonCategory.Category];
+                        //keywordsFromDb[newKeyword.Category] = newKeyword.AmazonCategoryID;
+                    }
+                }
         }
 
         private bool AmazonDesignExists(int id)

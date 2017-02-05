@@ -43,6 +43,8 @@ namespace T_generator.Data
 
         public DbSet<AmazonKeyword> AmazonKeywords { get; set; }
 
+        public DbSet<AmazonCategory> AmazonCategories { get; set; }
+
         public DbSet<AmazonProduct> AmazonProducts { get; set; }
 
         public DbSet<AmazonMarketplace> AmazonMarketplaces { get; set; }
@@ -70,6 +72,7 @@ namespace T_generator.Data
             modelBuilder.Entity<AmazonBulletPoint>().ToTable("AmazonBulletPoint");
             modelBuilder.Entity<AmazonImageURL>().ToTable("AmazonImageURL");
             modelBuilder.Entity<AmazonKeyword>().ToTable("AmazonKeyword");
+            modelBuilder.Entity<AmazonCategory>().ToTable("AmazonCategory");
             modelBuilder.Entity<AmazonProduct>().ToTable("AmazonProduct");
             modelBuilder.Entity<AmazonMarketplace>().ToTable("AmazonMarketplace");
             modelBuilder.Entity<AmazonDesign>().ToTable("AmazonDesign");
