@@ -37,7 +37,7 @@
         <div class="form-group">
             <label asp-for="AmazonCategoryID" class="col-md-2 control-label">Category</label>
             <div class="col-md-10">
-                <input class="form-control" name="Categpry" data-autocomplete-url="@Url.Action("UpdateCategories")" data-label-member="category" data-value-member="amazonCategoryID" />
+                <input class="form-control" name="Categpry" value="@(Model.AmazonCategory.Category)" data-autocomplete-url="@Url.Action("UpdateCategories")" data-label-member="category" data-value-member="amazonCategoryID" />
                 <span asp-validation-for="AmazonCategory" class="text-danger" />
             </div>
         </div>

@@ -64,30 +64,31 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AmazonDesignID,AmazonAccountID,DesignURL,Name,SearchTags1,SearchTags2,SearchTags3")] AmazonDesign amazonDesign,AmazonCategory amazonCategory,IFormFile DesignURL)
+        public async Task<IActionResult> Create([Bind("AmazonDesignID,AmazonAccountID,DesignURL,Name,SearchTags1,SearchTags2,SearchTags3")] AmazonDesign amazonDesign,String Category, IFormFile DesignURL)
         {
-            UpdateDesignCategories(amazonCategory, amazonDesign);
+            UpdateDesignCategories(Category, amazonDesign);
             if (ModelState.IsValid)
-            {                            
-                
-                var fullUploadPath = Path.Combine(_environment.WebRootPath, DESIGN_DIR);
-                var extension = DesignURL.FileName.Split('.').Last();
-                var filename = amazonDesign.AmazonDesignID + "." + extension;
-                fullUploadPath = Path.Combine(fullUploadPath, filename);
+            {
+                _context.Add(amazonDesign);
+                _context.SaveChanges();
                 if (DesignURL.Length > 0)
                 {
+                    var fullUploadPath = Path.Combine(_environment.WebRootPath, DESIGN_DIR);
+                    var extension = DesignURL.FileName.Split('.').Last();
+                    var filename = amazonDesign.AmazonDesignID + "." + extension;
+                    fullUploadPath = Path.Combine(fullUploadPath, filename);           
                     using (var fileStream = new FileStream(fullUploadPath, FileMode.Create))
                     {
                         await DesignURL.CopyToAsync(fileStream);
                         amazonDesign.DesignURL = Path.Combine(DESIGN_DIR, filename);
                     }
-
                 }
-                _context.Add(amazonDesign);
+               // _context.Add(amazonDesign);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name", amazonDesign.AmazonAccountID);
+            //ViewData["AmazonCategoryID"] = new SelectList(_context.AmazonCategories, "AmazonCategoryID", "Category", amazonDesign.AmazonCategoryID);
             return View(amazonDesign);
         }
 
@@ -99,12 +100,13 @@ namespace T_generator.Controllers.Amazon.Data.Basic
                 return NotFound();
             }
 
-            var amazonDesign = await _context.AmazonDesigns.SingleOrDefaultAsync(m => m.AmazonDesignID == id);
+            var amazonDesign = await _context.AmazonDesigns.Include(i => i.AmazonCategory).SingleOrDefaultAsync(m => m.AmazonDesignID == id);
             if (amazonDesign == null)
             {
                 return NotFound();
             }
             ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name", amazonDesign.AmazonAccountID);
+            //ViewData["AmazonCategoryID"] = new SelectList(_context.AmazonCategories, "AmazonCategoryID", "Category", amazonDesign.AmazonCategoryID);
             return View(amazonDesign);
         }
 
@@ -113,23 +115,23 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AmazonDesignID,AmazonAccountID,DesignURL,Name,SearchTags1,SearchTags2,SearchTags3")] AmazonDesign amazonDesign, AmazonCategory amazonCategory, IFormFile DesignURL,string oldURL)
+        public async Task<IActionResult> Edit(int id, [Bind("AmazonDesignID,AmazonAccountID,DesignURL,Name,SearchTags1,SearchTags2,SearchTags3")] AmazonDesign amazonDesign, String AmazonCategoryID, IFormFile DesignURL,string oldURL)
         {
             if (id != amazonDesign.AmazonDesignID)
             {
                 return NotFound();
             }
-            UpdateDesignCategories(amazonCategory, amazonDesign);
+            UpdateDesignCategories(AmazonCategoryID, amazonDesign);
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var fullUploadPath = Path.Combine(_environment.WebRootPath, DESIGN_DIR);
-                    var extension = DesignURL.FileName.Split('.').Last();
-                    var filename = amazonDesign.AmazonDesignID + "." + extension;
-                    fullUploadPath = Path.Combine(fullUploadPath, filename);
                     if (DesignURL.Length > 0)
                     {
+                        var fullUploadPath = Path.Combine(_environment.WebRootPath, DESIGN_DIR);
+                        var extension = DesignURL.FileName.Split('.').Last();
+                        var filename = amazonDesign.AmazonDesignID + "." + extension;
+                        fullUploadPath = Path.Combine(fullUploadPath, filename);                    
                         using (var fileStream = new FileStream(fullUploadPath, FileMode.Create))
                         {
                             System.IO.File.Delete(Path.Combine(_environment.WebRootPath, oldURL));
@@ -155,6 +157,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
                 return RedirectToAction("Index");
             }
             ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name", amazonDesign.AmazonAccountID);
+            //ViewData["AmazonCategoryID"] = new SelectList(_context.AmazonCategories, "AmazonCategoryID", "Category", amazonDesign.AmazonCategoryID);
             return View(amazonDesign);
         }
 
@@ -187,7 +190,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
             return RedirectToAction("Index");
         }
 
-        public IActionResult UpdateKCategories(string term)
+        public IActionResult UpdateCategories(string term)
         {
             List<AmazonCategory> CategoryList = new List<AmazonCategory>();
             foreach (AmazonCategory category in _context.AmazonCategories)
@@ -201,25 +204,24 @@ namespace T_generator.Controllers.Amazon.Data.Basic
             return Json(CategoryList);
         }
 
-        private void UpdateDesignCategories(AmazonCategory amazonCategory, AmazonDesign amazonDesign)
+        private void UpdateDesignCategories(String amazonCategory, AmazonDesign amazonDesign)
         {
             var keywordsFromDb = _context.AmazonCategories
                                 .ToDictionary(c => c.Category,
                                               c => c.AmazonCategoryID);
 
-                if (amazonCategory.Category != null)
+                if (amazonCategory != null)
                 {
-                    if (keywordsFromDb.Keys.Contains(amazonCategory.Category))
+                    if (keywordsFromDb.Keys.Contains(amazonCategory))
                     {
-                        amazonDesign.AmazonCategoryID=keywordsFromDb[amazonCategory.Category];
+                        amazonDesign.AmazonCategoryID=keywordsFromDb[amazonCategory];
                     }
                     else
                     {
-                        AmazonCategory newKeyword = new AmazonCategory { Category = amazonCategory.Category };
+                        AmazonCategory newKeyword = new AmazonCategory { Category = amazonCategory };
                         _context.AmazonCategories.Add(newKeyword);
                         _context.SaveChanges();
-                        amazonDesign.AmazonCategoryID = keywordsFromDb[amazonCategory.Category];
-                        //keywordsFromDb[newKeyword.Category] = newKeyword.AmazonCategoryID;
+                        amazonDesign.AmazonCategoryID = newKeyword.AmazonCategoryID;
                     }
                 }
         }
