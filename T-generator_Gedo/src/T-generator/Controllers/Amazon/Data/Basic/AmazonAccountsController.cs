@@ -44,8 +44,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
 
         // GET: AmazonAccounts/Create
         public IActionResult Create()
-        {
-            ViewData["AmazonMarketplaceID"] = new SelectList(_context.AmazonMarketplaces, "AmazonMarketplaceID", "Name");
+        {          
             return View();
         }
 
@@ -54,7 +53,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AmazonAccountID,AmazonMarketplaceID,Name,Prefix")] AmazonAccount amazonAccount)
+        public async Task<IActionResult> Create([Bind("AmazonAccountID,Name,Prefix")] AmazonAccount amazonAccount)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +77,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
             {
                 return NotFound();
             }
-            ViewData["AmazonMarketplaceID"] = new SelectList(_context.AmazonMarketplaces, "AmazonMarketplaceID", "Name", amazonAccount.AmazonMarketplaceID);
+            
             return View(amazonAccount);
         }
 
@@ -87,7 +86,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AmazonAccountID,AmazonMarketplaceID,Name,Prefix")] AmazonAccount amazonAccount)
+        public async Task<IActionResult> Edit(int id, [Bind("AmazonAccountID,Name,Prefix")] AmazonAccount amazonAccount)
         {
             if (id != amazonAccount.AmazonAccountID)
             {
@@ -114,7 +113,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["AmazonMarketplaceID"] = new SelectList(_context.AmazonMarketplaces, "AmazonMarketplaceID", "Name", amazonAccount.AmazonMarketplaceID);
+            
             return View(amazonAccount);
         }
 

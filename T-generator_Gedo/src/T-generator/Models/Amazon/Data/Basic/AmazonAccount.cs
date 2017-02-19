@@ -13,11 +13,6 @@ namespace T_generator.Models.Amazon.Data.Basic
 
         [Display(Name = "Account")]
         public string Name { get; set; }
-        public string Prefix { get; set; }
-
-        [Display(Name = "Marketplace")]
-        public int AmazonMarketplaceID { get; set; }
-
-        public virtual AmazonMarketplace AmazonMarketplace { get; set; }
+        public string Prefix { get; set; }        
     }
 }

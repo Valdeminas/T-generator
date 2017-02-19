@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using T_generator.Models.Amazon.Data.Dump;
+using T_generator.Models.Amazon.Data.Intermediate;
 
 namespace T_generator.Models.Amazon.Data.Basic
 {
@@ -29,5 +30,10 @@ namespace T_generator.Models.Amazon.Data.Basic
         public int AmazonCategoryID { get; set; }
 
         public virtual AmazonCategory AmazonCategory { get; set; }
+
+        [Display(Name = "Marketplace")]
+        public int AmazonMarketplaceID { get; set; }
+
+        public virtual AmazonMarketplace AmazonMarketplace { get; set; }
     }
 }
