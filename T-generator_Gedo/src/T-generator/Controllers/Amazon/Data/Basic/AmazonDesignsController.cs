@@ -12,6 +12,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Net.Http.Headers;
 using T_generator.Models.Amazon.Data.Dump;
+using T_generator.Services.Amazon;
 
 namespace T_generator.Controllers.Amazon.Data.Basic
 {
@@ -29,10 +30,12 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         }
 
         // GET: AmazonDesigns
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            
-            return View(await _context.AmazonDesigns.ToListAsync());
+            int itemsPerPage = 35;
+            var items = from s in _context.AmazonDesigns
+                        select s;
+            return View(await PaginatedList<AmazonDesign>.CreateAsync(items.AsNoTracking(), page ?? 1, itemsPerPage));
         }
 
         // GET: AmazonDesigns/Details/5

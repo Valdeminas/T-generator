@@ -1,4 +1,6 @@
-@model IEnumerable<T_generator.Models.Amazon.Data.Basic.AmazonDesign>
+@using T_generator.Services.Amazon;
+
+@model PaginatedList<T_generator.Models.Amazon.Data.Basic.AmazonDesign>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,23 +14,23 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DesignURL)
+            <th>              
+                @Html.DisplayNameFor(model => model.FirstOrDefault().DesignURL)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AmazonAccount.Name)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().AmazonAccount.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SearchTags1)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().SearchTags1)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SearchTags2)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().SearchTags2)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SearchTags3)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().SearchTags3)
             </th>
             <th></th>
         </tr>
@@ -63,3 +65,12 @@
 }
     </tbody>
 </table>
+
+@for (int i=1;i<Model.TotalPages+1;i++)
+{
+    <a asp-action="Index"
+       asp-route-page="@(i)"
+       class="btn btn-default @(Model.PageIndex==i ? "disabled" : "") btn">
+        @i
+    </a>
+}
