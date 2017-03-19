@@ -12,6 +12,7 @@ using T_generator.Models.Amazon.Data.Dump;
 using Microsoft.CodeAnalysis;
 using T_generator.Models.Amazon.Data.JoinTables;
 using T_generator.Models.Amazon.Data.Basic;
+using T_generator.Services.Amazon;
 
 namespace T_generator.Controllers.Amazon.Data.Intermediate
 {
@@ -25,10 +26,15 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         }
 
         // GET: AmazonProducts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            var amazonContext = _context.AmazonProducts.Include(a => a.AmazonType);
-            return View(await amazonContext.ToListAsync());
+            //var amazonContext = _context.AmazonProducts.Include(a => a.AmazonType);
+            //return View(await amazonContext.ToListAsync());
+
+            int itemsPerPage = 35;
+            var items = from s in _context.AmazonProducts.Include(a => a.AmazonType)
+            select s;
+            return View(await PaginatedList<AmazonProduct>.CreateAsync(items.AsNoTracking(), page ?? 1, itemsPerPage));
         }
 
         // GET: AmazonProducts/Details/5

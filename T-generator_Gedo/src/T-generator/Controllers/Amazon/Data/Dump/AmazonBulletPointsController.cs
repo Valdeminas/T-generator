@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using T_generator.Data;
 using T_generator.Models.Amazon.Data.Dump;
+using T_generator.Services.Amazon;
 
 namespace T_generator.Controllers.Amazon.Data.Dump
 {
@@ -20,9 +21,12 @@ namespace T_generator.Controllers.Amazon.Data.Dump
         }
 
         // GET: AmazonBulletPoints
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            return View(await _context.AmazonBulletPoints.ToListAsync());
+            int itemsPerPage = 35;
+            var items = from s in _context.AmazonBulletPoints
+                        select s;
+            return View(await PaginatedList<AmazonBulletPoint>.CreateAsync(items.AsNoTracking(), page ?? 1, itemsPerPage));
         }
 
         // GET: AmazonBulletPoints/Details/5

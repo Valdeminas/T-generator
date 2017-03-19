@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using T_generator.Data;
 using T_generator.Models.Amazon.Objects.Item.Children;
+using T_generator.Services.Amazon;
 
 namespace T_generator.Controllers.Amazon.Data.Intermediate
 {
@@ -20,10 +21,15 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         }
 
         // GET: AmazonItemSingles
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            var amazonContext = _context.AmazonItemSingles.Include(a => a.AmazonBrowseNode).Include(a => a.AmazonCountry).Include(a => a.AmazonProduct);
-            return View(await amazonContext.ToListAsync());
+            //var amazonContext = _context.AmazonItemSingles.Include(a => a.AmazonBrowseNode).Include(a => a.AmazonCountry).Include(a => a.AmazonProduct);
+            //return View(await amazonContext.ToListAsync());
+
+            int itemsPerPage = 35;
+            var items = from s in _context.AmazonItemSingles.Include(a => a.AmazonBrowseNode).Include(a => a.AmazonCountry).Include(a => a.AmazonProduct)
+            select s;
+            return View(await PaginatedList<AmazonItemSingle>.CreateAsync(items.AsNoTracking(), page ?? 1, itemsPerPage));
         }
 
         // GET: AmazonItemSingles/Details/5
