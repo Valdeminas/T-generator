@@ -1,0 +1,24 @@
+@model T_generator.Models.Amazon.Data.Dump.AmazonCategory
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Keyword</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.AmazonCategoryID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

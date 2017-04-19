@@ -1,0 +1,46 @@
+@using T_generator.Services.Amazon;
+
+@model PaginatedList<T_generator.Models.Amazon.Data.Dump.AmazonCategory>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Category</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AmazonCategoryID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AmazonCategoryID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AmazonCategoryID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@for (int i = 1; i < Model.TotalPages + 1; i++)
+{
+    <a asp-action="Index"
+       asp-route-page="@(i)"
+       class="btn btn-default @(Model.PageIndex==i ? "disabled" : "") btn">
+        @i
+    </a>
+}
