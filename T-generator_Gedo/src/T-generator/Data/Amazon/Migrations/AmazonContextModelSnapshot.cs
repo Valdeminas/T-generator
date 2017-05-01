@@ -216,6 +216,32 @@ namespace Tgenerator.Migrations
                     b.ToTable("AmazonKeyword");
                 });
 
+            modelBuilder.Entity("T_generator.Models.Amazon.Data.Intermediate.AmazonListing", b =>
+                {
+                    b.Property<int>("AmazonListingID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("AmazonDesignID");
+
+                    b.Property<int?>("AmazonDesingID");
+
+                    b.Property<int?>("AmazonProductColorID");
+
+                    b.Property<int?>("AmazonProductID");
+
+                    b.Property<string>("DesignURL");
+
+                    b.HasKey("AmazonListingID");
+
+                    b.HasIndex("AmazonDesignID");
+
+                    b.HasIndex("AmazonProductColorID");
+
+                    b.HasIndex("AmazonProductID");
+
+                    b.ToTable("AmazonListing");
+                });
+
             modelBuilder.Entity("T_generator.Models.Amazon.Data.Intermediate.AmazonMarketplace", b =>
                 {
                     b.Property<int>("AmazonMarketplaceID")
@@ -239,9 +265,9 @@ namespace Tgenerator.Migrations
                     b.Property<int>("AmazonProductID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AmazonAccountID");
+                    b.Property<int?>("AmazonAccountID");
 
-                    b.Property<int>("AmazonTypeID");
+                    b.Property<int?>("AmazonTypeID");
 
                     b.Property<string>("Description");
 
@@ -256,6 +282,26 @@ namespace Tgenerator.Migrations
                     b.HasIndex("AmazonTypeID");
 
                     b.ToTable("AmazonProduct");
+                });
+
+            modelBuilder.Entity("T_generator.Models.Amazon.Data.Intermediate.AmazonProductColor", b =>
+                {
+                    b.Property<int>("AmazonProductColorID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AmazonProductID");
+
+                    b.Property<string>("DesignURL");
+
+                    b.Property<string>("Name");
+
+                    b.Property<decimal>("Opacity");
+
+                    b.HasKey("AmazonProductColorID");
+
+                    b.HasIndex("AmazonProductID");
+
+                    b.ToTable("AmazonProductColor");
                 });
 
             modelBuilder.Entity("T_generator.Models.Amazon.Data.JoinTables.KeywordAssignment", b =>
@@ -334,18 +380,15 @@ namespace Tgenerator.Migrations
                 {
                     b.HasOne("T_generator.Models.Amazon.Data.Basic.AmazonAccount", "AmazonAccount")
                         .WithMany()
-                        .HasForeignKey("AmazonAccountID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("AmazonAccountID");
 
                     b.HasOne("T_generator.Models.Amazon.Data.Dump.AmazonCategory", "AmazonCategory")
                         .WithMany()
-                        .HasForeignKey("AmazonCategoryID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("AmazonCategoryID");
 
                     b.HasOne("T_generator.Models.Amazon.Data.Intermediate.AmazonMarketplace", "AmazonMarketplace")
                         .WithMany()
-                        .HasForeignKey("AmazonMarketplaceID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("AmazonMarketplaceID");
                 });
 
             modelBuilder.Entity("T_generator.Models.Amazon.Data.Dump.AmazonBulletPoint", b =>
@@ -369,69 +412,81 @@ namespace Tgenerator.Migrations
                         .HasForeignKey("AmazonItemID");
                 });
 
+            modelBuilder.Entity("T_generator.Models.Amazon.Data.Intermediate.AmazonListing", b =>
+                {
+                    b.HasOne("T_generator.Models.Amazon.Data.Basic.AmazonDesign", "AmazonDesign")
+                        .WithMany()
+                        .HasForeignKey("AmazonDesignID");
+
+                    b.HasOne("T_generator.Models.Amazon.Data.Intermediate.AmazonProductColor", "AmazonProductColor")
+                        .WithMany()
+                        .HasForeignKey("AmazonProductColorID");
+
+                    b.HasOne("T_generator.Models.Amazon.Data.Intermediate.AmazonProduct", "AmazonProduct")
+                        .WithMany()
+                        .HasForeignKey("AmazonProductID");
+                });
+
             modelBuilder.Entity("T_generator.Models.Amazon.Data.Intermediate.AmazonMarketplace", b =>
                 {
                     b.HasOne("T_generator.Models.Amazon.Data.Basic.AmazonCurrency", "AmazonCurrency")
                         .WithMany()
-                        .HasForeignKey("AmazonCurrencyID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("AmazonCurrencyID");
                 });
 
             modelBuilder.Entity("T_generator.Models.Amazon.Data.Intermediate.AmazonProduct", b =>
                 {
                     b.HasOne("T_generator.Models.Amazon.Data.Basic.AmazonAccount", "AmazonAccount")
                         .WithMany()
-                        .HasForeignKey("AmazonAccountID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("AmazonAccountID");
 
                     b.HasOne("T_generator.Models.Amazon.Data.Basic.AmazonType", "AmazonType")
                         .WithMany()
-                        .HasForeignKey("AmazonTypeID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("AmazonTypeID");
+                });
+
+            modelBuilder.Entity("T_generator.Models.Amazon.Data.Intermediate.AmazonProductColor", b =>
+                {
+                    b.HasOne("T_generator.Models.Amazon.Data.Intermediate.AmazonProduct", "AmazonProduct")
+                        .WithMany()
+                        .HasForeignKey("AmazonProductID");
                 });
 
             modelBuilder.Entity("T_generator.Models.Amazon.Data.JoinTables.KeywordAssignment", b =>
                 {
                     b.HasOne("T_generator.Models.Amazon.Data.Dump.AmazonKeyword", "Keyword")
                         .WithMany()
-                        .HasForeignKey("KeywordID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("KeywordID");
 
                     b.HasOne("T_generator.Models.Amazon.Data.Intermediate.AmazonProduct", "Product")
                         .WithMany("Keywords")
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ProductID");
                 });
 
             modelBuilder.Entity("T_generator.Models.Amazon.Data.JoinTables.ProductSizes", b =>
                 {
                     b.HasOne("T_generator.Models.Amazon.Data.Intermediate.AmazonProduct", "Product")
                         .WithMany("Sizes")
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ProductID");
 
                     b.HasOne("T_generator.Models.Amazon.Data.Basic.AmazonSize", "Size")
                         .WithMany()
-                        .HasForeignKey("SizeID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("SizeID");
                 });
 
             modelBuilder.Entity("T_generator.Models.Amazon.Objects.Item.AmazonItem", b =>
                 {
                     b.HasOne("T_generator.Models.Amazon.Data.Dump.AmazonBrowseNode", "AmazonBrowseNode")
                         .WithMany()
-                        .HasForeignKey("AmazonBrowseNodeID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("AmazonBrowseNodeID");
 
                     b.HasOne("T_generator.Models.Amazon.Data.Basic.AmazonCountry", "AmazonCountry")
                         .WithMany()
-                        .HasForeignKey("AmazonCountryID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("AmazonCountryID");
 
                     b.HasOne("T_generator.Models.Amazon.Data.Intermediate.AmazonProduct", "AmazonProduct")
                         .WithMany()
-                        .HasForeignKey("AmazonProductID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("AmazonProductID");
                 });
         }
     }

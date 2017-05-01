@@ -32,8 +32,8 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             //return View(await amazonContext.ToListAsync());
 
             int itemsPerPage = 35;
-            var items = from s in _context.AmazonProducts.Include(a => a.AmazonType)
-            select s;
+            var items = from s in _context.AmazonProducts.Include(a => a.AmazonType).Include(i => i.AmazonAccount)
+                        select s;
             return View(await PaginatedList<AmazonProduct>.CreateAsync(items.AsNoTracking(), page ?? 1, itemsPerPage));
         }
 
@@ -47,6 +47,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
 
             var amazonProduct = await _context.AmazonProducts
                 .Include(i=>i.AmazonType)
+                .Include(i=>i.AmazonAccount)
                 .Include(i => i.Keywords)
                 .ThenInclude(i => i.Keyword)
                 .AsNoTracking()
@@ -66,6 +67,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             amazonProduct.Keywords = new List<KeywordAssignment>();
             ViewData["AmazonSizeID"] = new MultiSelectList(_context.AmazonSizes, "AmazonSizeID", "Name");
             ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "Name");
+            ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name");
             return View();
         }
 
@@ -75,7 +77,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AmazonTypeID,Description,Name,Prefix")] AmazonProduct amazonProduct, IList<AssignedKeywordsViewModel> keywords, List<int> Sizes)
+        public async Task<IActionResult> Create([Bind("AmazonTypeID,AmazonAccountID,Description,Name,Prefix")] AmazonProduct amazonProduct, IList<AssignedKeywordsViewModel> keywords, List<int> Sizes)
         {
             amazonProduct.Sizes = new List<ProductSizes>();
             amazonProduct.Keywords = new List<KeywordAssignment>();
@@ -97,8 +99,9 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                     "Try again, and if the problem persists " +
                     "see your system administrator.");
             }
-            ViewData["AmazonSizeID"] = new MultiSelectList(_context.AmazonSizes, "AmazonSizeID", "Name");
+            ViewData["AmazonSizeID"] = new MultiSelectList(_context.AmazonSizes, "AmazonSizeID", "Name", amazonProduct.Sizes.Select(i => i.SizeID).ToArray());
             ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "Name", amazonProduct.AmazonTypeID);
+            ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name", amazonProduct.AmazonAccountID);
             return View(amazonProduct);
         }
 
@@ -122,6 +125,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             }            
             ViewData["AmazonSizeID"] = new MultiSelectList(_context.AmazonSizes, "AmazonSizeID", "Name", amazonProduct.Sizes.Select(i=>i.SizeID).ToArray());
             ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "Name", amazonProduct.AmazonTypeID);
+            ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name", amazonProduct.AmazonAccountID);
             PopulateAssignedKeywordData(amazonProduct);
             return View(amazonProduct);
         }
@@ -140,6 +144,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
 
             var productToUpdate = await _context.AmazonProducts
                 .Include(i => i.AmazonType)
+                .Include(i=>i.AmazonAccount)
                 .Include(i => i.Keywords)
                 .Include(i=>i.Sizes)
                 .SingleOrDefaultAsync(m => m.AmazonProductID == id);
@@ -147,7 +152,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             if (await TryUpdateModelAsync<AmazonProduct>(
                     productToUpdate,
                     "",
-                    i => i.Name, i => i.Prefix, i => i.Description, i => i.AmazonTypeID))
+                    i => i.Name, i => i.Prefix, i => i.Description, i => i.AmazonTypeID,i=>i.AmazonAccount))
             {
                 UpdateProductKeywords(keywords, productToUpdate);
                 UpdateProductSizes(Sizes, productToUpdate);
@@ -167,6 +172,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
 
             ViewData["AmazonTypeID"] = new SelectList(_context.AmazonTypes, "AmazonTypeID", "Name", productToUpdate.AmazonTypeID);
             ViewData["AmazonSizeID"] = new MultiSelectList(_context.AmazonSizes, "AmazonSizeID", "Name", productToUpdate.Sizes.Select(i => i.SizeID).ToArray());
+            ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name", productToUpdate.AmazonAccountID);
             return View(productToUpdate);
         }
 
@@ -180,6 +186,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
 
             var amazonProduct = await _context.AmazonProducts
                 .Include(i => i.AmazonType)
+                .Include(i=>i.AmazonAccount)
                 .Include(i=>i.Sizes)
                 .Include(i => i.Keywords)
                 .ThenInclude(i => i.Keyword)

@@ -46,7 +46,8 @@
       "type": "build"
     },
     "Microsoft.CodeAnalysis.CSharp": "1.3.0",
-    "ImageSharp": "1.0.0-alpha-000241"
+    "ImageSharp": "1.0.0-alpha-000241",
+    "EPPlus.Core": "1.3.2",
   },
 
   "tools": {

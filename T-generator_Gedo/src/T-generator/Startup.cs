@@ -56,6 +56,11 @@ namespace T_generator
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
+            services.AddMvc(config =>
+            {
+                config.ModelBinderProviders.Insert(0, new InvariantDecimalModelBinderProvider());
+            });
+
             if (_env.IsProduction())
             {
                 services.AddDbContext<AmazonContext>(options =>

@@ -12,6 +12,12 @@
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
+        <label asp-for="AmazonAccountID" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <select asp-for="AmazonAccountID" class="form-control" asp-items="ViewBag.AmazonAccountID"></select>
+        </div>
+    </div>
+        <div class="form-group">
             <label asp-for="AmazonTypeID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <select asp-for="AmazonTypeID" class ="form-control" asp-items="ViewBag.AmazonTypeID"></select>

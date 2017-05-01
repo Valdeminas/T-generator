@@ -23,17 +23,14 @@ namespace T_generator.Models.Amazon.Data.Basic
 
         [Display(Name = "Account")]
         public int AmazonAccountID { get; set; }
-
         public virtual AmazonAccount AmazonAccount { get; set; }
 
         [Display(Name = "Category")]
         public int AmazonCategoryID { get; set; }
-
         public virtual AmazonCategory AmazonCategory { get; set; }
 
         [Display(Name = "Marketplace")]
         public int AmazonMarketplaceID { get; set; }
-
         public virtual AmazonMarketplace AmazonMarketplace { get; set; }
     }
 }

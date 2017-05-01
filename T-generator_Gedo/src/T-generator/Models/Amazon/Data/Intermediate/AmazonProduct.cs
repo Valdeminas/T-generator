@@ -13,12 +13,11 @@ namespace T_generator.Models.Amazon.Data.Intermediate
         public string Name { get; set; }
         public string Prefix { get; set; }
 
-        public string Description { get; set; }
-
-        public virtual AmazonType AmazonType { get; set; }
+        public string Description { get; set; }        
 
         [Display(Name = "Type")]
         public int AmazonTypeID { get; set; }
+        public virtual AmazonType AmazonType { get; set; }
 
         public ICollection<KeywordAssignment> Keywords { get; set; }
 
@@ -27,7 +26,6 @@ namespace T_generator.Models.Amazon.Data.Intermediate
 
         [Display(Name = "Account")]
         public int AmazonAccountID { get; set; }
-
         public virtual AmazonAccount AmazonAccount { get; set; }
 
     }

@@ -12,6 +12,44 @@ namespace T_generator.Data
 {
     public class AmazonContext : DbContext
     {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
+            modelBuilder.Entity<AmazonBrowseNode>().ToTable("AmazonBrowseNode");
+            modelBuilder.Entity<AmazonAccount>().ToTable("AmazonAccount");
+            modelBuilder.Entity<AmazonColor>().ToTable("AmazonColor");
+            modelBuilder.Entity<AmazonCountry>().ToTable("AmazonCountry");
+            modelBuilder.Entity<AmazonCountry>().ToTable("AmazonCountry");
+            modelBuilder.Entity<AmazonCurrency>().ToTable("AmazonCurrency");
+            modelBuilder.Entity<AmazonSize>().ToTable("AmazonSize");
+            modelBuilder.Entity<AmazonVariation>().ToTable("AmazonVariation");
+            modelBuilder.Entity<AmazonBulletPoint>().ToTable("AmazonBulletPoint");
+            modelBuilder.Entity<AmazonImageURL>().ToTable("AmazonImageURL");
+            modelBuilder.Entity<AmazonKeyword>().ToTable("AmazonKeyword");
+            modelBuilder.Entity<AmazonCategory>().ToTable("AmazonCategory");
+            modelBuilder.Entity<AmazonProduct>().ToTable("AmazonProduct");
+            modelBuilder.Entity<AmazonProductColor>().ToTable("AmazonProductColor");
+            modelBuilder.Entity<AmazonMarketplace>().ToTable("AmazonMarketplace");
+            modelBuilder.Entity<AmazonDesign>().ToTable("AmazonDesign");
+            modelBuilder.Entity<KeywordAssignment>().ToTable("KeywordAssignment");
+            modelBuilder.Entity<ProductSizes>().ToTable("ProductSizes");
+            modelBuilder.Entity<AmazonItem>().ToTable("AmazonItem");
+            modelBuilder.Entity<AmazonItemSingle>().ToTable("AmazonItemSingle");
+            modelBuilder.Entity<AmazonListing>().ToTable("AmazonListing");
+
+
+
+            modelBuilder.Entity<KeywordAssignment>()
+                .HasKey(c => new { c.KeywordID, c.ProductID, c.Order });
+            modelBuilder.Entity<ProductSizes>()
+                .HasKey(c => new { c.SizeID, c.ProductID });
+
+        }
+
         public AmazonContext(DbContextOptions<AmazonContext> options) 
             : base(options)
         {
@@ -47,6 +85,8 @@ namespace T_generator.Data
 
         public DbSet<AmazonProduct> AmazonProducts { get; set; }
 
+        public DbSet<AmazonProductColor> AmazonProductColors { get; set; }
+
         public DbSet<AmazonMarketplace> AmazonMarketplaces { get; set; }
 
         public DbSet<AmazonDesign> AmazonDesigns { get; set; }
@@ -59,34 +99,9 @@ namespace T_generator.Data
 
         public DbSet<ProductSizes> ProductSizes { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<AmazonBrowseNode>().ToTable("AmazonBrowseNode");
-            modelBuilder.Entity<AmazonAccount>().ToTable("AmazonAccount");
-            modelBuilder.Entity<AmazonColor>().ToTable("AmazonColor");
-            modelBuilder.Entity<AmazonCountry>().ToTable("AmazonCountry");
-            modelBuilder.Entity<AmazonCountry>().ToTable("AmazonCountry");
-            modelBuilder.Entity<AmazonCurrency>().ToTable("AmazonCurrency");
-            modelBuilder.Entity<AmazonSize>().ToTable("AmazonSize");
-            modelBuilder.Entity<AmazonVariation>().ToTable("AmazonVariation");
-            modelBuilder.Entity<AmazonBulletPoint>().ToTable("AmazonBulletPoint");
-            modelBuilder.Entity<AmazonImageURL>().ToTable("AmazonImageURL");
-            modelBuilder.Entity<AmazonKeyword>().ToTable("AmazonKeyword");
-            modelBuilder.Entity<AmazonCategory>().ToTable("AmazonCategory");
-            modelBuilder.Entity<AmazonProduct>().ToTable("AmazonProduct");
-            modelBuilder.Entity<AmazonMarketplace>().ToTable("AmazonMarketplace");
-            modelBuilder.Entity<AmazonDesign>().ToTable("AmazonDesign");
-            modelBuilder.Entity<KeywordAssignment>().ToTable("KeywordAssignment");
-            modelBuilder.Entity<ProductSizes>().ToTable("ProductSizes");
-            modelBuilder.Entity<AmazonItem>().ToTable("AmazonItem");
-            modelBuilder.Entity<AmazonItemSingle>().ToTable("AmazonItemSingle");
-            
+        public DbSet<AmazonListing> AmazonListings { get; set; }
 
-            modelBuilder.Entity<KeywordAssignment>()
-                .HasKey(c => new { c.KeywordID, c.ProductID, c.Order });
-            modelBuilder.Entity<ProductSizes>()
-                .HasKey(c => new { c.SizeID, c.ProductID });
-        }
+        
 
         
 
