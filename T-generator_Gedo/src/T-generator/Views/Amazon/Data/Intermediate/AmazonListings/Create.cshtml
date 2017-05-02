@@ -1,0 +1,46 @@
+@model T_generator.Models.Amazon.Data.Intermediate.AmazonListing
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+        <h4>Product Color</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="AmazonProductID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="AmazonProductID" class="form-control" asp-items="ViewBag.AmazonProductID"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AmazonProductColorID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="AmazonProductColorID" class="form-control" asp-items="ViewBag.AmazonProductColorID"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AmazonDesignID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="AmazonDesignID" class="form-control" asp-items="ViewBag.AmazonDesignID"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

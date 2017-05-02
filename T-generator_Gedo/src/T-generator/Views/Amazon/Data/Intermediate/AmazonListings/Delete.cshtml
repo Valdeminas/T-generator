@@ -1,0 +1,48 @@
+@model T_generator.Models.Amazon.Data.Intermediate.AmazonListing
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Product Color</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DesignURL)
+        </dt>
+        <dd>
+            <a href="../../@(Model.DesignURL)">
+                <img src="../../@(Model.DesignURL)" alt="@(Model.DesignURL)" width="500" />
+                </a>>
+</dd>
+        <dt>
+            Product
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AmazonProduct.Name)
+        </dd>
+        <dt>
+           Color
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AmazonProductColor.Name)
+        </dd>
+        <dt>
+            Design
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AmazonDesign.Name)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,56 @@
+@model T_generator.Models.Amazon.Data.Intermediate.AmazonListing
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit"  method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+        <h4>Product Color</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="AmazonListingID" />
+        <div class="form-group">
+            <label asp-for="DesignURL" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DesignURL" type="hidden" class="form-control" value="@(Model.DesignURL)"/>
+                <a href="../../@(Model.DesignURL)">
+                    <img src="../../@(Model.DesignURL)" alt="@(Model.DesignURL)" width="500" />
+                    </a>
+        </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AmazonProductID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="AmazonProductID" class="form-control" asp-items="ViewBag.AmazonProductID"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AmazonProductColorID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="AmazonProductColorID" class="form-control" asp-items="ViewBag.AmazonProductColorID"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AmazonDesignID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="AmazonDesignID" class="form-control" asp-items="ViewBag.AmazonDesignID"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

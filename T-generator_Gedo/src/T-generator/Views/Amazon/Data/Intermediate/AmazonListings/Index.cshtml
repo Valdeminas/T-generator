@@ -1,0 +1,66 @@
+@using T_generator.Services.Amazon;
+
+@model PaginatedList<T_generator.Models.Amazon.Data.Intermediate.AmazonListing>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Listings</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>              
+                @Html.DisplayNameFor(model => model.FirstOrDefault().DesignURL)
+            </th>
+            <th>
+                Product
+            </th>
+            <th>
+                Color
+            </th>
+            <th>
+                Design
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a href="../@(item.DesignURL)">
+                    <img src="../@(item.DesignURL)" alt="@(item.DesignURL)" width="60" />
+                    </a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AmazonProduct.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AmazonProductColor.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AmazonDesign.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AmazonListingID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AmazonListingID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AmazonListingID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@for (int i=1;i<Model.TotalPages+1;i++)
+{
+    <a asp-action="Index"
+       asp-route-page="@(i)"
+       class="btn btn-default @(Model.PageIndex==i ? "disabled" : "") btn">
+        @i
+    </a>
+}

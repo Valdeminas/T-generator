@@ -1,0 +1,42 @@
+@model T_generator.Models.Amazon.Data.Intermediate.AmazonProductColor
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Product Color</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DesignURL)
+        </dt>
+        <dd>
+            <img src="../../@(Model.DesignURL)" alt="@(Model.Name)" width="60" />
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            Product
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AmazonProduct.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Opacity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Opacity)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.AmazonProductColorID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
