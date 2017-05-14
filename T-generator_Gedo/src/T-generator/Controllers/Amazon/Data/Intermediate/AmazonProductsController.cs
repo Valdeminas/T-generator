@@ -152,7 +152,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             if (await TryUpdateModelAsync<AmazonProduct>(
                     productToUpdate,
                     "",
-                    i => i.Name, i => i.Prefix, i => i.Description, i => i.AmazonTypeID,i=>i.AmazonAccount))
+                    i => i.Name, i => i.Prefix, i => i.Description, i => i.AmazonTypeID,i=>i.AmazonAccountID))
             {
                 UpdateProductKeywords(keywords, productToUpdate);
                 UpdateProductSizes(Sizes, productToUpdate);
@@ -291,7 +291,10 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
 
         private void UpdateProductSizes(List<int> Sizes, AmazonProduct productToUpdate)
         {
-            foreach(var sizeid in Sizes)
+            _context.ProductSizes.RemoveRange(_context.ProductSizes.Where(i => i.ProductID == productToUpdate.AmazonProductID));
+            _context.SaveChanges();
+
+            foreach (var sizeid in Sizes)
             {
                 productToUpdate.Sizes.Add(new ProductSizes { ProductID=productToUpdate.AmazonProductID,SizeID=sizeid});
             }

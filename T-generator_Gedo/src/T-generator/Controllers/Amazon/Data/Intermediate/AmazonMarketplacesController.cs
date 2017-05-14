@@ -76,7 +76,13 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                 _context.SaveChanges();
                 var fullUploadPath = Path.Combine(_environment.WebRootPath, TEMPLATE_DIR);
                 var extension = TemplateURL.FileName.Split('.').Last();
-                var filename = amazonMarketplace.AmazonMarketplaceID + "." + extension;
+                if (extension != "xlsx")
+                {
+                    ViewData["AmazonCurrencyID"] = new SelectList(_context.AmazonCurrencies, "AmazonCurrencyID", "Currency", amazonMarketplace.AmazonCurrencyID);
+                    ViewData["Error"] = "Must be .xlsx file.";
+                    return View(amazonMarketplace);
+                }
+                var filename = amazonMarketplace.AmazonMarketplaceID + "_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "." + extension;
                 fullUploadPath = Path.Combine(fullUploadPath, filename);
                 using (var fileStream = new FileStream(fullUploadPath, FileMode.Create))
                 {
@@ -114,7 +120,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AmazonMarketplaceID,AmazonCurrencyID,TemplateURL,SheetNumber,StartingRow,Name,Prefix")] AmazonMarketplace amazonMarketplace, IFormFile TemplateURL, string oldURL)
+        public async Task<IActionResult> Edit(int id, [Bind("TemplateURL,AmazonMarketplaceID,AmazonCurrencyID,SheetNumber,StartingRow,Name,Prefix")] AmazonMarketplace amazonMarketplace, IFormFile TemplateURL, string oldURL)
         {
             if (id != amazonMarketplace.AmazonMarketplaceID)
             {
@@ -130,7 +136,14 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                     {
                         var fullUploadPath = Path.Combine(_environment.WebRootPath, TEMPLATE_DIR);
                         var extension = TemplateURL.FileName.Split('.').Last();
-                        var filename = amazonMarketplace.AmazonMarketplaceID + "." + extension;
+                        if (extension != "xlsx")
+                        {
+                            ViewData["Error"] = "Must be .xlsx file.";
+                            ViewData["AmazonCurrencyID"] = new SelectList(_context.AmazonCurrencies, "AmazonCurrencyID", "Currency", amazonMarketplace.AmazonCurrencyID);
+                            amazonMarketplace.TemplateURL = oldURL;
+                            return View(amazonMarketplace);
+                        }
+                        var filename = amazonMarketplace.AmazonMarketplaceID + "_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "." + extension;
                         fullUploadPath = Path.Combine(fullUploadPath, filename);
                         using (var fileStream = new FileStream(fullUploadPath, FileMode.Create))
                         {

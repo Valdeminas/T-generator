@@ -6,11 +6,12 @@
 
 <h2>Create</h2>
 
-<form asp-action="Create">
+<form asp-action="Create"  method="post" enctype="multipart/form-data">
     <div class="form-horizontal">
         <h4>Marketplace</h4>
         <hr />
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div asp-validation-summary="ModelOnly" class="text-danger">@(ViewBag.Error)
+        </div>
         <div class="form-group">
             <label asp-for="TemplateURL" class="col-md-2 control-label"></label>
             <div class="col-md-10">

@@ -12,6 +12,7 @@ namespace T_generator.Data
 {
     public class AmazonContext : DbContext
     {
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
@@ -59,6 +60,7 @@ namespace T_generator.Data
 
         public AmazonContext()
         {
+            
         }
 
         public DbSet<AmazonBrowseNode> AmazonBrowseNodes { get; set; }

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EnableMSDeployAppOffline>true</EnableMSDeployAppOffline>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAlkik3bba6EqZsNTV0LWA7QAAAAACAAAAAAAQZgAAAAEAACAAAAAp/2Nhxc5plmS/utnFJManoWIthXLfmBbR373lbiO0zwAAAAAOgAAAAAIAACAAAABho4BAxG4V9bChihMfCI+ko+0Z+aUe3wUV+UQ7j5DJPiAAAACxZTM3/3+m3E9iaBiYKB+QjvtJ+HOewCp04omxYEh/tEAAAACMvHhLlXRfsjhct8RjETRsqh8xJ7uqejoBLjl3+q0awVel8W/CK+PE63Wtmfsf428OxOtH+1LVf4/WwKR1KLFK</EncryptedPassword>
+  </PropertyGroup>
+</Project>

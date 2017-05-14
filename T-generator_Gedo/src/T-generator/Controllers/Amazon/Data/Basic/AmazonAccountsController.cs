@@ -168,6 +168,9 @@ namespace T_generator.Controllers.Amazon.Data.Basic
 
         private void UpdateAccountMarketplaces(List<int> Marketplaces, AmazonAccount productToUpdate)
         {
+            _context.AccountMarketplaces.RemoveRange(_context.AccountMarketplaces.Where(i => i.AccountID == productToUpdate.AmazonAccountID));
+            _context.SaveChanges();
+
             foreach (var marketplaceid in Marketplaces)
             {
                 productToUpdate.Marketplaces.Add(new AccountMarketplaces { AccountID = productToUpdate.AmazonAccountID, MarketplaceID = marketplaceid });

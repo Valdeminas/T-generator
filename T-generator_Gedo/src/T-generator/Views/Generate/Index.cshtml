@@ -1,0 +1,37 @@
+﻿@*@model T_generator.Models.Amazon.Data.Intermediate.AmazonProduct*@
+
+@{
+    ViewData["Title"] = "Generate";
+}
+
+<h2>Generate</h2>
+
+<form asp-action="Generate">
+    <div class="form-horizontal">
+        <h4>Generate</h4>
+        <hr />
+        @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+        <div class="form-group">
+            <label class="col-md-2 control-label">Account</label>
+            <div class="col-md-10">
+                <select name="AmazonAccountID" class="form-control" asp-items="ViewBag.AmazonAccountID" id="AmazonAccountID"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Products</label>
+            <div class="col-md-10">
+                <select name="Products" class="form-control" asp-items="ViewBag.AmazonProductID" id="Products" multiple></select>
+            </div>
+        </div>       
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Generate" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("/js/Generate.js")"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
