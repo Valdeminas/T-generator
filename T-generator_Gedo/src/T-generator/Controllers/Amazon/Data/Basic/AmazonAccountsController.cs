@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using T_generator.Data;
 using T_generator.Models.Amazon.Data.Basic;
 using T_generator.Services.Amazon;
+using T_generator.Models.Amazon.Data.JoinTables;
 
 namespace T_generator.Controllers.Amazon.Data.Basic
 {
@@ -48,7 +49,8 @@ namespace T_generator.Controllers.Amazon.Data.Basic
 
         // GET: AmazonAccounts/Create
         public IActionResult Create()
-        {          
+        {
+            ViewData["AmazonMarketplaceID"] = new MultiSelectList(_context.AmazonMarketplaces, "AmazonMarketplaceID", "Name");
             return View();
         }
 
@@ -57,14 +59,17 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AmazonAccountID,Name,Prefix")] AmazonAccount amazonAccount)
+        public async Task<IActionResult> Create([Bind("AmazonAccountID,Name,Prefix")] AmazonAccount amazonAccount, List<int> Marketplaces)
         {
+            amazonAccount.Marketplaces = new List<AccountMarketplaces>();
+            UpdateAccountMarketplaces(Marketplaces, amazonAccount);
             if (ModelState.IsValid)
             {
                 _context.Add(amazonAccount);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+            ViewData["AmazonMarketplaceID"] = new MultiSelectList(_context.AmazonMarketplaces, "AmazonMarketplaceID", "Name", amazonAccount.Marketplaces.Select(i => i.MarketplaceID).ToArray());
             return View(amazonAccount);
         }
 
@@ -76,12 +81,14 @@ namespace T_generator.Controllers.Amazon.Data.Basic
                 return NotFound();
             }
 
-            var amazonAccount = await _context.AmazonAccounts.SingleOrDefaultAsync(m => m.AmazonAccountID == id);
+            var amazonAccount = await _context.AmazonAccounts
+                .Include(i=>i.Marketplaces)
+                .SingleOrDefaultAsync(m => m.AmazonAccountID == id);
             if (amazonAccount == null)
             {
                 return NotFound();
             }
-            
+            ViewData["AmazonMarketplaceID"] = new MultiSelectList(_context.AmazonMarketplaces, "AmazonMarketplaceID", "Name", amazonAccount.Marketplaces.Select(i => i.MarketplaceID).ToArray());
             return View(amazonAccount);
         }
 
@@ -90,34 +97,37 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AmazonAccountID,Name,Prefix")] AmazonAccount amazonAccount)
+        public async Task<IActionResult> Edit(int id, [Bind("AmazonAccountID,Name,Prefix")] AmazonAccount amazonAccount, List<int> Marketplaces)
         {
             if (id != amazonAccount.AmazonAccountID)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var productToUpdate = await _context.AmazonAccounts
+                .Include(i => i.Marketplaces)
+                .SingleOrDefaultAsync(m => m.AmazonAccountID == id);
+
+            if (await TryUpdateModelAsync<AmazonAccount>(
+                    productToUpdate,
+                    "",
+                    i => i.Name, i => i.Prefix))
             {
+                UpdateAccountMarketplaces(Marketplaces, productToUpdate);
                 try
                 {
-                    _context.Update(amazonAccount);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateException /* ex */)
                 {
-                    if (!AmazonAccountExists(amazonAccount.AmazonAccountID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
                 }
                 return RedirectToAction("Index");
             }
-            
+            ViewData["AmazonMarketplaceID"] = new MultiSelectList(_context.AmazonMarketplaces, "AmazonMarketplaceID", "Name", amazonAccount.Marketplaces.Select(i => i.MarketplaceID).ToArray());
             return View(amazonAccount);
         }
 
@@ -129,7 +139,9 @@ namespace T_generator.Controllers.Amazon.Data.Basic
                 return NotFound();
             }
 
-            var amazonAccount = await _context.AmazonAccounts.SingleOrDefaultAsync(m => m.AmazonAccountID == id);
+            var amazonAccount = await _context.AmazonAccounts
+                .Include(i=>i.Marketplaces)
+                .SingleOrDefaultAsync(m => m.AmazonAccountID == id);
             if (amazonAccount == null)
             {
                 return NotFound();
@@ -152,6 +164,14 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         private bool AmazonAccountExists(int id)
         {
             return _context.AmazonAccounts.Any(e => e.AmazonAccountID == id);
+        }
+
+        private void UpdateAccountMarketplaces(List<int> Marketplaces, AmazonAccount productToUpdate)
+        {
+            foreach (var marketplaceid in Marketplaces)
+            {
+                productToUpdate.Marketplaces.Add(new AccountMarketplaces { AccountID = productToUpdate.AmazonAccountID, MarketplaceID = marketplaceid });
+            }
         }
     }
 }

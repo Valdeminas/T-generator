@@ -19,7 +19,7 @@ namespace T_generator.Controllers
 
         public IActionResult Index()
             {
-            T_generator.Services.Amazon.EPPlusCore.EPPLusCore.test();
+            //T_generator.Services.Amazon.EPPlusCore.EPPLusCore.test();
             return View();
             }
 

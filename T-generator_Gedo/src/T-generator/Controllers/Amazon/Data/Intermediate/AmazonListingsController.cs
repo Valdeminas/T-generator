@@ -87,7 +87,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AmazonProductColorID,AmazonProductID,DesignURL,AmazonDesignID")] AmazonListing amazonListing)
+        public async Task<IActionResult> Create([Bind("AmazonProductColorID,AmazonProductID,DesignURL,AmazonDesignID,Top,Left,Right")] AmazonListing amazonListing)
         {
             if (ModelState.IsValid)
             {
@@ -103,8 +103,8 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                 var designURL = Path.Combine(COLOR_DIR, amazonListing.AmazonListingID + "_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".jpg");
                 var outputImage = Path.Combine(_environment.WebRootPath, designURL);
 
-                Point topLeft = new Point(200, 200);
-                Point topRight = new Point(400, 200);
+                Point topLeft = new Point(amazonListing.Left, amazonListing.Top);
+                Point topRight = new Point(amazonListing.Right, amazonListing.Top);
 
                 using (FileStream savePic = System.IO.File.OpenWrite(outputImage))
                 {
@@ -154,7 +154,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AmazonListingID,AmazonProductColorID,AmazonProductID,DesignURL,AmazonDesignID")] AmazonListing amazonListing)
+        public async Task<IActionResult> Edit(int id, [Bind("AmazonListingID,AmazonProductColorID,AmazonProductID,DesignURL,AmazonDesignID,Top,Left,Right")] AmazonListing amazonListing)
         {
             if (id != amazonListing.AmazonListingID)
             {
@@ -174,8 +174,8 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                     var designURL = Path.Combine(COLOR_DIR, amazonListing.AmazonListingID + "_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".jpg");
                     var outputImage = Path.Combine(_environment.WebRootPath, designURL);
 
-                    Point topLeft = new Point(200, 200);
-                    Point topRight = new Point(400, 200);
+                    Point topLeft = new Point(amazonListing.Left, amazonListing.Top);
+                    Point topRight = new Point(amazonListing.Right, amazonListing.Top);
 
                     using (FileStream savePic = System.IO.File.OpenWrite(outputImage))
                     {

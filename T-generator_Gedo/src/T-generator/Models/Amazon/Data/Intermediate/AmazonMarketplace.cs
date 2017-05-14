@@ -19,5 +19,14 @@ namespace T_generator.Models.Amazon.Data.Intermediate
         public int AmazonCurrencyID { get; set; }
 
         public virtual AmazonCurrency AmazonCurrency { get; set; }
+
+        [Display(Name = "Template")]
+        public string TemplateURL { get; set; }
+
+        [Display(Name = "Sheet Number")]
+        public int SheetNumber { get; set; }
+
+        [Display(Name = "Starting Row")]
+        public int StartingRow { get; set; }
     }
 }

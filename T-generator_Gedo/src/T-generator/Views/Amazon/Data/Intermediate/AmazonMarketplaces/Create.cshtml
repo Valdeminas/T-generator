@@ -12,6 +12,13 @@
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
+            <label asp-for="TemplateURL" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TemplateURL" type="file" class="form-control" />
+                <span asp-validation-for="TemplateURL" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
             <label asp-for="AmazonCurrencyID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <select asp-for="AmazonCurrencyID" class ="form-control" asp-items="ViewBag.AmazonCurrencyID"></select>
@@ -29,6 +36,20 @@
             <div class="col-md-10">
                 <input asp-for="Prefix" class="form-control" />
                 <span asp-validation-for="Prefix" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="StartingRow" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="StartingRow" class="form-control" />
+                <span asp-validation-for="StartingRow" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SheetNumber" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="SheetNumber" class="form-control" />
+                <span asp-validation-for="SheetNumber" class="text-danger" />
             </div>
         </div>
         <div class="form-group">

@@ -47,6 +47,8 @@ namespace T_generator.Data
                 .HasKey(c => new { c.KeywordID, c.ProductID, c.Order });
             modelBuilder.Entity<ProductSizes>()
                 .HasKey(c => new { c.SizeID, c.ProductID });
+            modelBuilder.Entity<AccountMarketplaces>()
+                .HasKey(c => new { c.MarketplaceID, c.AccountID });
 
         }
 
@@ -101,9 +103,11 @@ namespace T_generator.Data
 
         public DbSet<AmazonListing> AmazonListings { get; set; }
 
-        
+        public DbSet<AccountMarketplaces> AccountMarketplaces { get; set; }
 
-        
+
+
+
 
     }
 }

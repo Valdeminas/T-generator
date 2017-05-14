@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using T_generator.Models.Amazon.Data.Intermediate;
+using T_generator.Models.Amazon.Data.JoinTables;
 
 namespace T_generator.Models.Amazon.Data.Basic
 {
@@ -13,6 +14,9 @@ namespace T_generator.Models.Amazon.Data.Basic
 
         [Display(Name = "Account")]
         public string Name { get; set; }
-        public string Prefix { get; set; }        
+        public string Prefix { get; set; }
+
+        [Display(Name = "Marketplaces")]
+        public ICollection<AccountMarketplaces> Marketplaces { get; set; }
     }
 }

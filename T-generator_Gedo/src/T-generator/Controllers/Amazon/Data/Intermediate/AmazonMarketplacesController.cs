@@ -8,16 +8,23 @@ using Microsoft.EntityFrameworkCore;
 using T_generator.Data;
 using T_generator.Models.Amazon.Data.Intermediate;
 using T_generator.Services.Amazon;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace T_generator.Controllers.Amazon.Data.Intermediate
 {
     public class AmazonMarketplacesController : Controller
     {
-        private readonly AmazonContext _context;
+        private const string TEMPLATE_DIR = "uploads/Templates";
 
-        public AmazonMarketplacesController(AmazonContext context)
+        private readonly AmazonContext _context;
+        private IHostingEnvironment _environment;
+
+        public AmazonMarketplacesController(AmazonContext context, IHostingEnvironment environment)
         {
-            _context = context;    
+            _context = context;
+            _environment = environment;
         }
 
         // GET: AmazonMarketplaces
@@ -61,11 +68,23 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AmazonMarketplaceID,AmazonCurrencyID,Name,Prefix")] AmazonMarketplace amazonMarketplace)
+        public async Task<IActionResult> Create([Bind("AmazonMarketplaceID,AmazonCurrencyID,TemplateURL,SheetNumber,StartingRow,Name,Prefix")] AmazonMarketplace amazonMarketplace, IFormFile TemplateURL)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && TemplateURL != null)
             {
                 _context.Add(amazonMarketplace);
+                _context.SaveChanges();
+                var fullUploadPath = Path.Combine(_environment.WebRootPath, TEMPLATE_DIR);
+                var extension = TemplateURL.FileName.Split('.').Last();
+                var filename = amazonMarketplace.AmazonMarketplaceID + "." + extension;
+                fullUploadPath = Path.Combine(fullUploadPath, filename);
+                using (var fileStream = new FileStream(fullUploadPath, FileMode.Create))
+                {
+                    await TemplateURL.CopyToAsync(fileStream);
+                    amazonMarketplace.TemplateURL = Path.Combine(TEMPLATE_DIR, filename);
+                }
+
+                // _context.Add(amazonDesign);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -95,7 +114,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AmazonMarketplaceID,AmazonCurrencyID,Name,Prefix")] AmazonMarketplace amazonMarketplace)
+        public async Task<IActionResult> Edit(int id, [Bind("AmazonMarketplaceID,AmazonCurrencyID,TemplateURL,SheetNumber,StartingRow,Name,Prefix")] AmazonMarketplace amazonMarketplace, IFormFile TemplateURL, string oldURL)
         {
             if (id != amazonMarketplace.AmazonMarketplaceID)
             {
@@ -106,6 +125,24 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             {
                 try
                 {
+
+                    if (TemplateURL != null)
+                    {
+                        var fullUploadPath = Path.Combine(_environment.WebRootPath, TEMPLATE_DIR);
+                        var extension = TemplateURL.FileName.Split('.').Last();
+                        var filename = amazonMarketplace.AmazonMarketplaceID + "." + extension;
+                        fullUploadPath = Path.Combine(fullUploadPath, filename);
+                        using (var fileStream = new FileStream(fullUploadPath, FileMode.Create))
+                        {
+                            System.IO.File.Delete(Path.Combine(_environment.WebRootPath, oldURL));
+                            await TemplateURL.CopyToAsync(fileStream);
+                            amazonMarketplace.TemplateURL = Path.Combine(TEMPLATE_DIR, filename);
+                        }
+                    }
+                    else
+                    {
+                        amazonMarketplace.TemplateURL = oldURL;
+                    }
                     _context.Update(amazonMarketplace);
                     await _context.SaveChangesAsync();
                 }
@@ -151,6 +188,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             var amazonMarketplace = await _context.AmazonMarketplaces.SingleOrDefaultAsync(m => m.AmazonMarketplaceID == id);
             _context.AmazonMarketplaces.Remove(amazonMarketplace);
             await _context.SaveChangesAsync();
+            System.IO.File.Delete(Path.Combine(_environment.WebRootPath, amazonMarketplace.TemplateURL));
             return RedirectToAction("Index");
         }
 

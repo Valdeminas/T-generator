@@ -221,15 +221,19 @@ namespace Tgenerator.Migrations
                     b.Property<int>("AmazonListingID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("AmazonDesignID");
+                    b.Property<int>("AmazonDesignID");
 
-                    b.Property<int?>("AmazonDesingID");
+                    b.Property<int>("AmazonProductColorID");
 
-                    b.Property<int?>("AmazonProductColorID");
-
-                    b.Property<int?>("AmazonProductID");
+                    b.Property<int>("AmazonProductID");
 
                     b.Property<string>("DesignURL");
+
+                    b.Property<int>("Left");
+
+                    b.Property<int>("Right");
+
+                    b.Property<int>("Top");
 
                     b.HasKey("AmazonListingID");
 
@@ -253,6 +257,12 @@ namespace Tgenerator.Migrations
 
                     b.Property<string>("Prefix");
 
+                    b.Property<int>("SheetNumber");
+
+                    b.Property<int>("StartingRow");
+
+                    b.Property<string>("TemplateURL");
+
                     b.HasKey("AmazonMarketplaceID");
 
                     b.HasIndex("AmazonCurrencyID");
@@ -265,9 +275,9 @@ namespace Tgenerator.Migrations
                     b.Property<int>("AmazonProductID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("AmazonAccountID");
+                    b.Property<int>("AmazonAccountID");
 
-                    b.Property<int?>("AmazonTypeID");
+                    b.Property<int>("AmazonTypeID");
 
                     b.Property<string>("Description");
 
@@ -302,6 +312,21 @@ namespace Tgenerator.Migrations
                     b.HasIndex("AmazonProductID");
 
                     b.ToTable("AmazonProductColor");
+                });
+
+            modelBuilder.Entity("T_generator.Models.Amazon.Data.JoinTables.AccountMarketplaces", b =>
+                {
+                    b.Property<int>("MarketplaceID");
+
+                    b.Property<int>("AccountID");
+
+                    b.HasKey("MarketplaceID", "AccountID");
+
+                    b.HasIndex("AccountID");
+
+                    b.HasIndex("MarketplaceID");
+
+                    b.ToTable("AccountMarketplaces");
                 });
 
             modelBuilder.Entity("T_generator.Models.Amazon.Data.JoinTables.KeywordAssignment", b =>
@@ -450,6 +475,17 @@ namespace Tgenerator.Migrations
                     b.HasOne("T_generator.Models.Amazon.Data.Intermediate.AmazonProduct", "AmazonProduct")
                         .WithMany()
                         .HasForeignKey("AmazonProductID");
+                });
+
+            modelBuilder.Entity("T_generator.Models.Amazon.Data.JoinTables.AccountMarketplaces", b =>
+                {
+                    b.HasOne("T_generator.Models.Amazon.Data.Basic.AmazonAccount", "Account")
+                        .WithMany("Marketplaces")
+                        .HasForeignKey("AccountID");
+
+                    b.HasOne("T_generator.Models.Amazon.Data.Intermediate.AmazonMarketplace", "Marketplace")
+                        .WithMany()
+                        .HasForeignKey("MarketplaceID");
                 });
 
             modelBuilder.Entity("T_generator.Models.Amazon.Data.JoinTables.KeywordAssignment", b =>
