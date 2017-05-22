@@ -11,14 +11,36 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form asp-action="Index"
+      method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="currentFilter" value="@ViewData["currentFilter"]" />
+            <input type="hidden" name="currentSortOder" value="@ViewData["SortParm"]" />
+            <input type="hidden" name="itemsPerPage" value="@ViewData["ItemsPerPage"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+                <a asp-action=Index
+                   asp-route-currentSortOder="Name"
+                   asp-route-previousSortOrder="@ViewData["SortParm"]" 
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-itemsPerPage="@ViewData["ItemsPerPage"]">@Html.DisplayNameFor(model => model.FirstOrDefault().Name)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().Prefix)
+                <a asp-action=Index
+                   asp-route-currentSortOder="Prefix"
+                   asp-route-previousSortOrder="@ViewData["SortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-itemsPerPage="@ViewData["ItemsPerPage"]">@Html.DisplayNameFor(model => model.FirstOrDefault().Prefix)</a>
             </th>
             <th></th>
         </tr>
@@ -46,7 +68,29 @@
 {
     <a asp-action="Index"
        asp-route-page="@(i)"
+       asp-route-currentSortOder="@ViewData["SortParm"]"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       asp-route-itemsPerPage="@ViewData["ItemsPerPage"]"
        class="btn btn-default @(Model.PageIndex==i ? "disabled" : "") btn">
         @i
     </a>
 }
+
+<p>
+    <text>Show items per page</text>
+    <a asp-action=Index
+       asp-route-currentSortOder="@ViewData["SortParm"]"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       asp-route-itemsPerPage="@(10)"
+       class="btn btn-default @(Int32.Parse(ViewData["ItemsPerPage"].ToString())==10 ? "disabled" : "") btn">10</a>
+    <a asp-action=Index
+       asp-route-currentSortOder="@ViewData["SortParm"]"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       asp-route-itemsPerPage="@(20)"
+       class="btn btn-default @(Int32.Parse(ViewData["ItemsPerPage"].ToString())==20 ? "disabled" : "") btn">20</a>
+    <a asp-action=Index
+       asp-route-currentSortOder="@ViewData["SortParm"]"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       asp-route-itemsPerPage="@(30)"
+       class="btn btn-default @(Int32.Parse(ViewData["ItemsPerPage"].ToString())==30 ? "disabled" : "") btn">30</a>
+</p>
