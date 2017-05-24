@@ -21,6 +21,23 @@
             <input type="hidden" name="itemsPerPage" value="@ViewData["ItemsPerPage"]" />
             <input type="submit" value="Search" class="btn btn-default" /> |
             <a asp-action="Index">Back to Full List</a>
+            <span style="float:right;">
+                <a asp-action=Index
+                   asp-route-currentSortOder="@ViewData["SortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-itemsPerPage="@(10)"
+                   class="btn btn-default @(Int32.Parse(ViewData["ItemsPerPage"].ToString())==10 ? "disabled" : "") btn">10</a>
+                <a asp-action=Index
+                   asp-route-currentSortOder="@ViewData["SortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-itemsPerPage="@(20)"
+                   class="btn btn-default @(Int32.Parse(ViewData["ItemsPerPage"].ToString())==20 ? "disabled" : "") btn">20</a>
+                <a asp-action=Index
+                   asp-route-currentSortOder="@ViewData["SortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-itemsPerPage="@(30)"
+                   class="btn btn-default @(Int32.Parse(ViewData["ItemsPerPage"].ToString())==30 ? "disabled" : "") btn">30</a>
+            </span>                  
         </p>
     </div>
 </form>
@@ -75,22 +92,3 @@
         @i
     </a>
 }
-
-<p>
-    <text>Show items per page</text>
-    <a asp-action=Index
-       asp-route-currentSortOder="@ViewData["SortParm"]"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       asp-route-itemsPerPage="@(10)"
-       class="btn btn-default @(Int32.Parse(ViewData["ItemsPerPage"].ToString())==10 ? "disabled" : "") btn">10</a>
-    <a asp-action=Index
-       asp-route-currentSortOder="@ViewData["SortParm"]"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       asp-route-itemsPerPage="@(20)"
-       class="btn btn-default @(Int32.Parse(ViewData["ItemsPerPage"].ToString())==20 ? "disabled" : "") btn">20</a>
-    <a asp-action=Index
-       asp-route-currentSortOder="@ViewData["SortParm"]"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       asp-route-itemsPerPage="@(30)"
-       class="btn btn-default @(Int32.Parse(ViewData["ItemsPerPage"].ToString())==30 ? "disabled" : "") btn">30</a>
-</p>
