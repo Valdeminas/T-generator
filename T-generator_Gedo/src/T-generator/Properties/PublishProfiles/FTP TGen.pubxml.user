@@ -11,7 +11,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="appsettings.json">
-      <publishTime>04/25/2017 15:58:16</publishTime>
+      <publishTime>06/11/2017 16:47:00</publishTime>
     </File>
     <File Include="CoreCompat.System.Drawing.dll">
       <publishTime>06/27/2016 17:30:42</publishTime>
@@ -788,16 +788,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/05/2016 04:57:34</publishTime>
     </File>
     <File Include="T-generator.deps.json">
-      <publishTime>05/22/2017 17:27:41</publishTime>
+      <publishTime>06/11/2017 18:00:52</publishTime>
     </File>
     <File Include="T-generator.dll">
-      <publishTime>05/15/2017 02:48:01</publishTime>
+      <publishTime>06/11/2017 17:58:54</publishTime>
     </File>
     <File Include="T-generator.pdb">
-      <publishTime>05/15/2017 02:48:01</publishTime>
+      <publishTime>06/11/2017 17:58:54</publishTime>
     </File>
     <File Include="T-generator.runtimeconfig.json">
-      <publishTime>05/22/2017 17:27:41</publishTime>
+      <publishTime>06/11/2017 18:00:52</publishTime>
     </File>
     <File Include="Views/Account/Delete.cshtml">
       <publishTime>11/28/2016 23:50:03</publishTime>
@@ -836,7 +836,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/14/2017 23:10:31</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Basic/AmazonAccounts/Index.cshtml">
-      <publishTime>03/19/2017 17:17:20</publishTime>
+      <publishTime>05/24/2017 11:56:40</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Basic/AmazonCountries/Create.cshtml">
       <publishTime>11/17/2016 20:34:19</publishTime>
@@ -1019,18 +1019,33 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/25/2017 14:03:47</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces/Create.cshtml">
-      <publishTime>05/15/2017 01:23:16</publishTime>
+      <publishTime>06/03/2017 14:37:49</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces/Delete.cshtml">
-      <publishTime>11/17/2016 20:34:19</publishTime>
+      <publishTime>06/03/2017 14:27:25</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces/Details.cshtml">
-      <publishTime>11/17/2016 20:34:19</publishTime>
+      <publishTime>06/03/2017 14:27:25</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces/Edit.cshtml">
-      <publishTime>05/15/2017 01:23:19</publishTime>
+      <publishTime>06/03/2017 14:37:44</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces/Index.cshtml">
+      <publishTime>06/03/2017 14:32:49</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces_old/Create.cshtml">
+      <publishTime>05/15/2017 01:23:16</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces_old/Delete.cshtml">
+      <publishTime>11/17/2016 20:34:19</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces_old/Details.cshtml">
+      <publishTime>11/17/2016 20:34:19</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces_old/Edit.cshtml">
+      <publishTime>05/15/2017 01:23:19</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces_old/Index.cshtml">
       <publishTime>03/19/2017 17:18:12</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonProductColors/Create.cshtml">
@@ -1100,7 +1115,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/17/2016 20:34:19</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>05/22/2017 17:27:43</publishTime>
+      <publishTime>06/11/2017 18:00:55</publishTime>
     </File>
     <File Include="wwwroot/css/Login.css">
       <publishTime>11/17/2016 20:34:19</publishTime>
@@ -1109,7 +1124,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/28/2017 15:00:55</publishTime>
     </File>
     <File Include="wwwroot/css/site.min.css">
-      <publishTime>05/22/2017 17:27:38</publishTime>
+      <publishTime>06/11/2017 18:00:48</publishTime>
     </File>
     <File Include="wwwroot/favicon.ico">
       <publishTime>11/17/2016 20:34:19</publishTime>
@@ -1139,7 +1154,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/14/2017 17:17:22</publishTime>
     </File>
     <File Include="wwwroot/js/site.min.js">
-      <publishTime>05/22/2017 17:27:38</publishTime>
+      <publishTime>06/11/2017 18:00:48</publishTime>
     </File>
     <File Include="wwwroot/lib/bootstrap/.bower.json">
       <publishTime>11/17/2016 20:34:19</publishTime>
@@ -1279,11 +1294,17 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="wwwroot/uploads/Generated/3004_20170425144309109.jpg">
       <publishTime>04/25/2017 14:43:09</publishTime>
     </File>
+    <File Include="wwwroot/uploads/Generated/4004_20170603175044616.jpg">
+      <publishTime>06/03/2017 17:50:44</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Generated/4005_20170603175055990.jpg">
+      <publishTime>06/03/2017 17:50:56</publishTime>
+    </File>
     <File Include="wwwroot/uploads/Templates/2_20170515011219260.xlsx">
-      <publishTime>05/15/2017 02:10:34</publishTime>
+      <publishTime>06/11/2017 15:12:40</publishTime>
     </File>
     <File Include="wwwroot/uploads/Templates/3_20170515011224180.xlsx">
-      <publishTime>05/15/2017 01:12:24</publishTime>
+      <publishTime>06/03/2017 17:30:55</publishTime>
     </File>
     <File Include="wwwroot/uploads/Templates/4_20170515011228218.xlsx">
       <publishTime>05/15/2017 01:12:28</publishTime>

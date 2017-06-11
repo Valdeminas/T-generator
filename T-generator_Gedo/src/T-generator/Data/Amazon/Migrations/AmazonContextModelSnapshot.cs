@@ -251,17 +251,187 @@ namespace Tgenerator.Migrations
                     b.Property<int>("AmazonMarketplaceID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("AdultFlag");
+
                     b.Property<int>("AmazonCurrencyID");
+
+                    b.Property<int>("BikiniTopStyle");
+
+                    b.Property<int>("BraBandSize");
+
+                    b.Property<int>("BraBandSizeUnit");
+
+                    b.Property<int>("BraCupSize");
+
+                    b.Property<int>("BrandName");
+
+                    b.Property<int>("BrowseNode");
+
+                    b.Property<int>("CanBeGiftMessaged");
+
+                    b.Property<int>("CanBeGiftWrapped");
+
+                    b.Property<int>("ClosureType");
+
+                    b.Property<int>("ClothingType");
+
+                    b.Property<int>("CollarStyle");
+
+                    b.Property<int>("Colour");
+
+                    b.Property<int>("ColourMap");
+
+                    b.Property<int>("CountryOfOrigin");
+
+                    b.Property<int>("Department");
+
+                    b.Property<int>("Features1");
+
+                    b.Property<int>("Features2");
+
+                    b.Property<int>("Features3");
+
+                    b.Property<int>("Features4");
+
+                    b.Property<int>("Features5");
+
+                    b.Property<int>("FittingType");
+
+                    b.Property<int>("FulfillmentCentreId");
+
+                    b.Property<int>("FulfillmentLatency");
+
+                    b.Property<int>("GtinExemptionReason");
+
+                    b.Property<int>("InnerMaterialType");
+
+                    b.Property<int>("IsDiscontinued");
+
+                    b.Property<int>("ItemLength");
+
+                    b.Property<int>("ItemSKU");
+
+                    b.Property<int>("ItemShape");
+
+                    b.Property<int>("JeansLengthInches");
+
+                    b.Property<int>("JeansLengthUnitOfMeasure");
+
+                    b.Property<int>("JeansWidthInches");
+
+                    b.Property<int>("JeansWidthUnitOfMeasure");
+
+                    b.Property<int>("LaunchDate");
+
+                    b.Property<int>("MainImgUrl");
+
+                    b.Property<int>("ManufacturerPartNumber");
+
+                    b.Property<int>("MaterialComposition");
+
+                    b.Property<int>("MaxAggrShipQuant");
+
+                    b.Property<int>("MerchantShippingGroup");
+
+                    b.Property<int>("ModelName");
+
+                    b.Property<int>("ModelNumber");
 
                     b.Property<string>("Name");
 
+                    b.Property<int>("NeckStyle");
+
+                    b.Property<int>("NumberOfItems");
+
+                    b.Property<int>("OccasionDescription");
+
+                    b.Property<int>("OpacityTransparency");
+
+                    b.Property<int>("OtherImgUrl");
+
+                    b.Property<int>("OuterMaterialType");
+
+                    b.Property<int>("PackageDimensionsUnitOfMeasure");
+
+                    b.Property<int>("PackageHeight");
+
+                    b.Property<int>("PackageLength");
+
+                    b.Property<int>("PackageLengthUnitOfMeasure");
+
+                    b.Property<int>("PackageQuantity");
+
+                    b.Property<int>("PackageWeight");
+
+                    b.Property<int>("PackageWeightUnitOfMeasure");
+
+                    b.Property<int>("PackageWidth");
+
+                    b.Property<int>("ParentSKU");
+
+                    b.Property<int>("Parentage");
+
+                    b.Property<int>("PatternDescription");
+
                     b.Property<string>("Prefix");
+
+                    b.Property<int>("ProductCareInstructions");
+
+                    b.Property<int>("ProductDescription");
+
+                    b.Property<int>("ProductID");
+
+                    b.Property<int>("ProductName");
+
+                    b.Property<int>("ProductType");
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<int>("RelatedProductID");
+
+                    b.Property<int>("RelatedProductType");
+
+                    b.Property<int>("RelationshipType");
+
+                    b.Property<int>("SaleEndDate");
+
+                    b.Property<int>("SaleFromDate");
+
+                    b.Property<int>("SalePrice");
+
+                    b.Property<int>("SearchTerms");
+
+                    b.Property<int>("SeasonAndCollectionYear");
 
                     b.Property<int>("SheetNumber");
 
+                    b.Property<int>("ShippingWeight");
+
+                    b.Property<int>("Size");
+
+                    b.Property<int>("SizeMap");
+
+                    b.Property<int>("SleeveType");
+
+                    b.Property<int>("SpecialFeatures");
+
+                    b.Property<int>("StandardPrice");
+
                     b.Property<int>("StartingRow");
 
+                    b.Property<int>("StyleName");
+
+                    b.Property<int>("SwatchImgUrl");
+
+                    b.Property<int>("SwimwearBottomStyle");
+
                     b.Property<string>("TemplateURL");
+
+                    b.Property<int>("UpdateDelete");
+
+                    b.Property<int>("VariationTheme");
+
+                    b.Property<int>("WeightUnitOfMeasure");
 
                     b.HasKey("AmazonMarketplaceID");
 

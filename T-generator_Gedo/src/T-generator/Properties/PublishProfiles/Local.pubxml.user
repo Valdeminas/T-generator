@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>D:\Programavimas\T-gen_new\T-generator\T-generator_Gedo\src\T-generator\.\bin\Release\PublishOutput</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="ProductionConnection">
+      <Value>Data Source=SQL6001.SmarterASP.NET;Initial Catalog=DB_A1EE59_Valdeminas;User Id=DB_A1EE59_Valdeminas_admin;Password=Gameshark7;</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>

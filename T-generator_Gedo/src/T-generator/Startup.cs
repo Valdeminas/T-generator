@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 
 namespace T_generator
     {
@@ -137,7 +138,6 @@ namespace T_generator
             loggerFactory.AddDebug();
 
             app.UseApplicationInsightsRequestTelemetry();
-
             if (env.IsDevelopment())
                 {
                 app.UseDeveloperExceptionPage();

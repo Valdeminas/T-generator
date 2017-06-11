@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,21 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using T_generator.Data;
 using T_generator.Models.Amazon.Data.Intermediate;
+using T_generator.Services.Amazon;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using T_generator.Services.Amazon;
 
 namespace T_generator.Controllers.Amazon.Data.Intermediate
 {
-    public class AmazonMarketplacesController : Controller
+    public class AmazonMarketplacesController_old : Controller
     {
         private const string TEMPLATE_DIR = "uploads/Templates";
 
         private readonly AmazonContext _context;
         private IHostingEnvironment _environment;
 
-        public AmazonMarketplacesController(AmazonContext context, IHostingEnvironment environment)
+        public AmazonMarketplacesController_old(AmazonContext context, IHostingEnvironment environment)
         {
             _context = context;
             _environment = environment;
@@ -47,7 +47,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                 return NotFound();
             }
 
-            var amazonMarketplace = await _context.AmazonMarketplaces.SingleOrDefaultAsync(m => m.AmazonMarketplaceID == id);
+            var amazonMarketplace = await _context.AmazonMarketplaces.Include(a => a.AmazonCurrency).SingleOrDefaultAsync(m => m.AmazonMarketplaceID == id);
             if (amazonMarketplace == null)
             {
                 return NotFound();
@@ -59,7 +59,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // GET: AmazonMarketplaces/Create
         public IActionResult Create()
         {
-            ViewData["AmazonCurrencyID"] = new SelectList(_context.AmazonCurrencies, "AmazonCurrencyID", "AmazonCurrencyID");
+            ViewData["AmazonCurrencyID"] = new SelectList(_context.AmazonCurrencies, "AmazonCurrencyID", "Currency");
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AmazonMarketplaceID,AdultFlag,AmazonCurrencyID,BikiniTopStyle,BraBandSize,BraBandSizeUnit,BraCupSize,BrandName,BrowseNode,CanBeGiftMessaged,CanBeGiftWrapped,ClosureType,ClothingType,CollarStyle,Colour,ColourMap,CountryOfOrigin,Department,Features1,Features2,Features3,Features4,Features5,FittingType,FulfillmentCentreId,FulfillmentLatency,GtinExemptionReason,InnerMaterialType,IsDiscontinued,ItemLength,ItemSKU,ItemShape,JeansLengthInches,JeansLengthUnitOfMeasure,JeansWidthInches,JeansWidthUnitOfMeasure,LaunchDate,MainImgUrl,ManufacturerPartNumber,MaterialComposition,MaxAggrShipQuant,MerchantShippingGroup,ModelName,ModelNumber,Name,NeckStyle,NumberOfItems,OccasionDescription,OpacityTransparency,OtherImgUrl,OuterMaterialType,PackageDimensionsUnitOfMeasure,PackageHeight,PackageLength,PackageLengthUnitOfMeasure,PackageQuantity,PackageWeight,PackageWeightUnitOfMeasure,PackageWidth,ParentSKU,Parentage,PatternDescription,Prefix,ProductCareInstructions,ProductDescription,ProductID,ProductName,ProductType,Quantity,RelatedProductID,RelatedProductType,RelationshipType,SaleEndDate,SaleFromDate,SalePrice,SearchTerms,SeasonAndCollectionYear,SheetNumber,ShippingWeight,Size,SizeMap,SleeveType,SpecialFeatures,StandardPrice,StartingRow,StyleName,SwatchImgUrl,SwimwearBottomStyle,TemplateURL,UpdateDelete,VariationTheme,WeightUnitOfMeasure")] AmazonMarketplace amazonMarketplace, IFormFile TemplateURL)
+        public async Task<IActionResult> Create([Bind("AmazonMarketplaceID,AmazonCurrencyID,TemplateURL,SheetNumber,StartingRow,Name,Prefix")] AmazonMarketplace amazonMarketplace, IFormFile TemplateURL)
         {
             if (ModelState.IsValid && TemplateURL != null)
             {
@@ -111,7 +111,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             {
                 return NotFound();
             }
-            ViewData["AmazonCurrencyID"] = new SelectList(_context.AmazonCurrencies, "AmazonCurrencyID", "AmazonCurrencyID", amazonMarketplace.AmazonCurrencyID);
+            ViewData["AmazonCurrencyID"] = new SelectList(_context.AmazonCurrencies, "AmazonCurrencyID", "Currency", amazonMarketplace.AmazonCurrencyID);
             return View(amazonMarketplace);
         }
 
@@ -120,7 +120,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AmazonMarketplaceID,AdultFlag,AmazonCurrencyID,BikiniTopStyle,BraBandSize,BraBandSizeUnit,BraCupSize,BrandName,BrowseNode,CanBeGiftMessaged,CanBeGiftWrapped,ClosureType,ClothingType,CollarStyle,Colour,ColourMap,CountryOfOrigin,Department,Features1,Features2,Features3,Features4,Features5,FittingType,FulfillmentCentreId,FulfillmentLatency,GtinExemptionReason,InnerMaterialType,IsDiscontinued,ItemLength,ItemSKU,ItemShape,JeansLengthInches,JeansLengthUnitOfMeasure,JeansWidthInches,JeansWidthUnitOfMeasure,LaunchDate,MainImgUrl,ManufacturerPartNumber,MaterialComposition,MaxAggrShipQuant,MerchantShippingGroup,ModelName,ModelNumber,Name,NeckStyle,NumberOfItems,OccasionDescription,OpacityTransparency,OtherImgUrl,OuterMaterialType,PackageDimensionsUnitOfMeasure,PackageHeight,PackageLength,PackageLengthUnitOfMeasure,PackageQuantity,PackageWeight,PackageWeightUnitOfMeasure,PackageWidth,ParentSKU,Parentage,PatternDescription,Prefix,ProductCareInstructions,ProductDescription,ProductID,ProductName,ProductType,Quantity,RelatedProductID,RelatedProductType,RelationshipType,SaleEndDate,SaleFromDate,SalePrice,SearchTerms,SeasonAndCollectionYear,SheetNumber,ShippingWeight,Size,SizeMap,SleeveType,SpecialFeatures,StandardPrice,StartingRow,StyleName,SwatchImgUrl,SwimwearBottomStyle,TemplateURL,UpdateDelete,VariationTheme,WeightUnitOfMeasure")] AmazonMarketplace amazonMarketplace, IFormFile TemplateURL, string oldURL)
+        public async Task<IActionResult> Edit(int id, [Bind("TemplateURL,AmazonMarketplaceID,AmazonCurrencyID,SheetNumber,StartingRow,Name,Prefix")] AmazonMarketplace amazonMarketplace, IFormFile TemplateURL, string oldURL)
         {
             if (id != amazonMarketplace.AmazonMarketplaceID)
             {
@@ -184,7 +184,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                 return NotFound();
             }
 
-            var amazonMarketplace = await _context.AmazonMarketplaces.SingleOrDefaultAsync(m => m.AmazonMarketplaceID == id);
+            var amazonMarketplace = await _context.AmazonMarketplaces.Include(a => a.AmazonCurrency).SingleOrDefaultAsync(m => m.AmazonMarketplaceID == id);
             if (amazonMarketplace == null)
             {
                 return NotFound();
