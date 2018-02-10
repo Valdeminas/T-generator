@@ -87,7 +87,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AmazonProductColorID,AmazonProductID,DesignURL,AmazonDesignID,Top,Left,Right")] AmazonListing amazonListing)
+        public async Task<IActionResult> Create([Bind("AmazonProductColorID,AmazonProductID,DesignURL,AmazonDesignID,Top,Left,Right,Bot")] AmazonListing amazonListing)
         {
             if (ModelState.IsValid)
             {
@@ -103,13 +103,32 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                 var designURL = Path.Combine(COLOR_DIR, amazonListing.AmazonListingID + "_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".jpg");
                 var outputImage = Path.Combine(_environment.WebRootPath, designURL);
 
-                Point topLeft = new Point(amazonListing.Left, amazonListing.Top);
-                Point topRight = new Point(amazonListing.Right, amazonListing.Top);
+                if (amazonListing.Left == null || amazonListing.Left == 0)
+                {
+                    amazonListing.Left = amazonProductColor.Left;
+                }
+                if (amazonListing.Top == null || amazonListing.Top == 0)
+                {
+                    amazonListing.Top = amazonProductColor.Top;
+                }
+                if (amazonListing.Right == null || amazonListing.Right == 0)
+                {
+                    amazonListing.Right = amazonProductColor.Right;
+                }
+                if (amazonListing.Bot == null || amazonListing.Bot == 0)
+                {
+                    amazonListing.Bot = amazonProductColor.Bot;
+                }
+
+                Point topLeft = new Point((int)amazonListing.Left, (int)amazonListing.Top);
+                Point topRight = new Point((int)amazonListing.Right, (int)amazonListing.Top);
+                Point botLeft = new Point((int)amazonListing.Left, (int)amazonListing.Bot);
+                Point botRight = new Point((int)amazonListing.Right, (int)amazonListing.Bot);
 
                 using (FileStream savePic = System.IO.File.OpenWrite(outputImage))
                 {
                     T_generator.Services.Amazon.ImageCollider.MergeImages(
-                        new BackPicture(baseImage, topLeft, topRight),
+                        new BackPicture(baseImage, topLeft, topRight, botLeft, botRight),
                         new FrontPicture(coverImage, (int)(opacity*100)))
                             //.DrawLines(new Color(1, 1, 1), 1, new Vector2[] { new Vector2(topLeft.X, 0), new Vector2(topLeft.X, 1000) })
                             //.DrawLines(new Color(1, 1, 1), 1, new Vector2[] { new Vector2(0, topLeft.Y), new Vector2(1000, topLeft.Y) })
@@ -154,7 +173,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AmazonListingID,AmazonProductColorID,AmazonProductID,DesignURL,AmazonDesignID,Top,Left,Right")] AmazonListing amazonListing)
+        public async Task<IActionResult> Edit(int id, [Bind("AmazonListingID,AmazonProductColorID,AmazonProductID,DesignURL,AmazonDesignID,Top,Left,Right,Bot")] AmazonListing amazonListing)
         {
             if (id != amazonListing.AmazonListingID)
             {
@@ -174,14 +193,33 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                     var designURL = Path.Combine(COLOR_DIR, amazonListing.AmazonListingID + "_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".jpg");
                     var outputImage = Path.Combine(_environment.WebRootPath, designURL);
 
-                    Point topLeft = new Point(amazonListing.Left, amazonListing.Top);
-                    Point topRight = new Point(amazonListing.Right, amazonListing.Top);
+                    if (amazonListing.Left == null || amazonListing.Left == 0)
+                    {
+                        amazonListing.Left = amazonProductColor.Left;
+                    }
+                    if (amazonListing.Top == null || amazonListing.Top == 0)
+                    {
+                        amazonListing.Top = amazonProductColor.Top;
+                    }
+                    if (amazonListing.Right == null || amazonListing.Right == 0)
+                    {
+                        amazonListing.Right = amazonProductColor.Right;
+                    }
+                    if (amazonListing.Bot == null || amazonListing.Bot == 0)
+                    {
+                        amazonListing.Bot = amazonProductColor.Bot;
+                    }
+
+                    Point topLeft = new Point((int)amazonListing.Left, (int)amazonListing.Top);
+                    Point topRight = new Point((int)amazonListing.Right, (int)amazonListing.Top);
+                    Point botLeft = new Point((int)amazonListing.Left, (int)amazonListing.Bot);
+                    Point botRight = new Point((int)amazonListing.Right, (int)amazonListing.Bot);
 
                     using (FileStream savePic = System.IO.File.OpenWrite(outputImage))
                     {
                         System.IO.File.Delete(Path.Combine(_environment.WebRootPath, amazonListing.DesignURL));
                         T_generator.Services.Amazon.ImageCollider.MergeImages(
-                            new BackPicture(baseImage, topLeft, topRight),
+                            new BackPicture(baseImage, topLeft, topRight, botLeft,botRight),
                             new FrontPicture(coverImage, (int)(opacity * 100)))
                                 //.DrawLines(new Color(1, 1, 1), 1, new Vector2[] { new Vector2(topLeft.X, 0), new Vector2(topLeft.X, 1000) })
                                 //.DrawLines(new Color(1, 1, 1), 1, new Vector2[] { new Vector2(0, topLeft.Y), new Vector2(1000, topLeft.Y) })

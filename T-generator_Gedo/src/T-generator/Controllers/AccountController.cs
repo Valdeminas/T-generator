@@ -279,7 +279,7 @@ namespace T_generator.Controllers
 
         public IActionResult AccessDenied(string returnUrl = null)
             {
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction("Account", "Login");
             }
 
         #region Helpers
@@ -304,7 +304,7 @@ namespace T_generator.Controllers
                 }
             else
                 {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction("Äccount", "Login");
                 }
             }
 

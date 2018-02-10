@@ -10,6 +10,7 @@ namespace T_generator.Models.Amazon.Data.Intermediate
     {
         public int AmazonProductID { get; set; }
 
+        [Required]
         public string Name { get; set; }
         public string Prefix { get; set; }
 

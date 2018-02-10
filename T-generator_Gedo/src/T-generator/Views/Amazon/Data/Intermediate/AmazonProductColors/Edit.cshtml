@@ -15,11 +15,14 @@
         <div class="form-group">
             <label asp-for="DesignURL" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <img src="../../@(Model.DesignURL)" alt="@(Model.Name)" width="60" />
-                <input asp-for="DesignURL" class="form-control" type="file"/>
-                <span asp-validation-for="DesignURL" class="text-danger" />
-                <input name="oldURL" type="hidden" value="@(Model.DesignURL)" />
-            </div>
+                <a href="../../@(Model.ThumbURL)">
+                    <img src="../../@(Model.ThumbURL)" alt="@(Model.Name)" width="60" />
+                    </a>
+                    <input asp-for="DesignURL" class="form-control" type="file" />
+                    <span asp-validation-for="DesignURL" class="text-danger" />
+                    <input name="oldURL" type="hidden" value="@(Model.DesignURL)" />
+                    <input name="oldThumb" type="hidden" value="@(Model.ThumbURL)" />
+</div>
         </div>
         <div class="form-group">
             <label asp-for="Name" class="col-md-2 control-label"></label>
@@ -32,6 +35,14 @@
             <label asp-for="AmazonProductID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <select asp-for="AmazonProductID" class="form-control" asp-items="ViewBag.AmazonProductID"></select>
+                <span asp-validation-for="AmazonProductID" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AmazonColorID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="AmazonColorID" class="form-control" asp-items="ViewBag.AmazonColorID"></select>
+                <span asp-validation-for="AmazonColorID" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
@@ -39,6 +50,34 @@
             <div class="col-md-10">
                 <input asp-for="Opacity" class="form-control"/>
                 <span asp-validation-for="Opacity" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Top" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Top" class="form-control" />
+                <span asp-validation-for="Top" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Left" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Left" class="form-control" />
+                <span asp-validation-for="Left" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Right" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Right" class="form-control" />
+                <span asp-validation-for="Right" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Bot" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Bot" class="form-control" />
+                <span asp-validation-for="Bot" class="text-danger" />
             </div>
         </div>
         <div class="form-group">

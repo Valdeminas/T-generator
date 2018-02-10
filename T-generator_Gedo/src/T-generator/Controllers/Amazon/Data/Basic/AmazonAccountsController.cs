@@ -194,6 +194,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         public async Task<IActionResult> DeleteConfirmed(int id)
             {
             var amazonAccount = await _context.AmazonAccounts.SingleOrDefaultAsync(m => m.AmazonAccountID == id);
+            DeleteAccountMarketplaces(amazonAccount);
             _context.AmazonAccounts.Remove(amazonAccount);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -214,5 +215,12 @@ namespace T_generator.Controllers.Amazon.Data.Basic
                 productToUpdate.Marketplaces.Add(new AccountMarketplaces { AccountID = productToUpdate.AmazonAccountID, MarketplaceID = marketplaceid });
                 }
             }
+
+        private void DeleteAccountMarketplaces(AmazonAccount productToUpdate)
+        {
+            _context.AccountMarketplaces.RemoveRange(_context.AccountMarketplaces.Where(i => i.AccountID == productToUpdate.AmazonAccountID));
+            _context.SaveChanges();
         }
+
+    }
     }

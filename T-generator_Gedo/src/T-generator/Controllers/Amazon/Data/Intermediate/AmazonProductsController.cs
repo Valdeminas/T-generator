@@ -206,17 +206,30 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var amazonProduct = await _context.AmazonProducts.Include(i=>i.Keywords).SingleOrDefaultAsync(m => m.AmazonProductID == id);
-            _context.AmazonProducts.Remove(amazonProduct);
-            foreach(var keyword in amazonProduct.Keywords)
+            if (!RelatedProductExists(id))
             {
-                if (_context.KeywordAssignment.Where(a=>a.ProductID!=amazonProduct.AmazonProductID).Count(m => m.KeywordID == keyword.KeywordID) == 0)
+                DeleteProductSizes(amazonProduct);
+                
+                _context.AmazonProducts.Remove(amazonProduct);
+                foreach (var keyword in amazonProduct.Keywords)
                 {
-                    var keywordToRemove = await _context.AmazonKeywords.SingleOrDefaultAsync(m => m.AmazonKeywordID == keyword.KeywordID);
-                    _context.AmazonKeywords.Remove(keywordToRemove);
+                    if (_context.KeywordAssignment.Where(a => a.ProductID != amazonProduct.AmazonProductID).Count(m => m.KeywordID == keyword.KeywordID) == 0)
+                    {
+                        var keywordToRemove = await _context.AmazonKeywords.SingleOrDefaultAsync(m => m.AmazonKeywordID == keyword.KeywordID);
+                        _context.AmazonKeywords.Remove(keywordToRemove);
+                    }
                 }
+                DeleteKeywordAssignment(amazonProduct);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            else
+            {
+                ViewData["Error"] = "This object has other entries using it."
+                    + Environment.NewLine
+                    + "Delete the entries using this object first, and then try to delete this object.";
+                return View(amazonProduct);
+            }
         }
 
         private bool AmazonProductExists(int id)
@@ -298,6 +311,23 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
             {
                 productToUpdate.Sizes.Add(new ProductSizes { ProductID=productToUpdate.AmazonProductID,SizeID=sizeid});
             }
+        }
+
+        private void DeleteProductSizes(AmazonProduct productToUpdate)
+        {
+            _context.ProductSizes.RemoveRange(_context.ProductSizes.Where(i => i.ProductID == productToUpdate.AmazonProductID));
+            _context.SaveChanges();
+        }
+
+        private void DeleteKeywordAssignment(AmazonProduct productToUpdate)
+        {
+            _context.KeywordAssignment.RemoveRange(_context.KeywordAssignment.Where(i => i.ProductID == productToUpdate.AmazonProductID));
+            _context.SaveChanges();
+        }
+
+        private bool RelatedProductExists(int id)
+        {
+            return _context.AmazonListings.Any(e => e.AmazonProductID == id);
         }
 
     }

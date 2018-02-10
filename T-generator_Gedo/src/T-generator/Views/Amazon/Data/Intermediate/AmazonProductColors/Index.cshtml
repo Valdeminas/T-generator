@@ -24,6 +24,9 @@
                 Product
             </th>
             <th>
+                Color
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().Opacity)
             </th>
             <th></th>
@@ -33,13 +36,18 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                <img src="../@(item.DesignURL)" alt="@(item.Name)" width="60" />
-            </td>
+                <a href="../@(item.ThumbURL)">
+                    <img src="../@(item.DesignURL)" alt="@(item.Name)" width="60" />
+                    </a>
+</td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AmazonProduct.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AmazonColor.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Opacity)

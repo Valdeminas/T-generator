@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Net.Http.Headers;
 using T_generator.Models.Amazon.Data.Dump;
 using T_generator.Services.Amazon;
+using T_generator.Models.Amazon.Data.JoinTables;
 
 namespace T_generator.Controllers.Amazon.Data.Basic
 {
@@ -48,7 +49,6 @@ namespace T_generator.Controllers.Amazon.Data.Basic
 
             var amazonDesign = await _context.AmazonDesigns
                 .Include(a => a.AmazonAccount)
-                .Include(a => a.AmazonMarketplace)
                 .Include(a => a.AmazonCategory)
                 .SingleOrDefaultAsync(m => m.AmazonDesignID == id);
 
@@ -64,7 +64,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         public IActionResult Create()
         {
             ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name");
-            ViewData["AmazonMarketplaceID"] = new SelectList(_context.AmazonMarketplaces, "AmazonMarketplaceID", "Name");
+            ViewData["AmazonMarketplaceID"] = new MultiSelectList(_context.AmazonMarketplaces, "AmazonMarketplaceID", "Name", _context.AmazonMarketplaces.Select(i => i.AmazonMarketplaceID).ToArray());
             ViewData["AmazonCategory"] = "";
             return View();
         }
@@ -74,15 +74,16 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AmazonDesignID,AmazonAccountID,AmazonMarketplaceID,DesignURL,Name,SearchTags1,SearchTags2,SearchTags3")] AmazonDesign amazonDesign,String Category, IFormFile DesignURL)
+        public async Task<IActionResult> Create([Bind("AmazonDesignID,AmazonAccountID,DesignURL,Name,SearchTags1,SearchTags2,SearchTags3")] AmazonDesign amazonDesign,String Category, IFormFile DesignURL, List<int> DesignMarketplaces)
         {
-            
+            amazonDesign.DesignMarketplaces = new List<DesignMarketplaces>();           
             if (ModelState.IsValid && DesignURL != null && Category != null)
             {
-                UpdateDesignCategories(Category, amazonDesign);            
+                UpdateDesignCategories(Category, amazonDesign);
                 _context.Add(amazonDesign);
                 _context.SaveChanges();
-                    var fullUploadPath = Path.Combine(_environment.WebRootPath, DESIGN_DIR);
+                UpdateDesignMarketplaces(DesignMarketplaces, amazonDesign);
+                var fullUploadPath = Path.Combine(_environment.WebRootPath, DESIGN_DIR);
                     var extension = DesignURL.FileName.Split('.').Last();
                     var filename = amazonDesign.AmazonDesignID + "." + extension;
                     fullUploadPath = Path.Combine(fullUploadPath, filename);           
@@ -97,7 +98,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
                 return RedirectToAction("Index");
             }
             ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name", amazonDesign.AmazonAccountID);
-            ViewData["AmazonMarketplaceID"] = new SelectList(_context.AmazonMarketplaces, "AmazonMarketplaceID", "Name");
+            ViewData["AmazonMarketplaceID"] = new MultiSelectList(_context.AmazonMarketplaces, "AmazonMarketplaceID", "Name", amazonDesign.DesignMarketplaces.Select(i => i.MarketplaceID).ToArray());
             ViewData["AmazonCategory"] = Category;
             return View(amazonDesign);
         }
@@ -110,13 +111,16 @@ namespace T_generator.Controllers.Amazon.Data.Basic
                 return NotFound();
             }
 
-            var amazonDesign = await _context.AmazonDesigns.Include(i => i.AmazonCategory).SingleOrDefaultAsync(m => m.AmazonDesignID == id);
+            var amazonDesign = await _context.AmazonDesigns
+                .Include(i => i.AmazonCategory)
+                .Include(i => i.DesignMarketplaces)
+                .SingleOrDefaultAsync(m => m.AmazonDesignID == id);
             if (amazonDesign == null)
             {
                 return NotFound();
             }
             ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name", amazonDesign.AmazonAccountID);
-            ViewData["AmazonMarketplaceID"] = new SelectList(_context.AmazonMarketplaces, "AmazonMarketplaceID", "Name", amazonDesign.AmazonMarketplaceID);
+            ViewData["AmazonMarketplaceID"] = new MultiSelectList(_context.AmazonMarketplaces, "AmazonMarketplaceID", "Name", amazonDesign.DesignMarketplaces.Select(i => i.MarketplaceID).ToArray());
             return View(amazonDesign);
         }
 
@@ -125,7 +129,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AmazonDesignID,AmazonAccountID,DesignURL,AmazonMarketplaceID,Name,SearchTags1,SearchTags2,SearchTags3")] AmazonDesign amazonDesign, String Category, IFormFile DesignURL,string oldURL)
+        public async Task<IActionResult> Edit(int id, [Bind("AmazonDesignID,AmazonAccountID,DesignURL,Name,SearchTags1,SearchTags2,SearchTags3")] AmazonDesign amazonDesign, String Category, IFormFile DesignURL,string oldURL, List<int> DesignMarketplaces)
         {
             if (id != amazonDesign.AmazonDesignID)
             {
@@ -134,6 +138,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
            
             if (ModelState.IsValid && Category != null)
             {
+                UpdateDesignMarketplaces(DesignMarketplaces, amazonDesign);
                 try
                 {
                     UpdateDesignCategories(Category, amazonDesign);
@@ -176,12 +181,12 @@ namespace T_generator.Controllers.Amazon.Data.Basic
                 .SingleOrDefaultAsync(m => m.AmazonDesignID == id);
 
             ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name", amazonDesign.AmazonAccountID);
-            ViewData["AmazonMarketplaceID"] = new SelectList(_context.AmazonMarketplaces, "AmazonMarketplaceID", "Name", amazonDesign.AmazonMarketplaceID);
+            ViewData["AmazonMarketplaceID"] = new MultiSelectList(_context.AmazonMarketplaces, "AmazonMarketplaceID", "Name", amazonDesign.DesignMarketplaces.Select(i => i.MarketplaceID).ToArray());
             return View(amazonDesign);
         }
 
         // GET: AmazonDesigns/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null)
             {
@@ -190,7 +195,7 @@ namespace T_generator.Controllers.Amazon.Data.Basic
 
             var amazonDesign = await _context.AmazonDesigns
                 .Include(a => a.AmazonAccount)
-                .Include(a => a.AmazonMarketplace)
+                .Include(a=>a.DesignMarketplaces)
                 .Include(a => a.AmazonCategory)
                 .SingleOrDefaultAsync(m => m.AmazonDesignID == id);
 
@@ -199,6 +204,11 @@ namespace T_generator.Controllers.Amazon.Data.Basic
                 return NotFound();
             }
 
+            if (AmazonListingExists(id))
+            {
+                ViewData["Error"] = "This Design belongs to a listing. Delete the listing first.";
+            }
+            
             return View(amazonDesign);
         }
 
@@ -207,16 +217,19 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var amazonDesign = await _context.AmazonDesigns.Include(i => i.AmazonCategory).SingleOrDefaultAsync(m => m.AmazonDesignID == id);
-            _context.AmazonDesigns.Remove(amazonDesign);
-                if (_context.AmazonCategories.Count(m => m.Category == amazonDesign.AmazonCategory.Category) == 1)
-                {
-                    var categoryToRemove = await _context.AmazonCategories.SingleOrDefaultAsync(m => m.AmazonCategoryID == amazonDesign.AmazonCategory.AmazonCategoryID);
-                    _context.AmazonCategories.Remove(categoryToRemove);
-                }
-            await _context.SaveChangesAsync();
-            System.IO.File.Delete(Path.Combine(_environment.WebRootPath, amazonDesign.DesignURL));
-            return RedirectToAction("Index");
+            
+                var amazonDesign = await _context.AmazonDesigns.Include(i => i.AmazonCategory).SingleOrDefaultAsync(m => m.AmazonDesignID == id);
+                DeleteDesignMarketplaces(amazonDesign);
+                _context.AmazonDesigns.Remove(amazonDesign);
+                //if (_context.AmazonCategories.Count(m => m.Category == amazonDesign.AmazonCategory.Category) == 1)
+                //{
+                //    var categoryToRemove = await _context.AmazonCategories.SingleOrDefaultAsync(m => m.AmazonCategoryID == amazonDesign.AmazonCategory.AmazonCategoryID);
+                //    _context.AmazonCategories.Remove(categoryToRemove);
+                //}
+                await _context.SaveChangesAsync();
+                System.IO.File.Delete(Path.Combine(_environment.WebRootPath, amazonDesign.DesignURL));
+                return RedirectToAction("Index");
+            
         }
 
         public IActionResult UpdateCategories(string term)
@@ -258,6 +271,28 @@ namespace T_generator.Controllers.Amazon.Data.Basic
         private bool AmazonDesignExists(int id)
         {
             return _context.AmazonDesigns.Any(e => e.AmazonDesignID == id);
+        }
+
+        private bool AmazonListingExists(int id)
+        {
+            return _context.AmazonListings.Any(e => e.AmazonDesignID == id);
+        }
+
+        private void UpdateDesignMarketplaces(List<int> Marketplaces, AmazonDesign productToUpdate)
+        {
+            _context.DesignMarketplaces.RemoveRange(_context.DesignMarketplaces.Where(i => i.DesignID == productToUpdate.AmazonDesignID));
+            _context.SaveChanges();
+
+            foreach (var marketplaceid in Marketplaces)
+            {
+                _context.DesignMarketplaces.Add(new DesignMarketplaces { DesignID = productToUpdate.AmazonDesignID, MarketplaceID = marketplaceid });
+            }
+        }
+
+        private void DeleteDesignMarketplaces(AmazonDesign productToUpdate)
+        {
+            _context.DesignMarketplaces.RemoveRange(_context.DesignMarketplaces.Where(i => i.DesignID == productToUpdate.AmazonDesignID));
+            _context.SaveChanges();
         }
     }
 }

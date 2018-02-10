@@ -13,8 +13,20 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="appsettings.json">
       <publishTime>06/11/2017 16:47:00</publishTime>
     </File>
+    <File Include="appsettings.production.json">
+      <publishTime>02/11/2018 01:02:24</publishTime>
+    </File>
+    <File Include="bower.json">
+      <publishTime>11/17/2016 20:34:19</publishTime>
+    </File>
+    <File Include="bundleconfig.json">
+      <publishTime>11/17/2016 20:34:19</publishTime>
+    </File>
+    <File Include="Controllers/GenerateController.cs">
+      <publishTime>10/15/2017 21:39:45</publishTime>
+    </File>
     <File Include="CoreCompat.System.Drawing.dll">
-      <publishTime>06/27/2016 17:30:42</publishTime>
+      <publishTime>05/12/2017 15:58:48</publishTime>
     </File>
     <File Include="Data/Amazon/Migrations/20170514233914_AccountMarketplacesTable2.cs">
       <publishTime>05/15/2017 02:46:19</publishTime>
@@ -22,527 +34,857 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Data/Amazon/Migrations/20170514233914_AccountMarketplacesTable2.Designer.cs">
       <publishTime>05/15/2017 02:39:14</publishTime>
     </File>
+    <File Include="dotnet-user-secrets.dll">
+      <publishTime>10/15/2017 14:36:23</publishTime>
+    </File>
     <File Include="EPPlus.Core.dll">
-      <publishTime>04/10/2017 19:32:28</publishTime>
+      <publishTime>11/28/2017 14:29:14</publishTime>
+    </File>
+    <File Include="ICSharpCode.SharpZipLib.dll">
+      <publishTime>08/20/2017 13:51:42</publishTime>
     </File>
     <File Include="ImageSharp.dll">
       <publishTime>12/27/2016 08:05:08</publishTime>
     </File>
+    <File Include="Microsoft.AI.DependencyCollector.dll">
+      <publishTime>10/25/2017 14:33:54</publishTime>
+    </File>
+    <File Include="Microsoft.AI.PerfCounterCollector.dll">
+      <publishTime>10/25/2017 14:43:14</publishTime>
+    </File>
+    <File Include="Microsoft.AI.ServerTelemetryChannel.dll">
+      <publishTime>10/10/2017 12:23:16</publishTime>
+    </File>
     <File Include="Microsoft.ApplicationInsights.AspNetCore.dll">
-      <publishTime>06/22/2016 12:35:54</publishTime>
+      <publishTime>11/01/2017 11:46:44</publishTime>
     </File>
     <File Include="Microsoft.ApplicationInsights.dll">
-      <publishTime>06/06/2016 10:42:24</publishTime>
+      <publishTime>10/10/2017 12:21:04</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Antiforgery.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:50</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Authentication.Abstractions.dll">
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Authentication.Cookies.dll">
-      <publishTime>06/22/2016 09:14:50</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Authentication.Core.dll">
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Authentication.dll">
-      <publishTime>06/22/2016 09:14:50</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Authorization.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Authorization.Policy.dll">
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Cors.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Cryptography.Internal.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Cryptography.KeyDerivation.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.DataProtection.Abstractions.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.DataProtection.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Diagnostics.Abstractions.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Diagnostics.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.dll">
+      <publishTime>10/30/2017 23:55:50</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Hosting.Abstractions.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Hosting.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Hosting.Server.Abstractions.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Html.Abstractions.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/15/2017 14:36:13</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Http.Abstractions.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Http.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Http.Extensions.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Http.Features.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.HttpOverrides.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Identity.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.JsonPatch.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/15/2017 14:36:15</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Localization.dll">
-      <publishTime>06/22/2016 09:14:52</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Mvc.Abstractions.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Mvc.ApiExplorer.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Mvc.Core.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Mvc.Cors.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Mvc.DataAnnotations.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Mvc.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Mvc.Formatters.Json.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Mvc.Localization.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Mvc.Razor.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Mvc.Razor.Extensions.dll">
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Mvc.Razor.Host.dll">
       <publishTime>08/31/2016 17:26:18</publishTime>
     </File>
+    <File Include="Microsoft.AspNetCore.Mvc.RazorPages.dll">
+      <publishTime>10/30/2017 23:55:52</publishTime>
+    </File>
     <File Include="Microsoft.AspNetCore.Mvc.TagHelpers.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Mvc.ViewFeatures.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Razor.dll">
-      <publishTime>06/22/2016 09:14:54</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Razor.Language.dll">
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Razor.Runtime.dll">
-      <publishTime>06/22/2016 09:14:54</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.ResponseCaching.Abstractions.dll">
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Routing.Abstractions.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Routing.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Server.IISIntegration.dll">
-      <publishTime>06/22/2016 09:14:54</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Server.Kestrel.Core.dll">
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Server.Kestrel.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Server.Kestrel.Https.dll">
+      <publishTime>10/30/2017 23:55:52</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll">
+      <publishTime>10/30/2017 23:55:52</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv.dll">
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.StaticFiles.dll">
-      <publishTime>06/22/2016 09:14:54</publishTime>
+      <publishTime>10/30/2017 23:55:52</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.WebUtilities.dll">
-      <publishTime>06/22/2016 09:14:54</publishTime>
+      <publishTime>10/30/2017 23:55:54</publishTime>
+    </File>
+    <File Include="Microsoft.CodeAnalysis.CSharp.dll">
+      <publishTime>10/15/2017 14:36:00</publishTime>
+    </File>
+    <File Include="Microsoft.CodeAnalysis.CSharp.Workspaces.dll">
+      <publishTime>10/15/2017 14:36:01</publishTime>
+    </File>
+    <File Include="Microsoft.CodeAnalysis.dll">
+      <publishTime>10/15/2017 14:37:04</publishTime>
+    </File>
+    <File Include="Microsoft.CodeAnalysis.Razor.dll">
+      <publishTime>10/30/2017 23:55:54</publishTime>
+    </File>
+    <File Include="Microsoft.CodeAnalysis.Workspaces.dll">
+      <publishTime>10/15/2017 14:36:06</publishTime>
     </File>
     <File Include="Microsoft.DotNet.InternalAbstractions.dll">
       <publishTime>06/21/2016 21:04:54</publishTime>
     </File>
+    <File Include="Microsoft.DotNet.PlatformAbstractions.dll">
+      <publishTime>10/16/2017 15:49:50</publishTime>
+    </File>
     <File Include="Microsoft.EntityFrameworkCore.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:54</publishTime>
     </File>
     <File Include="Microsoft.EntityFrameworkCore.Relational.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:54</publishTime>
     </File>
     <File Include="Microsoft.EntityFrameworkCore.SqlServer.dll">
-      <publishTime>08/31/2016 17:26:18</publishTime>
+      <publishTime>10/30/2017 23:55:50</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Caching.Abstractions.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:11</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Caching.Memory.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:11</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Configuration.Abstractions.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:12</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Configuration.Binder.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:12</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Configuration.CommandLine.dll">
+      <publishTime>10/15/2017 14:36:12</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Configuration.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:11</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Configuration.EnvironmentVariables.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>07/25/2017 00:48:04</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Configuration.FileExtensions.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:13</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Configuration.Json.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>07/25/2017 00:48:04</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Configuration.UserSecrets.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>07/25/2017 00:48:04</publishTime>
     </File>
     <File Include="Microsoft.Extensions.DependencyInjection.Abstractions.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:15</publishTime>
     </File>
     <File Include="Microsoft.Extensions.DependencyInjection.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:15</publishTime>
     </File>
     <File Include="Microsoft.Extensions.DependencyModel.dll">
-      <publishTime>06/21/2016 21:04:56</publishTime>
+      <publishTime>10/16/2017 15:49:52</publishTime>
     </File>
     <File Include="Microsoft.Extensions.DiagnosticAdapter.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>02/17/2017 13:40:02</publishTime>
     </File>
     <File Include="Microsoft.Extensions.FileProviders.Abstractions.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:16</publishTime>
     </File>
     <File Include="Microsoft.Extensions.FileProviders.Composite.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:16</publishTime>
     </File>
     <File Include="Microsoft.Extensions.FileProviders.Physical.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:16</publishTime>
     </File>
     <File Include="Microsoft.Extensions.FileSystemGlobbing.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:17</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Globalization.CultureInfoCache.dll">
       <publishTime>06/22/2016 09:14:56</publishTime>
     </File>
+    <File Include="Microsoft.Extensions.Hosting.Abstractions.dll">
+      <publishTime>10/30/2017 23:55:50</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Identity.Core.dll">
+      <publishTime>10/30/2017 23:55:50</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Identity.Stores.dll">
+      <publishTime>10/30/2017 23:55:50</publishTime>
+    </File>
     <File Include="Microsoft.Extensions.Localization.Abstractions.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/30/2017 23:55:50</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Localization.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/30/2017 23:55:50</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Logging.Abstractions.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:19</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Logging.Configuration.dll">
+      <publishTime>10/15/2017 14:36:20</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Logging.Console.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>07/25/2017 00:48:04</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Logging.Debug.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>07/25/2017 00:48:04</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Logging.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>07/25/2017 00:48:04</publishTime>
     </File>
     <File Include="Microsoft.Extensions.ObjectPool.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:21</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Options.ConfigurationExtensions.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>07/25/2017 00:48:04</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Options.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:22</publishTime>
     </File>
     <File Include="Microsoft.Extensions.PlatformAbstractions.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:22</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Primitives.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:23</publishTime>
     </File>
     <File Include="Microsoft.Extensions.WebEncoders.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/15/2017 14:36:23</publishTime>
     </File>
     <File Include="Microsoft.Net.Http.Headers.dll">
-      <publishTime>06/22/2016 09:14:56</publishTime>
+      <publishTime>10/30/2017 23:55:50</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.BrowserLink.dll">
+      <publishTime>10/30/2017 23:55:50</publishTime>
     </File>
     <File Include="Microsoft.VisualStudio.Web.BrowserLink.Loader.dll">
       <publishTime>06/22/2016 09:14:56</publishTime>
     </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.Contracts.dll">
+      <publishTime>10/30/2017 23:55:50</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.Core.dll">
+      <publishTime>10/30/2017 23:55:50</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.dll">
+      <publishTime>10/30/2017 23:55:50</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll">
+      <publishTime>10/30/2017 23:55:50</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll">
+      <publishTime>10/30/2017 23:55:50</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll">
+      <publishTime>10/30/2017 23:55:52</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll">
+      <publishTime>10/30/2017 23:55:52</publishTime>
+    </File>
+    <File Include="Newtonsoft.Json.Bson.dll">
+      <publishTime>10/15/2017 14:36:29</publishTime>
+    </File>
     <File Include="Newtonsoft.Json.dll">
-      <publishTime>06/13/2016 23:06:14</publishTime>
+      <publishTime>06/18/2017 13:57:10</publishTime>
+    </File>
+    <File Include="NPOI.dll">
+      <publishTime>09/25/2017 14:16:34</publishTime>
+    </File>
+    <File Include="NPOI.OOXML.dll">
+      <publishTime>09/25/2017 14:16:42</publishTime>
+    </File>
+    <File Include="NPOI.OpenXml4Net.dll">
+      <publishTime>09/25/2017 14:16:36</publishTime>
+    </File>
+    <File Include="NPOI.OpenXmlFormats.dll">
+      <publishTime>09/25/2017 14:16:40</publishTime>
+    </File>
+    <File Include="NuGet.Frameworks.dll">
+      <publishTime>10/15/2017 14:36:29</publishTime>
+    </File>
+    <File Include="refs/dotnet-aspnet-codegenerator-design.dll">
+      <publishTime>10/30/2017 23:55:50</publishTime>
     </File>
     <File Include="refs/Microsoft.CSharp.dll">
-      <publishTime>06/11/2016 23:13:10</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/Microsoft.EntityFrameworkCore.Design.dll">
+      <publishTime>10/30/2017 23:55:54</publishTime>
     </File>
     <File Include="refs/Microsoft.VisualBasic.dll">
-      <publishTime>06/11/2016 23:13:10</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/Microsoft.Win32.Primitives.dll">
-      <publishTime>11/05/2016 04:55:32</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/Microsoft.Win32.Registry.dll">
-      <publishTime>06/11/2016 23:13:18</publishTime>
+      <publishTime>10/15/2017 14:36:06</publishTime>
+    </File>
+    <File Include="refs/mscorlib.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/netstandard.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.AppContext.dll">
-      <publishTime>11/05/2016 04:55:34</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Buffers.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Collections.Concurrent.dll">
-      <publishTime>11/05/2016 04:55:32</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Collections.dll">
-      <publishTime>11/05/2016 04:55:38</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Collections.Immutable.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Collections.NonGeneric.dll">
-      <publishTime>11/05/2016 04:55:36</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Collections.Specialized.dll">
-      <publishTime>06/11/2016 23:13:22</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.ComponentModel.Annotations.dll">
-      <publishTime>06/11/2016 23:13:22</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.ComponentModel.Composition.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.ComponentModel.DataAnnotations.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.ComponentModel.dll">
-      <publishTime>06/11/2016 23:13:24</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.ComponentModel.EventBasedAsync.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.ComponentModel.Primitives.dll">
-      <publishTime>06/11/2016 23:13:22</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.ComponentModel.TypeConverter.dll">
-      <publishTime>06/11/2016 23:13:28</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Configuration.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Console.dll">
-      <publishTime>11/05/2016 04:55:48</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Core.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Data.Common.dll">
-      <publishTime>11/05/2016 04:55:50</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Data.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Data.SqlClient.dll">
-      <publishTime>06/11/2016 23:13:34</publishTime>
+      <publishTime>10/15/2017 14:36:25</publishTime>
     </File>
     <File Include="refs/System.Diagnostics.Contracts.dll">
-      <publishTime>06/11/2016 23:13:28</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Diagnostics.Debug.dll">
-      <publishTime>11/05/2016 04:55:52</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Diagnostics.DiagnosticSource.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Diagnostics.FileVersionInfo.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Diagnostics.Process.dll">
-      <publishTime>06/11/2016 23:13:36</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Diagnostics.StackTrace.dll">
-      <publishTime>06/11/2016 23:13:36</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Diagnostics.TextWriterTraceListener.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Diagnostics.Tools.dll">
-      <publishTime>11/05/2016 04:56:00</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Diagnostics.TraceSource.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Diagnostics.Tracing.dll">
-      <publishTime>11/05/2016 04:56:00</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Drawing.Common.dll">
+      <publishTime>11/14/2017 15:14:46</publishTime>
+    </File>
+    <File Include="refs/System.Drawing.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Drawing.Primitives.dll">
-      <publishTime>06/11/2016 23:13:38</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Dynamic.Runtime.dll">
-      <publishTime>06/11/2016 23:13:42</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Globalization.Calendars.dll">
-      <publishTime>11/05/2016 04:56:02</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Globalization.dll">
-      <publishTime>11/05/2016 04:56:06</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Globalization.Extensions.dll">
-      <publishTime>11/05/2016 04:56:02</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.IO.Compression.dll">
-      <publishTime>11/05/2016 04:56:08</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.IO.Compression.FileSystem.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.IO.Compression.ZipFile.dll">
-      <publishTime>11/05/2016 04:56:04</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.IO.dll">
-      <publishTime>11/05/2016 04:56:18</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.IO.FileSystem.AccessControl.dll">
+      <publishTime>11/05/2016 04:56:12</publishTime>
     </File>
     <File Include="refs/System.IO.FileSystem.dll">
-      <publishTime>11/05/2016 04:56:08</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.IO.FileSystem.DriveInfo.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.IO.FileSystem.Primitives.dll">
-      <publishTime>11/05/2016 04:56:08</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.IO.FileSystem.Watcher.dll">
-      <publishTime>06/11/2016 23:13:48</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.IO.IsolatedStorage.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.IO.MemoryMappedFiles.dll">
-      <publishTime>06/11/2016 23:13:54</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.IO.Pipes.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.IO.UnmanagedMemoryStream.dll">
-      <publishTime>06/11/2016 23:13:50</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Linq.dll">
-      <publishTime>11/05/2016 04:56:20</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Linq.Expressions.dll">
-      <publishTime>11/05/2016 04:56:24</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Linq.Parallel.dll">
-      <publishTime>06/11/2016 23:13:52</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Linq.Queryable.dll">
-      <publishTime>06/11/2016 23:13:58</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Net.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Net.Http.dll">
-      <publishTime>11/05/2016 04:56:30</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Net.HttpListener.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Net.Mail.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Net.NameResolution.dll">
-      <publishTime>06/11/2016 23:13:58</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Net.NetworkInformation.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Net.Ping.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Net.Primitives.dll">
-      <publishTime>11/05/2016 04:56:28</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Net.Requests.dll">
-      <publishTime>06/11/2016 23:14:02</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Net.Security.dll">
-      <publishTime>06/11/2016 23:14:06</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Net.ServicePoint.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Net.Sockets.dll">
-      <publishTime>11/05/2016 04:56:34</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Net.WebClient.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Net.WebHeaderCollection.dll">
-      <publishTime>06/11/2016 23:14:08</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Net.WebProxy.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Net.WebSockets.Client.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Net.WebSockets.dll">
-      <publishTime>06/11/2016 23:14:08</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Numerics.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Numerics.Vectors.dll">
-      <publishTime>06/11/2016 23:14:10</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.ObjectModel.dll">
-      <publishTime>11/05/2016 04:56:40</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Reflection.DispatchProxy.dll">
-      <publishTime>06/11/2016 23:14:14</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Reflection.dll">
-      <publishTime>11/05/2016 04:56:48</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Reflection.Emit.dll">
-      <publishTime>11/05/2016 04:56:44</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Reflection.Emit.ILGeneration.dll">
-      <publishTime>11/05/2016 04:56:40</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Reflection.Emit.Lightweight.dll">
-      <publishTime>11/05/2016 04:56:42</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Reflection.Extensions.dll">
-      <publishTime>11/05/2016 04:56:42</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Reflection.Metadata.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Reflection.Primitives.dll">
-      <publishTime>11/05/2016 04:56:50</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Reflection.TypeExtensions.dll">
-      <publishTime>11/05/2016 04:56:48</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Resources.Reader.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Resources.ResourceManager.dll">
-      <publishTime>11/05/2016 04:56:50</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Resources.Writer.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Runtime.CompilerServices.Unsafe.dll">
+      <publishTime>10/15/2017 14:36:42</publishTime>
+    </File>
+    <File Include="refs/System.Runtime.CompilerServices.VisualC.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Runtime.dll">
-      <publishTime>11/05/2016 04:57:12</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Runtime.Extensions.dll">
-      <publishTime>11/05/2016 04:56:52</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Runtime.Handles.dll">
-      <publishTime>11/05/2016 04:56:54</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Runtime.InteropServices.dll">
-      <publishTime>11/05/2016 04:56:56</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Runtime.InteropServices.RuntimeInformation.dll">
-      <publishTime>11/05/2016 04:57:00</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Runtime.InteropServices.WindowsRuntime.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Runtime.Loader.dll">
-      <publishTime>06/11/2016 23:14:24</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Runtime.Numerics.dll">
-      <publishTime>11/05/2016 04:57:00</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Runtime.Serialization.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Runtime.Serialization.Formatters.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Runtime.Serialization.Json.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Runtime.Serialization.Primitives.dll">
-      <publishTime>06/11/2016 23:14:32</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Runtime.Serialization.Xml.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Security.AccessControl.dll">
+      <publishTime>10/15/2017 14:36:12</publishTime>
     </File>
     <File Include="refs/System.Security.Claims.dll">
-      <publishTime>11/05/2016 04:57:04</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Security.Cryptography.Algorithms.dll">
-      <publishTime>11/05/2016 04:57:14</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Security.Cryptography.Csp.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Security.Cryptography.Encoding.dll">
-      <publishTime>11/05/2016 04:57:08</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Security.Cryptography.Pkcs.dll">
       <publishTime>11/05/2016 04:57:14</publishTime>
     </File>
     <File Include="refs/System.Security.Cryptography.Primitives.dll">
-      <publishTime>11/05/2016 04:57:18</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Security.Cryptography.X509Certificates.dll">
-      <publishTime>11/05/2016 04:57:18</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Security.Cryptography.Xml.dll">
+      <publishTime>10/15/2017 14:36:47</publishTime>
+    </File>
+    <File Include="refs/System.Security.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Security.Permissions.dll">
+      <publishTime>05/04/2017 17:22:06</publishTime>
     </File>
     <File Include="refs/System.Security.Principal.dll">
-      <publishTime>11/05/2016 04:57:14</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Security.Principal.Windows.dll">
-      <publishTime>06/11/2016 23:14:48</publishTime>
+      <publishTime>10/15/2017 14:36:57</publishTime>
+    </File>
+    <File Include="refs/System.Security.SecureString.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.ServiceModel.Web.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.ServiceProcess.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Text.Encoding.CodePages.dll">
+      <publishTime>10/15/2017 14:36:05</publishTime>
     </File>
     <File Include="refs/System.Text.Encoding.dll">
-      <publishTime>11/05/2016 04:57:22</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Text.Encoding.Extensions.dll">
-      <publishTime>11/05/2016 04:57:22</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Text.RegularExpressions.dll">
-      <publishTime>11/05/2016 04:57:24</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Threading.dll">
-      <publishTime>11/05/2016 04:57:30</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Threading.Overlapped.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Threading.Tasks.Dataflow.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Threading.Tasks.dll">
-      <publishTime>11/05/2016 04:57:28</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Threading.Tasks.Extensions.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Threading.Tasks.Parallel.dll">
-      <publishTime>06/11/2016 23:14:54</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Threading.Thread.dll">
-      <publishTime>11/05/2016 04:57:28</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Threading.ThreadPool.dll">
-      <publishTime>11/05/2016 04:57:26</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Threading.Timer.dll">
-      <publishTime>11/05/2016 04:57:30</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Transactions.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Transactions.Local.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.ValueTuple.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Web.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Web.HttpUtility.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Windows.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Xml.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Xml.Linq.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Xml.ReaderWriter.dll">
-      <publishTime>11/05/2016 04:57:36</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Xml.Serialization.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Xml.XDocument.dll">
-      <publishTime>11/05/2016 04:57:34</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Xml.XmlDocument.dll">
-      <publishTime>11/05/2016 04:57:34</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Xml.XmlSerializer.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Xml.XPath.dll">
-      <publishTime>11/05/2016 04:57:40</publishTime>
+      <publishTime>07/20/2017 16:25:30</publishTime>
+    </File>
+    <File Include="refs/System.Xml.XPath.XDocument.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="refs/System.Xml.XPath.XmlDocument.dll">
       <publishTime>11/05/2016 04:57:34</publishTime>
+    </File>
+    <File Include="refs/WindowsBase.dll">
+      <publishTime>07/20/2017 16:25:30</publishTime>
     </File>
     <File Include="Remotion.Linq.dll">
       <publishTime>06/14/2016 23:16:46</publishTime>
@@ -555,6 +897,18 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="runtimes/fedora.24-x64/native/System.Security.Cryptography.Native.OpenSsl.so">
       <publishTime>11/05/2016 04:21:42</publishTime>
+    </File>
+    <File Include="runtimes/linux-arm/native/libuv.so">
+      <publishTime>10/15/2017 14:36:02</publishTime>
+    </File>
+    <File Include="runtimes/linux-arm64/native/libuv.so">
+      <publishTime>10/15/2017 14:36:02</publishTime>
+    </File>
+    <File Include="runtimes/linux-armel/native/libuv.so">
+      <publishTime>10/15/2017 14:36:03</publishTime>
+    </File>
+    <File Include="runtimes/linux-x64/native/libuv.so">
+      <publishTime>10/15/2017 14:36:03</publishTime>
     </File>
     <File Include="runtimes/opensuse.13.2-x64/native/System.Security.Cryptography.Native.OpenSsl.so">
       <publishTime>11/05/2016 04:23:32</publishTime>
@@ -571,6 +925,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="runtimes/osx/lib/netstandard1.6/System.Security.Cryptography.Algorithms.dll">
       <publishTime>11/05/2016 04:57:14</publishTime>
     </File>
+    <File Include="runtimes/osx/native/libuv.dylib">
+      <publishTime>10/15/2017 14:36:03</publishTime>
+    </File>
     <File Include="runtimes/rhel.7-x64/native/System.Security.Cryptography.Native.OpenSsl.so">
       <publishTime>11/05/2016 00:21:46</publishTime>
     </File>
@@ -582,6 +939,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="runtimes/ubuntu.16.10-x64/native/System.Security.Cryptography.Native.OpenSsl.so">
       <publishTime>11/05/2016 04:21:54</publishTime>
+    </File>
+    <File Include="runtimes/unix/lib/netcoreapp2.0/System.Drawing.Common.dll">
+      <publishTime>11/14/2017 15:14:46</publishTime>
     </File>
     <File Include="runtimes/unix/lib/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll">
       <publishTime>11/05/2016 04:57:00</publishTime>
@@ -622,6 +982,33 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="runtimes/unix/lib/netstandard1.6/System.Security.Cryptography.X509Certificates.dll">
       <publishTime>11/05/2016 04:57:18</publishTime>
     </File>
+    <File Include="runtimes/unix/lib/netstandard2.0/System.Data.SqlClient.dll">
+      <publishTime>10/15/2017 14:36:26</publishTime>
+    </File>
+    <File Include="runtimes/win-arm/native/libuv.dll">
+      <publishTime>10/15/2017 14:36:03</publishTime>
+    </File>
+    <File Include="runtimes/win-arm64/native/sni.dll">
+      <publishTime>10/15/2017 14:36:36</publishTime>
+    </File>
+    <File Include="runtimes/win-x64/native/libuv.dll">
+      <publishTime>10/15/2017 14:36:03</publishTime>
+    </File>
+    <File Include="runtimes/win-x64/native/sni.dll">
+      <publishTime>10/15/2017 14:36:36</publishTime>
+    </File>
+    <File Include="runtimes/win-x86/native/libuv.dll">
+      <publishTime>10/15/2017 14:36:03</publishTime>
+    </File>
+    <File Include="runtimes/win-x86/native/sni.dll">
+      <publishTime>10/15/2017 14:36:36</publishTime>
+    </File>
+    <File Include="runtimes/win/lib/netcoreapp2.0/System.Drawing.Common.dll">
+      <publishTime>11/14/2017 15:14:46</publishTime>
+    </File>
+    <File Include="runtimes/win/lib/netcoreapp2.0/System.Text.Encoding.CodePages.dll">
+      <publishTime>10/15/2017 14:36:05</publishTime>
+    </File>
     <File Include="runtimes/win/lib/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll">
       <publishTime>11/05/2016 04:57:00</publishTime>
     </File>
@@ -658,6 +1045,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="runtimes/win/lib/netstandard1.6/System.Security.Cryptography.X509Certificates.dll">
       <publishTime>11/05/2016 04:57:18</publishTime>
     </File>
+    <File Include="runtimes/win/lib/netstandard2.0/System.Data.SqlClient.dll">
+      <publishTime>10/15/2017 14:36:28</publishTime>
+    </File>
     <File Include="runtimes/win7-x64/native/sni.dll">
       <publishTime>06/13/2016 21:46:18</publishTime>
     </File>
@@ -685,8 +1075,26 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="System.ComponentModel.TypeConverter.dll">
       <publishTime>06/11/2016 23:13:28</publishTime>
     </File>
+    <File Include="System.Composition.AttributedModel.dll">
+      <publishTime>10/15/2017 14:36:02</publishTime>
+    </File>
+    <File Include="System.Composition.Convention.dll">
+      <publishTime>10/15/2017 14:36:02</publishTime>
+    </File>
+    <File Include="System.Composition.Hosting.dll">
+      <publishTime>10/15/2017 14:36:02</publishTime>
+    </File>
+    <File Include="System.Composition.Runtime.dll">
+      <publishTime>10/15/2017 14:36:02</publishTime>
+    </File>
+    <File Include="System.Composition.TypedParts.dll">
+      <publishTime>10/15/2017 14:36:02</publishTime>
+    </File>
     <File Include="System.Data.Common.dll">
       <publishTime>11/05/2016 04:55:50</publishTime>
+    </File>
+    <File Include="System.Data.SqlClient.dll">
+      <publishTime>10/15/2017 14:36:17</publishTime>
     </File>
     <File Include="System.Diagnostics.Contracts.dll">
       <publishTime>06/11/2016 23:13:28</publishTime>
@@ -694,11 +1102,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="System.Diagnostics.DiagnosticSource.dll">
       <publishTime>11/05/2016 04:55:52</publishTime>
     </File>
+    <File Include="System.Drawing.Common.dll">
+      <publishTime>11/14/2017 15:14:46</publishTime>
+    </File>
     <File Include="System.Drawing.Primitives.dll">
       <publishTime>06/11/2016 23:13:38</publishTime>
     </File>
     <File Include="System.Interactive.Async.dll">
-      <publishTime>06/21/2016 21:47:14</publishTime>
+      <publishTime>10/15/2017 14:36:07</publishTime>
     </File>
     <File Include="System.IO.Compression.ZipFile.dll">
       <publishTime>11/05/2016 04:56:04</publishTime>
@@ -731,7 +1142,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/05/2016 04:56:48</publishTime>
     </File>
     <File Include="System.Runtime.CompilerServices.Unsafe.dll">
-      <publishTime>06/11/2016 23:14:20</publishTime>
+      <publishTime>10/15/2017 14:36:42</publishTime>
     </File>
     <File Include="System.Runtime.InteropServices.RuntimeInformation.dll">
       <publishTime>11/05/2016 04:57:00</publishTime>
@@ -751,11 +1162,20 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="System.Security.Cryptography.Primitives.dll">
       <publishTime>11/05/2016 04:57:18</publishTime>
     </File>
+    <File Include="System.Security.Cryptography.Xml.dll">
+      <publishTime>10/15/2017 14:36:47</publishTime>
+    </File>
+    <File Include="System.Security.Permissions.dll">
+      <publishTime>05/04/2017 17:22:06</publishTime>
+    </File>
     <File Include="System.Security.Principal.dll">
       <publishTime>11/05/2016 04:57:14</publishTime>
     </File>
+    <File Include="System.Text.Encoding.CodePages.dll">
+      <publishTime>10/15/2017 14:36:04</publishTime>
+    </File>
     <File Include="System.Text.Encodings.Web.dll">
-      <publishTime>06/11/2016 23:14:48</publishTime>
+      <publishTime>10/15/2017 14:36:12</publishTime>
     </File>
     <File Include="System.Text.RegularExpressions.dll">
       <publishTime>11/05/2016 04:57:24</publishTime>
@@ -788,16 +1208,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/05/2016 04:57:34</publishTime>
     </File>
     <File Include="T-generator.deps.json">
-      <publishTime>06/11/2017 18:00:52</publishTime>
+      <publishTime>02/11/2018 01:02:24</publishTime>
     </File>
     <File Include="T-generator.dll">
-      <publishTime>06/11/2017 17:58:54</publishTime>
+      <publishTime>02/11/2018 01:02:00</publishTime>
     </File>
     <File Include="T-generator.pdb">
-      <publishTime>06/11/2017 17:58:54</publishTime>
+      <publishTime>02/11/2018 01:02:00</publishTime>
+    </File>
+    <File Include="T-generator.PrecompiledViews.dll">
+      <publishTime>02/11/2018 01:02:23</publishTime>
+    </File>
+    <File Include="T-generator.PrecompiledViews.pdb">
+      <publishTime>02/11/2018 01:02:23</publishTime>
     </File>
     <File Include="T-generator.runtimeconfig.json">
-      <publishTime>06/11/2017 18:00:52</publishTime>
+      <publishTime>02/11/2018 01:02:24</publishTime>
     </File>
     <File Include="Views/Account/Delete.cshtml">
       <publishTime>11/28/2016 23:50:03</publishTime>
@@ -806,7 +1232,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/17/2016 20:34:19</publishTime>
     </File>
     <File Include="Views/Account/Login.cshtml">
-      <publishTime>01/28/2017 15:00:55</publishTime>
+      <publishTime>11/29/2017 20:50:17</publishTime>
     </File>
     <File Include="Views/Account/Modify.cshtml">
       <publishTime>11/18/2016 21:19:18</publishTime>
@@ -837,6 +1263,21 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Views/Amazon/Data/Basic/AmazonAccounts/Index.cshtml">
       <publishTime>05/24/2017 11:56:40</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Basic/AmazonColors/Create.cshtml">
+      <publishTime>02/10/2018 21:00:51</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Basic/AmazonColors/Delete.cshtml">
+      <publishTime>02/10/2018 21:01:04</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Basic/AmazonColors/Details.cshtml">
+      <publishTime>02/10/2018 21:01:17</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Basic/AmazonColors/Edit.cshtml">
+      <publishTime>02/10/2018 22:07:39</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Basic/AmazonColors/Index.cshtml">
+      <publishTime>02/10/2018 21:02:00</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Basic/AmazonCountries/Create.cshtml">
       <publishTime>11/17/2016 20:34:19</publishTime>
@@ -869,19 +1310,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/19/2017 17:17:30</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Basic/AmazonDesigns/Create.cshtml">
-      <publishTime>02/19/2017 21:28:47</publishTime>
+      <publishTime>07/06/2017 14:56:43</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Basic/AmazonDesigns/Delete.cshtml">
-      <publishTime>02/19/2017 20:52:09</publishTime>
+      <publishTime>11/29/2017 23:00:19</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Basic/AmazonDesigns/Details.cshtml">
-      <publishTime>02/19/2017 20:52:52</publishTime>
+      <publishTime>09/17/2017 22:28:17</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Basic/AmazonDesigns/Edit.cshtml">
-      <publishTime>02/19/2017 21:42:00</publishTime>
+      <publishTime>09/17/2017 22:27:24</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Basic/AmazonDesigns/Index.cshtml">
-      <publishTime>03/11/2017 15:46:28</publishTime>
+      <publishTime>10/08/2017 18:06:39</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Basic/AmazonSizes/Create.cshtml">
       <publishTime>11/17/2016 20:34:19</publishTime>
@@ -897,6 +1338,21 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Views/Amazon/Data/Basic/AmazonSizes/Index.cshtml">
       <publishTime>03/19/2017 17:17:35</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Basic/AmazonTemplates/Create.cshtml">
+      <publishTime>08/12/2017 15:51:48</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Basic/AmazonTemplates/Delete.cshtml">
+      <publishTime>10/21/2017 23:24:15</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Basic/AmazonTemplates/Details.cshtml">
+      <publishTime>08/12/2017 15:53:13</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Basic/AmazonTemplates/Edit.cshtml">
+      <publishTime>08/12/2017 15:53:53</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Basic/AmazonTemplates/Index.cshtml">
+      <publishTime>07/01/2017 15:47:03</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Basic/AmazonTypes/Create.cshtml">
       <publishTime>11/17/2016 20:34:19</publishTime>
@@ -988,6 +1444,21 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Amazon/Data/Dump/AmazonKeywords/Index.cshtml">
       <publishTime>03/19/2017 17:18:03</publishTime>
     </File>
+    <File Include="Views/Amazon/Data/Intermediate/AmazonColorTranslations/Create.cshtml">
+      <publishTime>02/10/2018 19:23:43</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Intermediate/AmazonColorTranslations/Delete.cshtml">
+      <publishTime>02/10/2018 22:28:02</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Intermediate/AmazonColorTranslations/Details.cshtml">
+      <publishTime>02/10/2018 23:56:36</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Intermediate/AmazonColorTranslations/Edit.cshtml">
+      <publishTime>02/10/2018 22:16:48</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Intermediate/AmazonColorTranslations/Index.cshtml">
+      <publishTime>02/10/2018 21:37:56</publishTime>
+    </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonItemSingles/Create.cshtml">
       <publishTime>11/17/2016 20:34:19</publishTime>
     </File>
@@ -1004,7 +1475,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/19/2017 17:18:07</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonListings/Create.cshtml">
-      <publishTime>05/13/2017 15:16:30</publishTime>
+      <publishTime>01/04/2018 16:39:49</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonListings/Delete.cshtml">
       <publishTime>04/25/2017 14:05:19</publishTime>
@@ -1013,24 +1484,39 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/25/2017 14:05:32</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonListings/Edit.cshtml">
-      <publishTime>05/13/2017 15:17:10</publishTime>
+      <publishTime>01/04/2018 16:40:16</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonListings/Index.cshtml">
       <publishTime>04/25/2017 14:03:47</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces/Create.cshtml">
-      <publishTime>06/03/2017 14:37:49</publishTime>
+      <publishTime>07/01/2017 14:47:40</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces/Delete.cshtml">
-      <publishTime>06/03/2017 14:27:25</publishTime>
+      <publishTime>07/01/2017 14:47:35</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces/Details.cshtml">
-      <publishTime>06/03/2017 14:27:25</publishTime>
+      <publishTime>07/01/2017 14:47:30</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces/Edit.cshtml">
-      <publishTime>06/03/2017 14:37:44</publishTime>
+      <publishTime>07/01/2017 14:47:19</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces/Index.cshtml">
+      <publishTime>03/19/2017 17:18:12</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces_new/Create.cshtml">
+      <publishTime>07/04/2017 21:35:39</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces_new/Delete.cshtml">
+      <publishTime>06/03/2017 14:27:25</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces_new/Details.cshtml">
+      <publishTime>06/03/2017 14:27:25</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces_new/Edit.cshtml">
+      <publishTime>06/03/2017 14:37:44</publishTime>
+    </File>
+    <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces_new/Index.cshtml">
       <publishTime>06/03/2017 14:32:49</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonMarketplaces_old/Create.cshtml">
@@ -1049,25 +1535,25 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/19/2017 17:18:12</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonProductColors/Create.cshtml">
-      <publishTime>04/24/2017 11:49:22</publishTime>
+      <publishTime>02/11/2018 00:03:42</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonProductColors/Delete.cshtml">
-      <publishTime>04/24/2017 10:31:05</publishTime>
+      <publishTime>02/11/2018 00:04:14</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonProductColors/Details.cshtml">
-      <publishTime>04/24/2017 12:29:17</publishTime>
+      <publishTime>02/11/2018 00:04:34</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonProductColors/Edit.cshtml">
-      <publishTime>04/24/2017 11:49:30</publishTime>
+      <publishTime>02/11/2018 00:17:29</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonProductColors/Index.cshtml">
-      <publishTime>04/24/2017 12:17:45</publishTime>
+      <publishTime>02/11/2018 00:05:14</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonProducts/Create.cshtml">
       <publishTime>04/24/2017 09:26:35</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonProducts/Delete.cshtml">
-      <publishTime>04/24/2017 09:28:12</publishTime>
+      <publishTime>01/14/2018 16:45:13</publishTime>
     </File>
     <File Include="Views/Amazon/Data/Intermediate/AmazonProducts/Details.cshtml">
       <publishTime>04/24/2017 09:28:12</publishTime>
@@ -1079,7 +1565,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/24/2017 09:28:09</publishTime>
     </File>
     <File Include="Views/Generate/Index.cshtml">
-      <publishTime>05/14/2017 17:42:20</publishTime>
+      <publishTime>07/04/2017 23:54:18</publishTime>
     </File>
     <File Include="Views/Home/About.cshtml">
       <publishTime>11/17/2016 20:34:19</publishTime>
@@ -1100,7 +1586,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/17/2016 20:34:19</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>05/14/2017 16:36:14</publishTime>
+      <publishTime>02/10/2018 21:05:47</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>11/17/2016 20:34:19</publishTime>
@@ -1109,13 +1595,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/17/2016 20:34:19</publishTime>
     </File>
     <File Include="Views/_ViewImports.cshtml">
-      <publishTime>11/17/2016 20:34:19</publishTime>
+      <publishTime>10/09/2017 21:18:51</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
       <publishTime>11/17/2016 20:34:19</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>06/11/2017 18:00:55</publishTime>
+      <publishTime>02/11/2018 01:02:24</publishTime>
     </File>
     <File Include="wwwroot/css/Login.css">
       <publishTime>11/17/2016 20:34:19</publishTime>
@@ -1124,7 +1610,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/28/2017 15:00:55</publishTime>
     </File>
     <File Include="wwwroot/css/site.min.css">
-      <publishTime>06/11/2017 18:00:48</publishTime>
+      <publishTime>09/24/2017 19:07:11</publishTime>
     </File>
     <File Include="wwwroot/favicon.ico">
       <publishTime>11/17/2016 20:34:19</publishTime>
@@ -1154,7 +1640,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/14/2017 17:17:22</publishTime>
     </File>
     <File Include="wwwroot/js/site.min.js">
-      <publishTime>06/11/2017 18:00:48</publishTime>
+      <publishTime>09/24/2017 19:07:12</publishTime>
     </File>
     <File Include="wwwroot/lib/bootstrap/.bower.json">
       <publishTime>11/17/2016 20:34:19</publishTime>
@@ -1229,7 +1715,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/17/2016 20:34:19</publishTime>
     </File>
     <File Include="wwwroot/lib/jquery-validation/dist/jquery.validate.js">
-      <publishTime>11/17/2016 20:34:19</publishTime>
+      <publishTime>09/24/2017 18:53:31</publishTime>
     </File>
     <File Include="wwwroot/lib/jquery-validation/dist/jquery.validate.min.js">
       <publishTime>11/17/2016 20:34:19</publishTime>
@@ -1252,14 +1738,56 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="wwwroot/lib/jquery/LICENSE.txt">
       <publishTime>11/17/2016 20:34:19</publishTime>
     </File>
+    <File Include="wwwroot/uploads/Colors/1009.png">
+      <publishTime>09/17/2017 20:59:26</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Colors/1010.png">
+      <publishTime>09/17/2017 21:01:50</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Colors/1012.jpg">
+      <publishTime>09/17/2017 21:08:17</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Colors/1013.jpg">
+      <publishTime>09/17/2017 21:21:23</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Colors/1014.jpg">
+      <publishTime>09/17/2017 21:25:42</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Colors/1015.jpg">
+      <publishTime>09/17/2017 21:30:50</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Colors/1016.png">
+      <publishTime>09/17/2017 21:32:59</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Colors/1017.png">
+      <publishTime>09/17/2017 21:46:45</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Colors/2018.jpg">
+      <publishTime>09/17/2017 22:09:01</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Colors/2019.jpg">
+      <publishTime>09/17/2017 22:10:01</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Colors/3018.jpg">
+      <publishTime>09/24/2017 17:14:56</publishTime>
+    </File>
     <File Include="wwwroot/uploads/Colors/4.jpg">
       <publishTime>04/24/2017 11:30:28</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Colors/4018.jpg">
+      <publishTime>01/04/2018 17:30:37</publishTime>
     </File>
     <File Include="wwwroot/uploads/Colors/5.png">
       <publishTime>04/24/2017 11:33:19</publishTime>
     </File>
     <File Include="wwwroot/uploads/Colors/6.jpg">
       <publishTime>04/24/2017 12:08:17</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Colors/7.png">
+      <publishTime>09/17/2017 20:27:08</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Colors/8.png">
+      <publishTime>09/17/2017 20:33:18</publishTime>
     </File>
     <File Include="wwwroot/uploads/Designs/2015.jpg">
       <publishTime>05/15/2017 00:48:39</publishTime>
@@ -1269,6 +1797,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="wwwroot/uploads/Designs/2016.png">
       <publishTime>04/25/2017 14:07:29</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Designs/3016.jpg">
+      <publishTime>07/06/2017 14:19:49</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Designs/3018.png">
+      <publishTime>08/12/2017 17:57:09</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Designs/4019.png">
+      <publishTime>01/04/2018 17:14:03</publishTime>
     </File>
     <File Include="wwwroot/uploads/Generated/2002.jpg">
       <publishTime>04/25/2017 12:52:45</publishTime>
@@ -1300,6 +1837,42 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="wwwroot/uploads/Generated/4005_20170603175055990.jpg">
       <publishTime>06/03/2017 17:50:56</publishTime>
     </File>
+    <File Include="wwwroot/uploads/Generated/4006_20170924172331492.jpg">
+      <publishTime>09/24/2017 17:23:32</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Generated/4007_20180104172836027.jpg">
+      <publishTime>01/04/2018 17:28:36</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Generated/4008_20180104173152871.jpg">
+      <publishTime>01/04/2018 17:31:52</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Generated/4009_20180104173700232.jpg">
+      <publishTime>01/04/2018 17:37:00</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Generated/4010_20180104173731972.jpg">
+      <publishTime>01/04/2018 17:37:31</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Generated/4011_20180104173755670.jpg">
+      <publishTime>01/04/2018 17:37:55</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Generated/4012_20180104173808929.jpg">
+      <publishTime>01/04/2018 17:38:08</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Generated/4013_20180104173830791.jpg">
+      <publishTime>01/04/2018 17:38:30</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Generated/4014_20180104174443399.jpg">
+      <publishTime>01/04/2018 17:44:43</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Generated/4015_20180104174748226.jpg">
+      <publishTime>01/04/2018 17:47:48</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Generated/4016_20180104183249706.jpg">
+      <publishTime>01/04/2018 18:32:49</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Templates/0_20170704231115580.xlsx">
+      <publishTime>07/04/2017 23:11:18</publishTime>
+    </File>
     <File Include="wwwroot/uploads/Templates/2_20170515011219260.xlsx">
       <publishTime>06/11/2017 15:12:40</publishTime>
     </File>
@@ -1308,6 +1881,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="wwwroot/uploads/Templates/4_20170515011228218.xlsx">
       <publishTime>05/15/2017 01:12:28</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Templates/4_20170704215938100.xlsx">
+      <publishTime>07/04/2017 21:59:38</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Templates/4_20171015213439570.xls">
+      <publishTime>10/15/2017 21:34:39</publishTime>
     </File>
     <File Include="wwwroot/uploads/Templates/5_20170515011232516.xlsx">
       <publishTime>05/15/2017 01:12:32</publishTime>
@@ -1321,8 +1900,89 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="wwwroot/uploads/Templates/Unisex.xlsx">
       <publishTime>05/15/2017 01:12:04</publishTime>
     </File>
+    <File Include="wwwroot/uploads/Templates/~%24Unisex.xlsx">
+      <publishTime>08/12/2017 15:47:25</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/1009_20170917205926402.jpg">
+      <publishTime>09/17/2017 20:59:26</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/1010_20170917210150941.jpg">
+      <publishTime>09/17/2017 21:01:51</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/1011_20170917210321284.jpg">
+      <publishTime>09/17/2017 21:03:26</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/1011_20170917210532903.jpg">
+      <publishTime>09/17/2017 21:05:37</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/1012_20170917210817541.jpg">
+      <publishTime>09/17/2017 21:08:17</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/1013_20170917212123541.jpg">
+      <publishTime>09/17/2017 21:21:23</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/1014_20170917212542007.jpg">
+      <publishTime>09/17/2017 21:25:42</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/1015_20170917213050559.jpg">
+      <publishTime>09/17/2017 21:31:09</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/1016_20170917213326031.jpg">
+      <publishTime>09/17/2017 21:33:26</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/1016_20170917213452328.jpg">
+      <publishTime>09/17/2017 21:34:52</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/1016_20170917213957216.jpg">
+      <publishTime>09/17/2017 21:39:57</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/1016_20170917214130269.jpg">
+      <publishTime>09/17/2017 21:41:55</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/1017_20170917214645707.jpg">
+      <publishTime>09/17/2017 21:46:52</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/1018_20170917220333915.jpg">
+      <publishTime>09/17/2017 22:03:47</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/2018_20170917220927922.jpg">
+      <publishTime>09/17/2017 22:09:27</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/2019_20170917221005942.jpg">
+      <publishTime>09/17/2017 22:10:06</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/3018_20170924190552476.jpg">
+      <publishTime>09/24/2017 19:05:52</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/4018_20180104173113626.jpg">
+      <publishTime>01/04/2018 17:31:13</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/7_20170917202708071.jpg">
+      <publishTime>09/17/2017 20:27:08</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/8_20170917203329803.jpg">
+      <publishTime>09/17/2017 20:34:06</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/9_20170917204833961.jpg">
+      <publishTime>09/17/2017 20:48:33</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/9_20170917204929360.jpg">
+      <publishTime>09/17/2017 20:49:59</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/9_20170917205042307.jpg">
+      <publishTime>09/17/2017 20:51:25</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/9_20170917205208324.jpg">
+      <publishTime>09/17/2017 20:52:37</publishTime>
+    </File>
+    <File Include="wwwroot/uploads/Thumbs/9_20170917205757477.jpg">
+      <publishTime>09/17/2017 20:58:03</publishTime>
+    </File>
     <File Include="wwwroot/_references.js">
-      <publishTime>05/14/2017 17:17:14</publishTime>
+      <publishTime>10/15/2017 15:00:39</publishTime>
+    </File>
+    <File Include="ZKWeb.System.Drawing.dll">
+      <publishTime>08/28/2017 17:32:08</publishTime>
     </File>
   </ItemGroup>
   <ItemGroup>

@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting.Server.Features;
+using System;
 
 namespace T_generator
     {
@@ -41,10 +42,10 @@ namespace T_generator
             if (env.IsDevelopment())
                 {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
+                builder.AddUserSecrets<Startup>();
 
                 // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
-                builder.AddApplicationInsightsSettings(developerMode: true);
+                //builder.AddApplicationInsightsSettings(developerMode: true);
                 }
 
             builder.AddEnvironmentVariables();
@@ -55,7 +56,7 @@ namespace T_generator
         public void ConfigureServices(IServiceCollection services)
             {
             // Add framework services.
-            services.AddApplicationInsightsTelemetry(Configuration);
+            //services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddMvc(config =>
             {
@@ -79,17 +80,33 @@ namespace T_generator
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             }
 
-    services.AddIdentity<ApplicationUser, IdentityRole>(config =>
-                {
-                    config.Password.RequiredLength = 6;
-                    config.Password.RequireDigit = false;
-                    config.Password.RequireLowercase = false;
-                    config.Password.RequireUppercase = false;
-                    config.Password.RequireNonAlphanumeric = false;
-                    config.User.RequireUniqueEmail = true;
-                })
+    services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+
+                // User settings
+                options.User.RequireUniqueEmail = true;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.Cookie.Expiration = TimeSpan.FromDays(150);
+                options.LoginPath = "/Account/Login"; // If the LoginPath is not set here, ASP.NET Core will default to /Account/Login
+                options.LogoutPath = "/Account/Logout"; // If the LogoutPath is not set here, ASP.NET Core will default to /Account/Logout
+                options.AccessDeniedPath = "/Account/Login"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied
+                options.SlidingExpiration = true;
+            });
 
             services.AddMvc(config =>
                 {
@@ -114,8 +131,11 @@ namespace T_generator
                     options.AddPolicy(IsNotSelfRequirement.ISNOTSELF_POLICY,policy=>policy.Requirements.Add(new IsNotSelfRequirement()));
                 });
 
-            services.AddSingleton<IAuthorizationHandler, AdminHandler>();
-            services.AddSingleton<IAuthorizationHandler, IsNotSelfHandler>();
+            //services.AddSingleton<IAuthorizationHandler, AdminHandler>();
+            //services.AddSingleton<IAuthorizationHandler, IsNotSelfHandler>();
+
+            services.AddTransient<IAuthorizationHandler, AdminHandler>();
+            services.AddTransient<IAuthorizationHandler, IsNotSelfHandler>();
 
             new AuthorizationOptions()
             {
@@ -137,7 +157,7 @@ namespace T_generator
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseApplicationInsightsRequestTelemetry();
+            //app.UseApplicationInsightsRequestTelemetry();
             if (env.IsDevelopment())
                 {
                 app.UseDeveloperExceptionPage();
@@ -153,11 +173,12 @@ namespace T_generator
 
             app.UseStatusCodePagesWithRedirects("~/Home/Index");
 
-            app.UseApplicationInsightsExceptionTelemetry();
+            //app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
 
-            app.UseIdentity();
+            //app.UseIdentity();
+            app.UseAuthentication();
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
@@ -167,7 +188,8 @@ namespace T_generator
                     name: "default",
                     template: "{controller}/{action}/{id?}",
                     defaults: new { controller = "Account", action = "Login" });
-            });
+                    //defaults: new { controller = "Home", action = "Index" });
+        });
 
             ApplicationDbInitializer.Initialize(appContext);
             AmazonDbInitializer.Initialize(amazonContext);

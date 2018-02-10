@@ -39,8 +39,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                <img src="../@(item.DesignURL)" alt="@(item.Name)" width="60" />
-            </td>
+                <a href="../@(item.DesignURL)">
+                    <img src="../@(item.DesignURL)" alt="@(item.Name)" width="60" />
+                    </a>
+</td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>

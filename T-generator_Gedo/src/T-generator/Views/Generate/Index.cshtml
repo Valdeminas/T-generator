@@ -6,9 +6,16 @@
 
 <h2>Generate</h2>
 
-<form asp-action="Generate">
+<form asp-action="Index">
     <div class="form-horizontal">
         <h4>Generate</h4>
+        @if (Convert.ToString(ViewData["Error"]) != "")
+        {
+            <div class="alert alert-danger">
+                <strong>Warning!</strong>
+                @ViewBag.Error
+            </div>
+        }
         <hr />
         @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
         <div class="form-group">

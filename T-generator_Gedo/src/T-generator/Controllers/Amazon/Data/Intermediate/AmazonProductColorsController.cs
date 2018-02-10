@@ -16,11 +16,14 @@ using T_generator.Services.Amazon;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using ImageSharp;
+using System.Numerics;
 
 namespace T_generator.Controllers.Amazon.Data.Intermediate
 {
     public class AmazonProductColorsController : Controller
     {
+        private const string THUMB_DIR = "uploads/Thumbs";
         private const string COLOR_DIR = "uploads/Colors";
 
         private readonly AmazonContext _context;
@@ -54,6 +57,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
 
             var amazonProductColor = await _context.AmazonProductColors
                 .Include(i=>i.AmazonProduct)
+                .Include(i=>i.AmazonColor)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.AmazonProductColorID == id);
             if (amazonProductColor == null)
@@ -69,6 +73,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         {
             var amazonProductColor = new AmazonProductColor();
             ViewData["AmazonProductID"] = new SelectList(_context.AmazonProducts, "AmazonProductID", "Name");
+            ViewData["AmazonColorID"] = new SelectList(_context.AmazonColors, "AmazonColorID", "Name");
             return View();
         }
 
@@ -78,7 +83,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AmazonProductColorID,AmazonProductID,DesignURL,Name,Opacity")] AmazonProductColor amazonProductColor, IFormFile DesignURL)
+        public async Task<IActionResult> Create([Bind("AmazonProductColorID,AmazonProductID,AmazonColorID,DesignURL,Name,Opacity,Top,Left,Right,Bot")] AmazonProductColor amazonProductColor, IFormFile DesignURL)
         {
             if (ModelState.IsValid && DesignURL != null)
             {
@@ -88,17 +93,35 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                 var extension = DesignURL.FileName.Split('.').Last();
                 var filename = amazonProductColor.AmazonProductColorID + "." + extension;
                 fullUploadPath = Path.Combine(fullUploadPath, filename);
+
                 using (var fileStream = new FileStream(fullUploadPath, FileMode.Create))
                 {
                     await DesignURL.CopyToAsync(fileStream);
                     amazonProductColor.DesignURL = Path.Combine(COLOR_DIR, filename);
                 }
 
-                // _context.Add(amazonDesign);
+                var thumbURL = Path.Combine(THUMB_DIR, amazonProductColor.AmazonProductColorID + "_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".jpg");
+                var outputImage = Path.Combine(_environment.WebRootPath, thumbURL);
+                var baseImage = Path.Combine(_environment.WebRootPath, amazonProductColor.DesignURL);
+
+                System.Drawing.Image m_baseimage= System.Drawing.Image.FromFile(baseImage); ;
+                System.Drawing.Pen myPen = new System.Drawing.Pen(System.Drawing.Color.Black);
+
+                System.Drawing.Graphics.FromImage(m_baseimage).DrawLine(myPen, new System.Drawing.Point(amazonProductColor.Left, 0), new System.Drawing.Point(amazonProductColor.Left, m_baseimage.Height));
+                System.Drawing.Graphics.FromImage(m_baseimage).DrawLine(myPen, new System.Drawing.Point(amazonProductColor.Right, 0), new System.Drawing.Point(amazonProductColor.Right, m_baseimage.Height));
+                System.Drawing.Graphics.FromImage(m_baseimage).DrawLine(myPen, new System.Drawing.Point(0, amazonProductColor.Top), new System.Drawing.Point(m_baseimage.Width, amazonProductColor.Top));
+                System.Drawing.Graphics.FromImage(m_baseimage).DrawLine(myPen, new System.Drawing.Point(0, amazonProductColor.Bot), new System.Drawing.Point(m_baseimage.Width, amazonProductColor.Bot));
+
+                m_baseimage.Save(outputImage);
+                m_baseimage.Dispose();
+
+                amazonProductColor.ThumbURL = thumbURL;
+
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit", new { id = amazonProductColor.AmazonProductColorID });
             }
             ViewData["AmazonProductID"] = new SelectList(_context.AmazonProducts, "AmazonProductID", "Name");
+            ViewData["AmazonColorID"] = new SelectList(_context.AmazonColors, "AmazonColorID", "Name");
             return View(amazonProductColor);
         }
 
@@ -118,7 +141,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                 return NotFound();
             }
             ViewData["AmazonProductID"] = new SelectList(_context.AmazonProducts, "AmazonProductID", "Name", amazonProductColor.AmazonProductID);
-
+            ViewData["AmazonColorID"] = new SelectList(_context.AmazonColors, "AmazonColorID", "Name", amazonProductColor.AmazonColorID);
             return View(amazonProductColor);
         }
 
@@ -127,7 +150,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AmazonProductColorID,AmazonProductID,DesignURL,Name,Opacity")] AmazonProductColor amazonProductColor, IFormFile DesignURL, string oldURL)
+        public async Task<IActionResult> Edit(int id, [Bind("AmazonProductColorID,AmazonProductID,AmazonColorID,DesignURL,Name,Opacity,Top,Left,Right,Bot")] AmazonProductColor amazonProductColor, IFormFile DesignURL, string oldURL,string oldThumb)
         {
             if (id != amazonProductColor.AmazonProductColorID)
             {
@@ -155,7 +178,27 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                     {
                         amazonProductColor.DesignURL = oldURL;
                     }
-                    _context.Update(amazonProductColor);
+
+                    var thumbURL = Path.Combine(THUMB_DIR, amazonProductColor.AmazonProductColorID + "_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".jpg");
+                    var outputImage = Path.Combine(_environment.WebRootPath, thumbURL);
+                    var baseImage = Path.Combine(_environment.WebRootPath, amazonProductColor.DesignURL);
+
+                    System.IO.File.Delete(Path.Combine(_environment.WebRootPath, oldThumb));
+
+                    System.Drawing.Image m_baseimage = System.Drawing.Image.FromFile(baseImage);
+                    System.Drawing.Pen myPen = new System.Drawing.Pen(System.Drawing.Color.Black);
+
+                    System.Drawing.Graphics.FromImage(m_baseimage).DrawLine(myPen, new System.Drawing.Point(amazonProductColor.Left, 0), new System.Drawing.Point(amazonProductColor.Left, m_baseimage.Height));
+                    System.Drawing.Graphics.FromImage(m_baseimage).DrawLine(myPen, new System.Drawing.Point(amazonProductColor.Right, 0), new System.Drawing.Point(amazonProductColor.Right, m_baseimage.Height));
+                    System.Drawing.Graphics.FromImage(m_baseimage).DrawLine(myPen, new System.Drawing.Point(0, amazonProductColor.Top), new System.Drawing.Point(m_baseimage.Width, amazonProductColor.Top));
+                    System.Drawing.Graphics.FromImage(m_baseimage).DrawLine(myPen, new System.Drawing.Point(0, amazonProductColor.Bot), new System.Drawing.Point(m_baseimage.Width, amazonProductColor.Bot));
+
+                    m_baseimage.Save(outputImage);
+                    m_baseimage.Dispose();
+
+                    amazonProductColor.ThumbURL = thumbURL;
+
+                        _context.Update(amazonProductColor);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -169,14 +212,16 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit", new { id = amazonProductColor.AmazonProductColorID });
             }
 
             amazonProductColor = await _context.AmazonProductColors
                 .Include(i => i.AmazonProduct)
+                .Include(i=>i.AmazonColor)
                 .SingleOrDefaultAsync(m => m.AmazonProductColorID == id);
 
             ViewData["AmazonProductID"] = new SelectList(_context.AmazonProducts, "AmazonProductID", "Name", amazonProductColor.AmazonProductID);
+            ViewData["AmazonColorID"] = new SelectList(_context.AmazonColors, "AmazonColorID", "Name", amazonProductColor.AmazonColorID);
             return View(amazonProductColor);
         }
 
@@ -190,6 +235,7 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
 
             var amazonProductColor = await _context.AmazonProductColors
                 .Include(i => i.AmazonProduct)
+                .Include(i=>i.AmazonColor)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.AmazonProductColorID == id);
             if (amazonProductColor == null)
@@ -205,10 +251,11 @@ namespace T_generator.Controllers.Amazon.Data.Intermediate
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var amazonProductColor = await _context.AmazonProductColors.Include(i => i.AmazonProduct).SingleOrDefaultAsync(m => m.AmazonProductColorID == id);
+            var amazonProductColor = await _context.AmazonProductColors.Include(i => i.AmazonProduct).Include(i=>i.AmazonColor).SingleOrDefaultAsync(m => m.AmazonProductColorID == id);
             _context.AmazonProductColors.Remove(amazonProductColor);
             await _context.SaveChangesAsync();
             System.IO.File.Delete(Path.Combine(_environment.WebRootPath, amazonProductColor.DesignURL));
+            System.IO.File.Delete(Path.Combine(_environment.WebRootPath, amazonProductColor.ThumbURL));
             return RedirectToAction("Index");
         }
         

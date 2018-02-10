@@ -15,8 +15,11 @@ using T_generator.Models.Amazon.Data.Intermediate;
 using T_generator.Models.Amazon.Data.Basic;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
-using OfficeOpenXml;
+//using OfficeOpenXml;
+using NPOI;
 using System.IO.Compression;
+using T_generator.Models.Amazon.Data.JoinTables;
+using NPOI.SS.UserModel;
 
 namespace T_generator.Controllers
 {
@@ -36,8 +39,8 @@ namespace T_generator.Controllers
         {
             //T_generator.Services.Amazon.EPPlusCore.EPPLusCore.test();
             AmazonAccount first = _context.AmazonAccounts.First();
-            ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name",first.AmazonAccountID);
-            ViewData["AmazonProductID"] = new MultiSelectList(_context.AmazonProducts.Where(i=>i.AmazonAccountID==first.AmazonAccountID), "AmazonProductID", "Name");
+            ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name", first.AmazonAccountID);
+            ViewData["AmazonProductID"] = new MultiSelectList(_context.AmazonProducts.Where(i => i.AmazonAccountID == first.AmazonAccountID), "AmazonProductID", "Name");
             return View();
         }
 
@@ -57,7 +60,7 @@ namespace T_generator.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Generate(int AmazonAccountID, List<int> Products)
+        public IActionResult Index(int AmazonAccountID, List<int> Products)
         {
             AmazonAccount account = _context.AmazonAccounts.Single(i=>i.AmazonAccountID==AmazonAccountID);
             var marketplaces = _context.AccountMarketplaces.Where(i => i.AccountID == account.AmazonAccountID);
@@ -68,369 +71,603 @@ namespace T_generator.Controllers
             foreach (var marketplace in marketplaces)
             {
                 var CurrentMarketplace = _context.AmazonMarketplaces.Where(i=>i.AmazonMarketplaceID==marketplace.MarketplaceID).SingleOrDefault();
+                var CurrentTemplates = _context.AmazonTemplates.Where(i => i.AmazonMarketplaceID == marketplace.MarketplaceID).ToArray();
 
-                string templatePath = Path.Combine(_environment.WebRootPath, CurrentMarketplace.TemplateURL);
+                if (CurrentTemplates.Length == 0)
+                {
+                    AmazonAccount first = _context.AmazonAccounts.First();
+                    ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name", first.AmazonAccountID);
+                    ViewData["AmazonProductID"] = new MultiSelectList(_context.AmazonProducts.Where(i => i.AmazonAccountID == first.AmazonAccountID), "AmazonProductID", "Name");
+                    ViewData["Error"] = "There are no templates for marketplace " + CurrentMarketplace.Name + ".";
+                    return View();
+                }
 
-                
+                foreach (var product in products)
+                {
 
-                int sheetNo = CurrentMarketplace.SheetNumber;
-                int startingRow = CurrentMarketplace.StartingRow;
-                int currentRow = startingRow;
+                    AmazonTemplate currentTemplate=null;
 
-                FileInfo newFile = new FileInfo(templatePath);
-
-                using (ExcelPackage pck = new ExcelPackage(newFile))
-                {                   
-                    ExcelWorksheet worksheet = pck.Workbook.Worksheets.SingleOrDefault(i => i.Index==sheetNo);
-
-                    var rows = worksheet.Dimension.Rows;
-                    var columns = worksheet.Dimension.Columns;
-
-                    foreach(var product in products)
+                    foreach(AmazonTemplate template in CurrentTemplates)
                     {
+                        var type=_context.TemplateTypes.Where(i => i.TemplateID == template.AmazonTemplateID).Where(i=>i.TypeID==product.AmazonTypeID).FirstOrDefault();
+                        if (type != null)
+                        {
+                            currentTemplate = template;
+                            break;
+                        }                       
+                    }
+
+                    if (currentTemplate == null)
+                    {
+                        AmazonAccount first = _context.AmazonAccounts.First();
+                        ViewData["AmazonAccountID"] = new SelectList(_context.AmazonAccounts, "AmazonAccountID", "Name", first.AmazonAccountID);
+                        ViewData["AmazonProductID"] = new MultiSelectList(_context.AmazonProducts.Where(i => i.AmazonAccountID == first.AmazonAccountID), "AmazonProductID", "Name");
+                        var AmazonType = _context.AmazonTypes.Where(i => i.AmazonTypeID == product.AmazonTypeID).SingleOrDefault();
+                        ViewData["Error"] = "There is no template of type " + AmazonType.Name + " , for product " + product.Name + ".";
+                        return View();
+                    }
+
+                string templatePath = Path.Combine(_environment.WebRootPath, currentTemplate.TemplateURL);
+               
+                int sheetNo = currentTemplate.SheetNumber;
+                int startingRow = currentTemplate.StartingRow;
+                int currentRow = startingRow-1;
+
+                    IWorkbook workbook = null;      
+                    ISheet worksheet = null;
+
+                    FileInfo newFile = new FileInfo(templatePath);
+
+                    //using (ExcelPackage pck = new ExcelPackage(newFile))
+                    using (FileStream FS=new FileStream(templatePath,FileMode.Open,FileAccess.ReadWrite))
+                    {
+                        workbook = WorkbookFactory.Create(FS);
+                        worksheet = workbook.GetSheetAt(sheetNo-1);
+                        //ExcelWorksheet worksheet = pck.Workbook.Worksheets.SingleOrDefault(i => i.Index == sheetNo);
+
+                        //var rows = worksheet.Dimension.Rows;
+                       // var columns = worksheet.Dimension.Columns;
+
+                        var rows = worksheet.LastRowNum;
+                        //var columns = worksheet.col;
+
+
                         var listings = _context.AmazonListings.Where(i => Products.Contains(i.AmazonProductID));
 
                         foreach (var listing in listings)
                         {
-                            var productsizes = _context.ProductSizes.Where(i=>i.ProductID==product.AmazonProductID);
+                            var row = worksheet.GetRow(currentRow);
+                            var cell=row.GetCell(0);
+                            var productsizes = _context.ProductSizes.Where(i => i.ProductID == product.AmazonProductID);
                             var currentDesign = _context.AmazonDesigns.Where(x => x.AmazonDesignID == listing.AmazonDesignID).First();
                             var currenType = _context.AmazonTypes.Where(x => x.AmazonTypeID == product.AmazonTypeID).First();
+                            var designMarketplaces = _context.DesignMarketplaces.Where(a => a.DesignID == currentDesign.AmazonDesignID).Where(a=>a.MarketplaceID==CurrentMarketplace.AmazonMarketplaceID);
 
-                            if (CurrentMarketplace.ItemSKU != null)
+                            //if (!designMarketplaces.Contains(new DesignMarketplaces { MarketplaceID = CurrentMarketplace.AmazonMarketplaceID, DesignID = currentDesign.AmazonDesignID }))
+                            //{
+                            //    continue;
+                            //}
+
+                            if (designMarketplaces.Count() == 0)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.ItemSKU, account.Name + "-" + product.AmazonProductID);
+                                continue;
                             }
-                            if (CurrentMarketplace.ProductID != null)
+
+                            if (currentTemplate.ItemSKU != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.ProductID, "");
+                                cell=row.CreateCell((int)currentTemplate.ItemSKU);
+                                cell.SetCellValue(account.Name + "-" + product.AmazonProductID);
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.ItemSKU, account.Name + "-" + product.AmazonProductID);
                             }
-                            if (CurrentMarketplace.ProductType != null)
+                            if (currentTemplate.ProductID != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.ProductType, "");
+                                cell = row.CreateCell((int)currentTemplate.ProductID);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.ProductID, "");
                             }
-                            if (CurrentMarketplace.ProductName != null)
+                            if (currentTemplate.ProductType != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.ProductName, product.Name);
+                                cell = row.CreateCell((int)currentTemplate.ProductType);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.ProductType, "");
                             }
-                            if (CurrentMarketplace.BrandName != null)
+                            if (currentTemplate.ProductName != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.BrandName, account.Name);
+                                cell = row.CreateCell((int)currentTemplate.ProductName);
+                                cell.SetCellValue(product.Name);
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.ProductName, product.Name);
                             }
-                            if (CurrentMarketplace.ClothingType != null)
+                            if (currentTemplate.BrandName != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.ClothingType, product.AmazonType.Name);
+                                cell = row.CreateCell((int)currentTemplate.BrandName);
+                                cell.SetCellValue(account.Name);
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.BrandName, account.Name);
                             }
-                            if (CurrentMarketplace.ProductDescription != null)
+                            if (currentTemplate.ClothingType != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.ProductDescription, product.Description);
+                                cell = row.CreateCell((int)currentTemplate.ClothingType);
+                                cell.SetCellValue(product.AmazonType.Name);
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.ClothingType, product.AmazonType.Name);
                             }
-                            if (CurrentMarketplace.UpdateDelete != null)
+                            if (currentTemplate.ProductDescription != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.UpdateDelete, "");
+                                cell = row.CreateCell((int)currentTemplate.ProductDescription);
+                                cell.SetCellValue(product.Description);
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.ProductDescription, product.Description);
                             }
-                            if (CurrentMarketplace.ModelNumber != null)
+                            if (currentTemplate.UpdateDelete != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.ModelNumber, "");
+                                cell = row.CreateCell((int)currentTemplate.UpdateDelete);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.UpdateDelete, "");
                             }
-                            if (CurrentMarketplace.ManufacturerPartNumber != null)
+                            if (currentTemplate.ModelNumber != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.ManufacturerPartNumber, account.Name + "-" + product.AmazonProductID);
+                                cell = row.CreateCell((int)currentTemplate.ModelNumber);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.ModelNumber, "");
                             }
-                            if (CurrentMarketplace.RelatedProductType != null)
+                            if (currentTemplate.ManufacturerPartNumber != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.RelatedProductType, "");
+                                cell = row.CreateCell((int)currentTemplate.ManufacturerPartNumber);
+                                cell.SetCellValue(account.Name + "-" + product.AmazonProductID);
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.ManufacturerPartNumber, account.Name + "-" + product.AmazonProductID);
                             }
-                            if (CurrentMarketplace.RelatedProductID != null)
+                            if (currentTemplate.RelatedProductType != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.RelatedProductID, "");
+                                cell = row.CreateCell((int)currentTemplate.RelatedProductType);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.RelatedProductType, "");
                             }
-                            if (CurrentMarketplace.GtinExemptionReason != null)
+                            if (currentTemplate.RelatedProductID != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.GtinExemptionReason, "");
+                                cell = row.CreateCell((int)currentTemplate.RelatedProductID);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.RelatedProductID, "");
                             }
-                            if (CurrentMarketplace.StandardPrice != null)
+                            if (currentTemplate.GtinExemptionReason != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.StandardPrice, "");
+                                cell = row.CreateCell((int)currentTemplate.GtinExemptionReason);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.GtinExemptionReason, "");
                             }
-                            if (CurrentMarketplace.Quantity != null)
+                            if (currentTemplate.StandardPrice != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.Quantity, "9999");
+                                cell = row.CreateCell((int)currentTemplate.StandardPrice);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.StandardPrice, "");
                             }
-                            if (CurrentMarketplace.FulfillmentLatency != null)
+                            if (currentTemplate.Quantity != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.FulfillmentLatency, "");
+                                cell = row.CreateCell((int)currentTemplate.Quantity);
+                                cell.SetCellValue("9999");
+                               // worksheet.SetValue(currentRow, (int)currentTemplate.Quantity, "9999");
                             }
-                            if (CurrentMarketplace.SalePrice != null)
+                            if (currentTemplate.FulfillmentLatency != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.SalePrice, "");
+                                cell = row.CreateCell((int)currentTemplate.FulfillmentLatency);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.FulfillmentLatency, "");
                             }
-                            if (CurrentMarketplace.SaleFromDate != null)
+                            if (currentTemplate.SalePrice != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.SaleFromDate, "");
+                                cell = row.CreateCell((int)currentTemplate.SalePrice);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.SalePrice, "");
                             }
-                            if (CurrentMarketplace.SaleEndDate != null)
+                            if (currentTemplate.SaleFromDate != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.SaleEndDate, "");
+                                cell = row.CreateCell((int)currentTemplate.SaleFromDate);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.SaleFromDate, "");
                             }
-                            if (CurrentMarketplace.MaxAggrShipQuant != null)
+                            if (currentTemplate.SaleEndDate != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.MaxAggrShipQuant, "");
+                                cell = row.CreateCell((int)currentTemplate.SaleEndDate);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.SaleEndDate, "");
                             }
-                            if (CurrentMarketplace.PackageQuantity != null)
+                            if (currentTemplate.MaxAggrShipQuant != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.PackageQuantity, "");
+                                cell = row.CreateCell((int)currentTemplate.MaxAggrShipQuant);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.MaxAggrShipQuant, "");
                             }
-                            if (CurrentMarketplace.NumberOfItems != null)
+                            if (currentTemplate.PackageQuantity != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.NumberOfItems, "");
+                                cell = row.CreateCell((int)currentTemplate.PackageQuantity);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.PackageQuantity, "");
                             }
-                            if (CurrentMarketplace.CanBeGiftMessaged != null)
+                            if (currentTemplate.NumberOfItems != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.CanBeGiftMessaged, "");
+                                cell = row.CreateCell((int)currentTemplate.NumberOfItems);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.NumberOfItems, "");
                             }
-                            if (CurrentMarketplace.CanBeGiftWrapped != null)
+                            if (currentTemplate.CanBeGiftMessaged != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.CanBeGiftWrapped, "");
+                                cell = row.CreateCell((int)currentTemplate.CanBeGiftMessaged);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.CanBeGiftMessaged, "");
                             }
-                            if (CurrentMarketplace.IsDiscontinued != null)
+                            if (currentTemplate.CanBeGiftWrapped != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.IsDiscontinued, "");
+                                cell = row.CreateCell((int)currentTemplate.CanBeGiftWrapped);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.CanBeGiftWrapped, "");
                             }
-                            if (CurrentMarketplace.LaunchDate != null)
+                            if (currentTemplate.IsDiscontinued != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.LaunchDate, "");
+                                cell = row.CreateCell((int)currentTemplate.IsDiscontinued);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.IsDiscontinued, "");
                             }
-                            if (CurrentMarketplace.MerchantShippingGroup != null)
+                            if (currentTemplate.LaunchDate != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.MerchantShippingGroup, "");
+                                cell = row.CreateCell((int)currentTemplate.LaunchDate);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.LaunchDate, "");
                             }
-                            if (CurrentMarketplace.ShippingWeight != null)
+                            if (currentTemplate.MerchantShippingGroup != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.ShippingWeight, "");
+                                cell = row.CreateCell((int)currentTemplate.MerchantShippingGroup);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.MerchantShippingGroup, "");
                             }
-                            if (CurrentMarketplace.WeightUnitOfMeasure != null)
+                            if (currentTemplate.ShippingWeight != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.WeightUnitOfMeasure, "");
+                                cell = row.CreateCell((int)currentTemplate.ShippingWeight);
+                                cell.SetCellValue("");
+                               // worksheet.SetValue(currentRow, (int)currentTemplate.ShippingWeight, "");
                             }
-                            if (CurrentMarketplace.BrowseNode != null)
+                            if (currentTemplate.WeightUnitOfMeasure != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.BrowseNode, "");
+                                cell = row.CreateCell((int)currentTemplate.WeightUnitOfMeasure);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.WeightUnitOfMeasure, "");
                             }
-                            if (CurrentMarketplace.SearchTerms != null)
+                            if (currentTemplate.BrowseNode != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.SearchTerms, product.Description);
+                                cell = row.CreateCell((int)currentTemplate.BrowseNode);
+                                cell.SetCellValue("");
+                               // worksheet.SetValue(currentRow, (int)currentTemplate.BrowseNode, "");
                             }
-                            if (CurrentMarketplace.Features1 != null)
+                            if (currentTemplate.SearchTerms != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.Features1, product.Keywords==null ? "" : product.Keywords.ToList()[0].Keyword.Keyword);
+                                cell = row.CreateCell((int)currentTemplate.SearchTerms);
+                                cell.SetCellValue(product.Description);
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.SearchTerms, product.Description);
                             }
-                            if (CurrentMarketplace.Features2 != null)
+                            if (currentTemplate.Features1 != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.Features2, product.Keywords == null ? "" : product.Keywords.ToList()[1].Keyword.Keyword);
+                                cell = row.CreateCell((int)currentTemplate.Features1);
+                                cell.SetCellValue(product.Keywords == null ? "" : product.Keywords.ToList()[0].Keyword.Keyword);
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.Features1, product.Keywords == null ? "" : product.Keywords.ToList()[0].Keyword.Keyword);
                             }
-                            if (CurrentMarketplace.Features3 != null)
+                            if (currentTemplate.Features2 != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.Features3, product.Keywords == null ? "" : product.Keywords.ToList()[2].Keyword.Keyword);
+                                cell = row.CreateCell((int)currentTemplate.Features2);
+                                cell.SetCellValue(product.Keywords == null ? "" : product.Keywords.ToList()[1].Keyword.Keyword);
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.Features2, product.Keywords == null ? "" : product.Keywords.ToList()[1].Keyword.Keyword);
                             }
-                            if (CurrentMarketplace.Features4 != null)
+                            if (currentTemplate.Features3 != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.Features4, product.Keywords == null ? "" : product.Keywords.ToList()[3].Keyword.Keyword);
+                                cell = row.CreateCell((int)currentTemplate.Features3);
+                                cell.SetCellValue(product.Keywords == null ? "" : product.Keywords.ToList()[2].Keyword.Keyword);
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.Features3, product.Keywords == null ? "" : product.Keywords.ToList()[2].Keyword.Keyword);
                             }
-                            if (CurrentMarketplace.Features5 != null)
+                            if (currentTemplate.Features4 != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.Features5, product.Keywords == null ? "" : product.Keywords.ToList()[4].Keyword.Keyword);
+                                cell = row.CreateCell((int)currentTemplate.Features4);
+                                cell.SetCellValue(product.Keywords == null ? "" : product.Keywords.ToList()[3].Keyword.Keyword);
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.Features4, product.Keywords == null ? "" : product.Keywords.ToList()[3].Keyword.Keyword);
                             }
-                            if (CurrentMarketplace.MainImgUrl != null)
+                            if (currentTemplate.Features5 != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.MainImgUrl, Path.Combine(Request.Host.Value, listing.DesignURL));
+                                cell = row.CreateCell((int)currentTemplate.Features5);
+                                cell.SetCellValue(product.Keywords == null ? "" : product.Keywords.ToList()[4].Keyword.Keyword);
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.Features5, product.Keywords == null ? "" : product.Keywords.ToList()[4].Keyword.Keyword);
                             }
-                            if (CurrentMarketplace.OtherImgUrl != null)
+                            if (currentTemplate.MainImgUrl != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.OtherImgUrl, "");
+                                cell = row.CreateCell((int)currentTemplate.MainImgUrl);
+                                cell.SetCellValue(Path.Combine(Request.Host.Value, listing.DesignURL));
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.MainImgUrl, Path.Combine(Request.Host.Value, listing.DesignURL));
                             }
-                            if (CurrentMarketplace.SwatchImgUrl != null)
+                            if (currentTemplate.OtherImgUrl != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.SwatchImgUrl, "");
+                                cell = row.CreateCell((int)currentTemplate.OtherImgUrl);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.OtherImgUrl, "");
                             }
-                            if (CurrentMarketplace.FulfillmentCentreId != null)
+                            if (currentTemplate.OtherImgUrl2 != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.FulfillmentCentreId, "");
+                                cell = row.CreateCell((int)currentTemplate.OtherImgUrl2);
+                                cell.SetCellValue("");
+                               // worksheet.SetValue(currentRow, (int)currentTemplate.OtherImgUrl2, "");
                             }
-                            if (CurrentMarketplace.PackageLength != null)
+                            if (currentTemplate.OtherImgUrl3 != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.PackageLength, "");
+                                cell = row.CreateCell((int)currentTemplate.OtherImgUrl3);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.OtherImgUrl3, "");
                             }
-                            if (CurrentMarketplace.PackageWidth != null)
+                            if (currentTemplate.SwatchImgUrl != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.PackageWidth, "");
+                                cell = row.CreateCell((int)currentTemplate.SwatchImgUrl);
+                                cell.SetCellValue("");
+                               // worksheet.SetValue(currentRow, (int)currentTemplate.SwatchImgUrl, "");
                             }
-                            if (CurrentMarketplace.PackageHeight != null)
+                            if (currentTemplate.FulfillmentCentreId != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.PackageHeight, "");
+                                cell = row.CreateCell((int)currentTemplate.FulfillmentCentreId);
+                                cell.SetCellValue("");
+                               // worksheet.SetValue(currentRow, (int)currentTemplate.FulfillmentCentreId, "");
                             }
-                            if (CurrentMarketplace.PackageLengthUnitOfMeasure != null)
+                            if (currentTemplate.PackageLength != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.PackageLengthUnitOfMeasure, "");
+                                cell = row.CreateCell((int)currentTemplate.PackageLength);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.PackageLength, "");
                             }
-                            if (CurrentMarketplace.PackageWeight != null)
+                            if (currentTemplate.PackageWidth != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.PackageWeight, "");
+                                cell = row.CreateCell((int)currentTemplate.PackageWidth);
+                                cell.SetCellValue("");
+                               // worksheet.SetValue(currentRow, (int)currentTemplate.PackageWidth, "");
                             }
-                            if (CurrentMarketplace.PackageWeightUnitOfMeasure != null)
+                            if (currentTemplate.PackageHeight != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.PackageWeightUnitOfMeasure, "");
+                                cell = row.CreateCell((int)currentTemplate.PackageHeight);
+                                cell.SetCellValue("");
+                               // worksheet.SetValue(currentRow, (int)currentTemplate.PackageHeight, "");
                             }
-                            if (CurrentMarketplace.PackageDimensionsUnitOfMeasure != null)
+                            if (currentTemplate.PackageLengthUnitOfMeasure != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.PackageDimensionsUnitOfMeasure, "");
+                                cell = row.CreateCell((int)currentTemplate.PackageLengthUnitOfMeasure);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.PackageLengthUnitOfMeasure, "");
                             }
-                            if (CurrentMarketplace.Parentage != null)
+                            if (currentTemplate.PackageWeight != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.Parentage, "parent");
+                                cell = row.CreateCell((int)currentTemplate.PackageWeight);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.PackageWeight, "");
                             }
-                            if (CurrentMarketplace.ParentSKU != null)
+                            if (currentTemplate.PackageWeightUnitOfMeasure != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.ParentSKU, "");
+                                cell = row.CreateCell((int)currentTemplate.PackageWeightUnitOfMeasure);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.PackageWeightUnitOfMeasure, "");
                             }
-                            if (CurrentMarketplace.VariationTheme != null)
+                            if (currentTemplate.PackageDimensionsUnitOfMeasure != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.VariationTheme, "size-color");
+                                cell = row.CreateCell((int)currentTemplate.PackageDimensionsUnitOfMeasure);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.PackageDimensionsUnitOfMeasure, "");
                             }
-                            if (CurrentMarketplace.CountryOfOrigin != null)
+                            if (currentTemplate.Parentage != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.CountryOfOrigin, "Lithuania");
+                                cell = row.CreateCell((int)currentTemplate.Parentage);
+                                cell.SetCellValue("parent");                          
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.Parentage, "parent");
                             }
-                            if (CurrentMarketplace.ColourMap != null)
+                            if (currentTemplate.ParentSKU != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.ColourMap, "");
+                                cell = row.CreateCell((int)currentTemplate.ParentSKU);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.ParentSKU, "");
                             }
-                            if (CurrentMarketplace.Colour != null)
+                            if (currentTemplate.VariationTheme != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.Colour, "");
+                                cell = row.CreateCell((int)currentTemplate.VariationTheme);
+                                cell.SetCellValue("size-color");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.VariationTheme, "size-color");
                             }
-                            if (CurrentMarketplace.SizeMap != null)
+                            if (currentTemplate.CountryOfOrigin != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.Colour, "");
+                                cell = row.CreateCell((int)currentTemplate.CountryOfOrigin);
+                                cell.SetCellValue("Lithuania");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.CountryOfOrigin, "Lithuania");
                             }
-                            if (CurrentMarketplace.Size != null)
+                            if (currentTemplate.ColourMap != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.Size, "");
+                                cell = row.CreateCell((int)currentTemplate.ColourMap);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.ColourMap, "");
                             }
-                            if (CurrentMarketplace.MaterialComposition != null)
+                            if (currentTemplate.Colour != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.MaterialComposition, "");
+                                cell = row.CreateCell((int)currentTemplate.Colour);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.Colour, "");
                             }
-                            if (CurrentMarketplace.OuterMaterialType != null)
+                            if (currentTemplate.SizeMap != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.OuterMaterialType, "");
+                                cell = row.CreateCell((int)currentTemplate.SizeMap);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.Colour, "");
                             }
-                            if (CurrentMarketplace.InnerMaterialType != null)
+                            if (currentTemplate.Size != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.InnerMaterialType, "");
+                                cell = row.CreateCell((int)currentTemplate.Size);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.Size, "");
                             }
-                            if (CurrentMarketplace.SeasonAndCollectionYear != null)
+                            if (currentTemplate.MaterialComposition != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.SeasonAndCollectionYear, "");
+                                cell = row.CreateCell((int)currentTemplate.MaterialComposition);
+                                cell.SetCellValue("");
+                               // worksheet.SetValue(currentRow, (int)currentTemplate.MaterialComposition, "");
                             }
-                            if (CurrentMarketplace.ProductCareInstructions != null)
+                            if (currentTemplate.OuterMaterialType != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.ProductCareInstructions, "");
+                                cell = row.CreateCell((int)currentTemplate.OuterMaterialType);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.OuterMaterialType, "");
                             }
-                            if (CurrentMarketplace.ModelName != null)
+                            if (currentTemplate.InnerMaterialType != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.ModelName, "");
+                                cell = row.CreateCell((int)currentTemplate.InnerMaterialType);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.InnerMaterialType, "");
                             }
-                            if (CurrentMarketplace.Department != null)
+                            if (currentTemplate.SeasonAndCollectionYear != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.Department, "");
+                                cell = row.CreateCell((int)currentTemplate.SeasonAndCollectionYear);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.SeasonAndCollectionYear, "");
                             }
-                            if (CurrentMarketplace.AdultFlag != null)
+                            if (currentTemplate.ProductCareInstructions != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.AdultFlag, "");
+                                cell = row.CreateCell((int)currentTemplate.ProductCareInstructions);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.ProductCareInstructions, "");
                             }
-                            if (CurrentMarketplace.ItemShape != null)
+                            if (currentTemplate.ModelName != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.ItemShape, "");
+                                cell = row.CreateCell((int)currentTemplate.ModelName);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.ModelName, "");
                             }
-                            if (CurrentMarketplace.OccasionDescription != null)
+                            if (currentTemplate.Department != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.OccasionDescription, "");
+                                cell = row.CreateCell((int)currentTemplate.Department);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.Department, "");
                             }
-                            if (CurrentMarketplace.StyleName != null)
+                            if (currentTemplate.AdultFlag != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.StyleName, "");
+                                cell = row.CreateCell((int)currentTemplate.AdultFlag);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.AdultFlag, "");
                             }
-                            if (CurrentMarketplace.SleeveType != null)
+                            if (currentTemplate.ItemShape != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.SleeveType, "");
+                                cell = row.CreateCell((int)currentTemplate.ItemShape);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.ItemShape, "");
                             }
-                            if (CurrentMarketplace.ItemLength != null)
+                            if (currentTemplate.OccasionDescription != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.ItemLength, "");
+                                cell = row.CreateCell((int)currentTemplate.OccasionDescription);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.OccasionDescription, "");
                             }
-                            if (CurrentMarketplace.BraCupSize != null)
+                            if (currentTemplate.StyleName != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.BraCupSize, "");
+                                cell = row.CreateCell((int)currentTemplate.StyleName);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.StyleName, "");
                             }
-                            if (CurrentMarketplace.BraBandSize != null)
+                            if (currentTemplate.SleeveType != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.BraBandSize, "");
+                                cell = row.CreateCell((int)currentTemplate.SleeveType);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.SleeveType, "");
                             }
-                            if (CurrentMarketplace.BraBandSizeUnit != null)
+                            if (currentTemplate.ItemLength != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.BraBandSizeUnit, "");
+                                cell = row.CreateCell((int)currentTemplate.ItemLength);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.ItemLength, "");
                             }
-                            if (CurrentMarketplace.SpecialFeatures != null)
+                            if (currentTemplate.BraCupSize != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.SpecialFeatures, "");
+                                cell = row.CreateCell((int)currentTemplate.BraCupSize);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.BraCupSize, "");
                             }
-                            if (CurrentMarketplace.OpacityTransparency != null)
+                            if (currentTemplate.BraBandSize != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.OpacityTransparency, "");
+                                cell = row.CreateCell((int)currentTemplate.BraBandSize);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.BraBandSize, "");
                             }
-                            if (CurrentMarketplace.ClosureType != null)
+                            if (currentTemplate.BraBandSizeUnit != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.ClosureType, "");
+                                cell = row.CreateCell((int)currentTemplate.BraBandSizeUnit);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.BraBandSizeUnit, "");
                             }
-                            if (CurrentMarketplace.BikiniTopStyle != null)
+                            if (currentTemplate.SpecialFeatures != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.BikiniTopStyle, "");
+                                cell = row.CreateCell((int)currentTemplate.SpecialFeatures);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.SpecialFeatures, "");
                             }
-                            if (CurrentMarketplace.SwimwearBottomStyle != null)
+                            if (currentTemplate.OpacityTransparency != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.SwimwearBottomStyle, "");
+                                cell = row.CreateCell((int)currentTemplate.OpacityTransparency);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.OpacityTransparency, "");
                             }
-                            if (CurrentMarketplace.PatternDescription != null)
+                            if (currentTemplate.ClosureType != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.PatternDescription, "");
+                                cell = row.CreateCell((int)currentTemplate.ClosureType);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.ClosureType, "");
                             }
-                            if (CurrentMarketplace.CollarStyle != null)
+                            if (currentTemplate.BikiniTopStyle != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.CollarStyle, "");
+                                cell = row.CreateCell((int)currentTemplate.BikiniTopStyle);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.BikiniTopStyle, "");
                             }
-                            if (CurrentMarketplace.FittingType != null)
+                            if (currentTemplate.SwimwearBottomStyle != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.FittingType, "");
+                                cell = row.CreateCell((int)currentTemplate.SwimwearBottomStyle);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.SwimwearBottomStyle, "");
                             }
-                            if (CurrentMarketplace.NeckStyle != null)
+                            if (currentTemplate.PatternDescription != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.NeckStyle, "");
+                                cell = row.CreateCell((int)currentTemplate.PatternDescription);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.PatternDescription, "");
                             }
-                            if (CurrentMarketplace.JeansLengthUnitOfMeasure != null)
+                            if (currentTemplate.CollarStyle != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.JeansLengthUnitOfMeasure, "");
+                                cell = row.CreateCell((int)currentTemplate.CollarStyle);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.CollarStyle, "");
                             }
-                            if (CurrentMarketplace.JeansLengthInches != null)
+                            if (currentTemplate.FittingType != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.JeansLengthInches, "");
+                                cell = row.CreateCell((int)currentTemplate.FittingType);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.FittingType, "");
                             }
-                            if (CurrentMarketplace.JeansWidthUnitOfMeasure != null)
+                            if (currentTemplate.NeckStyle != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.JeansWidthUnitOfMeasure, "");
+                                cell = row.CreateCell((int)currentTemplate.NeckStyle);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.NeckStyle, "");
                             }
-                            if (CurrentMarketplace.JeansWidthInches != null)
+                            if (currentTemplate.JeansLengthUnitOfMeasure != null)
                             {
-                                worksheet.SetValue(currentRow, (int)CurrentMarketplace.JeansWidthInches, "");
+                                cell = row.CreateCell((int)currentTemplate.JeansLengthUnitOfMeasure);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.JeansLengthUnitOfMeasure, "");
+                            }
+                            if (currentTemplate.JeansLengthInches != null)
+                            {
+                                cell = row.CreateCell((int)currentTemplate.JeansLengthInches);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.JeansLengthInches, "");
+                            }
+                            if (currentTemplate.JeansWidthUnitOfMeasure != null)
+                            {
+                                cell = row.CreateCell((int)currentTemplate.JeansWidthUnitOfMeasure);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.JeansWidthUnitOfMeasure, "");
+                            }
+                            if (currentTemplate.JeansWidthInches != null)
+                            {
+                                cell = row.CreateCell((int)currentTemplate.JeansWidthInches);
+                                cell.SetCellValue("");
+                                //worksheet.SetValue(currentRow, (int)currentTemplate.JeansWidthInches, "");
                             }
 
                             currentRow++;
@@ -438,354 +675,540 @@ namespace T_generator.Controllers
                             foreach (var productsize in productsizes)
                             {
                                 var size = _context.AmazonSizes.Where(i => i.AmazonSizeID == productsize.SizeID).First();
-
-                                if (CurrentMarketplace.ItemSKU != null)
+                                row = worksheet.GetRow(currentRow);
+                                if (currentTemplate.ItemSKU != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.ItemSKU, account.Name + "-" + product.AmazonProductID + "-" + size.Name);
+                                    cell = row.CreateCell((int)currentTemplate.ItemSKU);
+                                    cell.SetCellValue(account.Name + "-" + product.AmazonProductID + "-" + size.Name);
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.ItemSKU, account.Name + "-" + product.AmazonProductID + "-" + size.Name);
                                 }
-                                if (CurrentMarketplace.ProductID != null)
+                                if (currentTemplate.ProductID != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.ProductID, "");
+                                    cell = row.CreateCell((int)currentTemplate.ProductID);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.ProductID, "");
                                 }
-                                if (CurrentMarketplace.ProductType != null)
+                                if (currentTemplate.ProductType != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.ProductType, "");
+                                    cell = row.CreateCell((int)currentTemplate.ProductType);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.ProductType, "");
                                 }
-                                if (CurrentMarketplace.ProductName != null)
+                                if (currentTemplate.ProductName != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.ProductName, product.Name);
+                                    cell = row.CreateCell((int)currentTemplate.ProductName);
+                                    cell.SetCellValue(product.Name);
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.ProductName, product.Name);
                                 }
-                                if (CurrentMarketplace.BrandName != null)
+                                if (currentTemplate.BrandName != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.BrandName, account.Name);
+                                    cell = row.CreateCell((int)currentTemplate.BrandName);
+                                    cell.SetCellValue(account.Name);
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.BrandName, account.Name);
                                 }
-                                if (CurrentMarketplace.ClothingType != null)
+                                if (currentTemplate.ClothingType != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.ClothingType, product.AmazonType.Name);
+                                    cell = row.CreateCell((int)currentTemplate.ClothingType);
+                                    cell.SetCellValue(product.AmazonType.Name);
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.ClothingType, product.AmazonType.Name);
                                 }
-                                if (CurrentMarketplace.ProductDescription != null)
+                                if (currentTemplate.ProductDescription != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.ProductDescription, product.Description);
+                                    cell = row.CreateCell((int)currentTemplate.ProductDescription);
+                                    cell.SetCellValue(product.Description);
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.ProductDescription, product.Description);
                                 }
-                                if (CurrentMarketplace.UpdateDelete != null)
+                                if (currentTemplate.UpdateDelete != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.UpdateDelete, "");
+                                    cell = row.CreateCell((int)currentTemplate.UpdateDelete);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.UpdateDelete, "");
                                 }
-                                if (CurrentMarketplace.ModelNumber != null)
+                                if (currentTemplate.ModelNumber != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.ModelNumber, "");
+                                    cell = row.CreateCell((int)currentTemplate.ModelNumber);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.ModelNumber, "");
                                 }
-                                if (CurrentMarketplace.ManufacturerPartNumber != null)
+                                if (currentTemplate.ManufacturerPartNumber != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.ManufacturerPartNumber, account.Name + "-" + product.AmazonProductID + "-" + size.Name);
+                                    cell = row.CreateCell((int)currentTemplate.ManufacturerPartNumber);
+                                    cell.SetCellValue(account.Name + "-" + product.AmazonProductID + "-" + size.Name);
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.ManufacturerPartNumber, account.Name + "-" + product.AmazonProductID + "-" + size.Name);
                                 }
-                                if (CurrentMarketplace.RelatedProductType != null)
+                                if (currentTemplate.RelatedProductType != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.RelatedProductType, "");
+                                    cell = row.CreateCell((int)currentTemplate.RelatedProductType);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.RelatedProductType, "");
                                 }
-                                if (CurrentMarketplace.RelatedProductID != null)
+                                if (currentTemplate.RelatedProductID != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.RelatedProductID, "");
+                                    cell = row.CreateCell((int)currentTemplate.RelatedProductID);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.RelatedProductID, "");
                                 }
-                                if (CurrentMarketplace.GtinExemptionReason != null)
+                                if (currentTemplate.GtinExemptionReason != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.GtinExemptionReason, "");
+                                    cell = row.CreateCell((int)currentTemplate.GtinExemptionReason);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.GtinExemptionReason, "");
                                 }
-                                if (CurrentMarketplace.StandardPrice != null)
+                                if (currentTemplate.StandardPrice != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.StandardPrice, "");
+                                    cell = row.CreateCell((int)currentTemplate.StandardPrice);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.StandardPrice, "");
                                 }
-                                if (CurrentMarketplace.Quantity != null)
+                                if (currentTemplate.Quantity != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.Quantity, "9999");
+                                    cell = row.CreateCell((int)currentTemplate.Quantity);
+                                    cell.SetCellValue("9999");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.Quantity, "9999");
                                 }
-                                if (CurrentMarketplace.FulfillmentLatency != null)
+                                if (currentTemplate.FulfillmentLatency != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.FulfillmentLatency, "");
+                                    cell = row.CreateCell((int)currentTemplate.FulfillmentLatency);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.FulfillmentLatency, "");
                                 }
-                                if (CurrentMarketplace.SalePrice != null)
+                                if (currentTemplate.SalePrice != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.SalePrice, "");
+                                    cell = row.CreateCell((int)currentTemplate.SalePrice);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.SalePrice, "");
                                 }
-                                if (CurrentMarketplace.SaleFromDate != null)
+                                if (currentTemplate.SaleFromDate != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.SaleFromDate, "");
+                                    cell = row.CreateCell((int)currentTemplate.SaleFromDate);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.SaleFromDate, "");
                                 }
-                                if (CurrentMarketplace.SaleEndDate != null)
+                                if (currentTemplate.SaleEndDate != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.SaleEndDate, "");
+                                    cell = row.CreateCell((int)currentTemplate.SaleEndDate);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.SaleEndDate, "");
                                 }
-                                if (CurrentMarketplace.MaxAggrShipQuant != null)
+                                if (currentTemplate.MaxAggrShipQuant != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.MaxAggrShipQuant, "");
+                                    cell = row.CreateCell((int)currentTemplate.MaxAggrShipQuant);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.MaxAggrShipQuant, "");
                                 }
-                                if (CurrentMarketplace.PackageQuantity != null)
+                                if (currentTemplate.PackageQuantity != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.PackageQuantity, "");
+                                    cell = row.CreateCell((int)currentTemplate.PackageQuantity);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.PackageQuantity, "");
                                 }
-                                if (CurrentMarketplace.NumberOfItems != null)
+                                if (currentTemplate.NumberOfItems != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.NumberOfItems, "");
+                                    cell = row.CreateCell((int)currentTemplate.NumberOfItems);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.NumberOfItems, "");
                                 }
-                                if (CurrentMarketplace.CanBeGiftMessaged != null)
+                                if (currentTemplate.CanBeGiftMessaged != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.CanBeGiftMessaged, "");
+                                    cell = row.CreateCell((int)currentTemplate.CanBeGiftMessaged);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.CanBeGiftMessaged, "");
                                 }
-                                if (CurrentMarketplace.CanBeGiftWrapped != null)
+                                if (currentTemplate.CanBeGiftWrapped != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.CanBeGiftWrapped, "");
+                                    cell = row.CreateCell((int)currentTemplate.CanBeGiftWrapped);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.CanBeGiftWrapped, "");
                                 }
-                                if (CurrentMarketplace.IsDiscontinued != null)
+                                if (currentTemplate.IsDiscontinued != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.IsDiscontinued, "");
+                                    cell = row.CreateCell((int)currentTemplate.IsDiscontinued);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.IsDiscontinued, "");
                                 }
-                                if (CurrentMarketplace.LaunchDate != null)
+                                if (currentTemplate.LaunchDate != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.LaunchDate, "");
+                                    cell = row.CreateCell((int)currentTemplate.LaunchDate);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.LaunchDate, "");
                                 }
-                                if (CurrentMarketplace.MerchantShippingGroup != null)
+                                if (currentTemplate.MerchantShippingGroup != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.MerchantShippingGroup, "");
+                                    cell = row.CreateCell((int)currentTemplate.MerchantShippingGroup);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.MerchantShippingGroup, "");
                                 }
-                                if (CurrentMarketplace.ShippingWeight != null)
+                                if (currentTemplate.ShippingWeight != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.ShippingWeight, "");
+                                    cell = row.CreateCell((int)currentTemplate.ShippingWeight);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.ShippingWeight, "");
                                 }
-                                if (CurrentMarketplace.WeightUnitOfMeasure != null)
+                                if (currentTemplate.WeightUnitOfMeasure != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.WeightUnitOfMeasure, "");
+                                    cell = row.CreateCell((int)currentTemplate.WeightUnitOfMeasure);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.WeightUnitOfMeasure, "");
                                 }
-                                if (CurrentMarketplace.BrowseNode != null)
+                                if (currentTemplate.BrowseNode != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.BrowseNode, "");
+                                    cell = row.CreateCell((int)currentTemplate.BrowseNode);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.BrowseNode, "");
                                 }
-                                if (CurrentMarketplace.SearchTerms != null)
+                                if (currentTemplate.SearchTerms != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.SearchTerms, product.Description);
+                                    cell = row.CreateCell((int)currentTemplate.SearchTerms);
+                                    cell.SetCellValue(product.Description);
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.SearchTerms, product.Description);
                                 }
-                                if (CurrentMarketplace.Features1 != null)
+                                if (currentTemplate.Features1 != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.Features1, product.Keywords == null ? "" : product.Keywords.ToList()[0].Keyword.Keyword);
+                                    cell = row.CreateCell((int)currentTemplate.Features1);
+                                    cell.SetCellValue(product.Keywords == null ? "" : product.Keywords.ToList()[0].Keyword.Keyword);
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.Features1, product.Keywords == null ? "" : product.Keywords.ToList()[0].Keyword.Keyword);
                                 }
-                                if (CurrentMarketplace.Features2 != null)
+                                if (currentTemplate.Features2 != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.Features2, product.Keywords == null ? "" : product.Keywords.ToList()[1].Keyword.Keyword);
+                                    cell = row.CreateCell((int)currentTemplate.Features2);
+                                    cell.SetCellValue(product.Keywords == null ? "" : product.Keywords.ToList()[1].Keyword.Keyword);
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.Features2, product.Keywords == null ? "" : product.Keywords.ToList()[1].Keyword.Keyword);
                                 }
-                                if (CurrentMarketplace.Features3 != null)
+                                if (currentTemplate.Features3 != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.Features3, product.Keywords == null ? "" : product.Keywords.ToList()[2].Keyword.Keyword);
+                                    cell = row.CreateCell((int)currentTemplate.Features3);
+                                    cell.SetCellValue(product.Keywords == null ? "" : product.Keywords.ToList()[2].Keyword.Keyword);
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.Features3, product.Keywords == null ? "" : product.Keywords.ToList()[2].Keyword.Keyword);
                                 }
-                                if (CurrentMarketplace.Features4 != null)
+                                if (currentTemplate.Features4 != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.Features4, product.Keywords == null ? "" : product.Keywords.ToList()[3].Keyword.Keyword);
+                                    cell = row.CreateCell((int)currentTemplate.Features4);
+                                    cell.SetCellValue(product.Keywords == null ? "" : product.Keywords.ToList()[3].Keyword.Keyword);
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.Features4, product.Keywords == null ? "" : product.Keywords.ToList()[3].Keyword.Keyword);
                                 }
-                                if (CurrentMarketplace.Features5 != null)
+                                if (currentTemplate.Features5 != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.Features5, product.Keywords == null ? "" : product.Keywords.ToList()[4].Keyword.Keyword);
+                                    cell = row.CreateCell((int)currentTemplate.Features5);
+                                    cell.SetCellValue(product.Keywords == null ? "" : product.Keywords.ToList()[4].Keyword.Keyword);
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.Features5, product.Keywords == null ? "" : product.Keywords.ToList()[4].Keyword.Keyword);
                                 }
-                                if (CurrentMarketplace.MainImgUrl != null)
+                                if (currentTemplate.MainImgUrl != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.MainImgUrl, Path.Combine(Request.Host.Value, listing.DesignURL));
+                                    cell = row.CreateCell((int)currentTemplate.MainImgUrl);
+                                    cell.SetCellValue(Path.Combine(Request.Host.Value, listing.DesignURL));
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.MainImgUrl, Path.Combine(Request.Host.Value, listing.DesignURL));
                                 }
-                                if (CurrentMarketplace.OtherImgUrl != null)
+                                if (currentTemplate.OtherImgUrl != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.OtherImgUrl, "");
+                                    cell = row.CreateCell((int)currentTemplate.OtherImgUrl);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.OtherImgUrl, "");
                                 }
-                                if (CurrentMarketplace.SwatchImgUrl != null)
+                                if (currentTemplate.OtherImgUrl2 != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.SwatchImgUrl, "");
+                                    cell = row.CreateCell((int)currentTemplate.OtherImgUrl2);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.OtherImgUrl2, "");
                                 }
-                                if (CurrentMarketplace.FulfillmentCentreId != null)
+                                if (currentTemplate.OtherImgUrl3 != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.FulfillmentCentreId, "");
+                                    cell = row.CreateCell((int)currentTemplate.OtherImgUrl3);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.OtherImgUrl3, "");
                                 }
-                                if (CurrentMarketplace.PackageLength != null)
+                                if (currentTemplate.SwatchImgUrl != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.PackageLength, "");
+                                    cell = row.CreateCell((int)currentTemplate.SwatchImgUrl);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.SwatchImgUrl, "");
                                 }
-                                if (CurrentMarketplace.PackageWidth != null)
+                                if (currentTemplate.FulfillmentCentreId != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.PackageWidth, "");
+                                    cell = row.CreateCell((int)currentTemplate.FulfillmentCentreId);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.FulfillmentCentreId, "");
                                 }
-                                if (CurrentMarketplace.PackageHeight != null)
+                                if (currentTemplate.PackageLength != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.PackageHeight, "");
+                                    cell = row.CreateCell((int)currentTemplate.PackageLength);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.PackageLength, "");
                                 }
-                                if (CurrentMarketplace.PackageLengthUnitOfMeasure != null)
+                                if (currentTemplate.PackageWidth != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.PackageLengthUnitOfMeasure, "");
+                                    cell = row.CreateCell((int)currentTemplate.PackageWidth);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.PackageWidth, "");
                                 }
-                                if (CurrentMarketplace.PackageWeight != null)
+                                if (currentTemplate.PackageHeight != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.PackageWeight, "");
+                                    cell = row.CreateCell((int)currentTemplate.PackageHeight);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.PackageHeight, "");
                                 }
-                                if (CurrentMarketplace.PackageWeightUnitOfMeasure != null)
+                                if (currentTemplate.PackageLengthUnitOfMeasure != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.PackageWeightUnitOfMeasure, "");
+                                    cell = row.CreateCell((int)currentTemplate.PackageLengthUnitOfMeasure);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.PackageLengthUnitOfMeasure, "");
                                 }
-                                if (CurrentMarketplace.PackageDimensionsUnitOfMeasure != null)
+                                if (currentTemplate.PackageWeight != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.PackageDimensionsUnitOfMeasure, "");
+                                    cell = row.CreateCell((int)currentTemplate.PackageWeight);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.PackageWeight, "");
                                 }
-                                if (CurrentMarketplace.Parentage != null)
+                                if (currentTemplate.PackageWeightUnitOfMeasure != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.Parentage, "child");
+                                    cell = row.CreateCell((int)currentTemplate.PackageWeightUnitOfMeasure);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.PackageWeightUnitOfMeasure, "");
                                 }
-                                if (CurrentMarketplace.ParentSKU != null)
+                                if (currentTemplate.PackageDimensionsUnitOfMeasure != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.ParentSKU, account.Name + " - " + product.AmazonProductID);
+                                    cell = row.CreateCell((int)currentTemplate.PackageDimensionsUnitOfMeasure);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.PackageDimensionsUnitOfMeasure, "");
                                 }
-                                if (CurrentMarketplace.VariationTheme != null)
+                                if (currentTemplate.Parentage != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.VariationTheme, "size-color");
+                                    cell = row.CreateCell((int)currentTemplate.Parentage);
+                                    cell.SetCellValue("child");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.Parentage, "child");
                                 }
-                                if (CurrentMarketplace.CountryOfOrigin != null)
+                                if (currentTemplate.ParentSKU != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.CountryOfOrigin, "Lithuania");
+                                    cell = row.CreateCell((int)currentTemplate.ParentSKU);
+                                    cell.SetCellValue(account.Name + " - " + product.AmazonProductID);
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.ParentSKU, account.Name + " - " + product.AmazonProductID);
                                 }
-                                if (CurrentMarketplace.ColourMap != null)
+                                if (currentTemplate.VariationTheme != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.ColourMap, "");
+                                    cell = row.CreateCell((int)currentTemplate.VariationTheme);
+                                    cell.SetCellValue("size-color");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.VariationTheme, "size-color");
                                 }
-                                if (CurrentMarketplace.Colour != null)
+                                if (currentTemplate.CountryOfOrigin != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.Colour, "");
+                                    cell = row.CreateCell((int)currentTemplate.CountryOfOrigin);
+                                    cell.SetCellValue("Lithuania");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.CountryOfOrigin, "Lithuania");
                                 }
-                                if (CurrentMarketplace.SizeMap != null)
+                                if (currentTemplate.ColourMap != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.Colour, "");
+                                    cell = row.CreateCell((int)currentTemplate.ColourMap);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.ColourMap, "");
                                 }
-                                if (CurrentMarketplace.Size != null)
+                                if (currentTemplate.Colour != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.Size, "");
+                                    cell = row.CreateCell((int)currentTemplate.Colour);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.Colour, "");
                                 }
-                                if (CurrentMarketplace.MaterialComposition != null)
+                                if (currentTemplate.SizeMap != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.MaterialComposition, "");
+                                    cell = row.CreateCell((int)currentTemplate.SizeMap);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.Colour, "");
                                 }
-                                if (CurrentMarketplace.OuterMaterialType != null)
+                                if (currentTemplate.Size != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.OuterMaterialType, "");
+                                    cell = row.CreateCell((int)currentTemplate.Size);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.Size, "");
                                 }
-                                if (CurrentMarketplace.InnerMaterialType != null)
+                                if (currentTemplate.MaterialComposition != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.InnerMaterialType, "");
+                                    cell = row.CreateCell((int)currentTemplate.MaterialComposition);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.MaterialComposition, "");
                                 }
-                                if (CurrentMarketplace.SeasonAndCollectionYear != null)
+                                if (currentTemplate.OuterMaterialType != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.SeasonAndCollectionYear, "");
+                                    cell = row.CreateCell((int)currentTemplate.OuterMaterialType);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.OuterMaterialType, "");
                                 }
-                                if (CurrentMarketplace.ProductCareInstructions != null)
+                                if (currentTemplate.InnerMaterialType != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.ProductCareInstructions, "");
+                                    cell = row.CreateCell((int)currentTemplate.InnerMaterialType);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.InnerMaterialType, "");
                                 }
-                                if (CurrentMarketplace.ModelName != null)
+                                if (currentTemplate.SeasonAndCollectionYear != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.ModelName, "");
+                                    cell = row.CreateCell((int)currentTemplate.SeasonAndCollectionYear);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.SeasonAndCollectionYear, "");
                                 }
-                                if (CurrentMarketplace.Department != null)
+                                if (currentTemplate.ProductCareInstructions != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.Department, "");
+                                    cell = row.CreateCell((int)currentTemplate.ProductCareInstructions);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.ProductCareInstructions, "");
                                 }
-                                if (CurrentMarketplace.AdultFlag != null)
+                                if (currentTemplate.ModelName != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.AdultFlag, "");
+                                    cell = row.CreateCell((int)currentTemplate.ModelName);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.ModelName, "");
                                 }
-                                if (CurrentMarketplace.ItemShape != null)
+                                if (currentTemplate.Department != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.ItemShape, "");
+                                    cell = row.CreateCell((int)currentTemplate.Department);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.Department, "");
                                 }
-                                if (CurrentMarketplace.OccasionDescription != null)
+                                if (currentTemplate.AdultFlag != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.OccasionDescription, "");
+                                    cell = row.CreateCell((int)currentTemplate.AdultFlag);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.AdultFlag, "");
                                 }
-                                if (CurrentMarketplace.StyleName != null)
+                                if (currentTemplate.ItemShape != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.StyleName, "");
+                                    cell = row.CreateCell((int)currentTemplate.ItemShape);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.ItemShape, "");
                                 }
-                                if (CurrentMarketplace.SleeveType != null)
+                                if (currentTemplate.OccasionDescription != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.SleeveType, "");
+                                    cell = row.CreateCell((int)currentTemplate.OccasionDescription);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.OccasionDescription, "");
                                 }
-                                if (CurrentMarketplace.ItemLength != null)
+                                if (currentTemplate.StyleName != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.ItemLength, "");
+                                    cell = row.CreateCell((int)currentTemplate.StyleName);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.StyleName, "");
                                 }
-                                if (CurrentMarketplace.BraCupSize != null)
+                                if (currentTemplate.SleeveType != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.BraCupSize, "");
+                                    cell = row.CreateCell((int)currentTemplate.SleeveType);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.SleeveType, "");
                                 }
-                                if (CurrentMarketplace.BraBandSize != null)
+                                if (currentTemplate.ItemLength != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.BraBandSize, "");
+                                    cell = row.CreateCell((int)currentTemplate.ItemLength);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.ItemLength, "");
                                 }
-                                if (CurrentMarketplace.BraBandSizeUnit != null)
+                                if (currentTemplate.BraCupSize != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.BraBandSizeUnit, "");
+                                    cell = row.CreateCell((int)currentTemplate.BraCupSize);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.BraCupSize, "");
                                 }
-                                if (CurrentMarketplace.SpecialFeatures != null)
+                                if (currentTemplate.BraBandSize != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.SpecialFeatures, "");
+                                    cell = row.CreateCell((int)currentTemplate.BraBandSize);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.BraBandSize, "");
                                 }
-                                if (CurrentMarketplace.OpacityTransparency != null)
+                                if (currentTemplate.BraBandSizeUnit != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.OpacityTransparency, "");
+                                    cell = row.CreateCell((int)currentTemplate.BraBandSizeUnit);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.BraBandSizeUnit, "");
                                 }
-                                if (CurrentMarketplace.ClosureType != null)
+                                if (currentTemplate.SpecialFeatures != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.ClosureType, "");
+                                    cell = row.CreateCell((int)currentTemplate.SpecialFeatures);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.SpecialFeatures, "");
                                 }
-                                if (CurrentMarketplace.BikiniTopStyle != null)
+                                if (currentTemplate.OpacityTransparency != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.BikiniTopStyle, "");
+                                    cell = row.CreateCell((int)currentTemplate.OpacityTransparency);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.OpacityTransparency, "");
                                 }
-                                if (CurrentMarketplace.SwimwearBottomStyle != null)
+                                if (currentTemplate.ClosureType != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.SwimwearBottomStyle, "");
+                                    cell = row.CreateCell((int)currentTemplate.ClosureType);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.ClosureType, "");
                                 }
-                                if (CurrentMarketplace.PatternDescription != null)
+                                if (currentTemplate.BikiniTopStyle != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.PatternDescription, "");
+                                    cell = row.CreateCell((int)currentTemplate.BikiniTopStyle);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.BikiniTopStyle, "");
                                 }
-                                if (CurrentMarketplace.CollarStyle != null)
+                                if (currentTemplate.SwimwearBottomStyle != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.CollarStyle, "");
+                                    cell = row.CreateCell((int)currentTemplate.SwimwearBottomStyle);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.SwimwearBottomStyle, "");
                                 }
-                                if (CurrentMarketplace.FittingType != null)
+                                if (currentTemplate.PatternDescription != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.FittingType, "");
+                                    cell = row.CreateCell((int)currentTemplate.PatternDescription);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.PatternDescription, "");
                                 }
-                                if (CurrentMarketplace.NeckStyle != null)
+                                if (currentTemplate.CollarStyle != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.NeckStyle, "");
+                                    cell = row.CreateCell((int)currentTemplate.CollarStyle);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.CollarStyle, "");
                                 }
-                                if (CurrentMarketplace.JeansLengthUnitOfMeasure != null)
+                                if (currentTemplate.FittingType != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.JeansLengthUnitOfMeasure, "");
+                                    cell = row.CreateCell((int)currentTemplate.FittingType);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.FittingType, "");
                                 }
-                                if (CurrentMarketplace.JeansLengthInches != null)
+                                if (currentTemplate.NeckStyle != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.JeansLengthInches, "");
+                                    cell = row.CreateCell((int)currentTemplate.NeckStyle);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.NeckStyle, "");
                                 }
-                                if (CurrentMarketplace.JeansWidthUnitOfMeasure != null)
+                                if (currentTemplate.JeansLengthUnitOfMeasure != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.JeansWidthUnitOfMeasure, "");
+                                    cell = row.CreateCell((int)currentTemplate.JeansLengthUnitOfMeasure);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.JeansLengthUnitOfMeasure, "");
                                 }
-                                if (CurrentMarketplace.JeansWidthInches != null)
+                                if (currentTemplate.JeansLengthInches != null)
                                 {
-                                    worksheet.SetValue(currentRow, (int)CurrentMarketplace.JeansWidthInches, "");
+                                    cell = row.CreateCell((int)currentTemplate.JeansLengthInches);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.JeansLengthInches, "");
+                                }
+                                if (currentTemplate.JeansWidthUnitOfMeasure != null)
+                                {
+                                    cell = row.CreateCell((int)currentTemplate.JeansWidthUnitOfMeasure);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.JeansWidthUnitOfMeasure, "");
+                                }
+                                if (currentTemplate.JeansWidthInches != null)
+                                {
+                                    cell = row.CreateCell((int)currentTemplate.JeansWidthInches);
+                                    cell.SetCellValue("");
+                                    //worksheet.SetValue(currentRow, (int)currentTemplate.JeansWidthInches, "");
                                 }
 
                                 currentRow++;
                             }
                         }
 
-                    }
 
-                    string generatedPath = templatePath.Replace("Templates", "Temp");
-                    FileInfo generatedFile = new FileInfo(generatedPath);
-                    pck.SaveAs(generatedFile);
-                    filenamesAndUrls[CurrentMarketplace.Name] = generatedPath;
+
+                        string generatedPath = templatePath.Replace("Templates", "Temp");
+
+                        FileStream xfile = new FileStream(generatedPath, FileMode.Create, System.IO.FileAccess.Write);
+                        workbook.Write(xfile);
+                        xfile.Close();
+
+                        //FileInfo generatedFile = new FileInfo(generatedPath);
+                        //pck.SaveAs(generatedFile);
+                        filenamesAndUrls[currentTemplate.Name+Path.GetExtension(generatedPath)] = generatedPath;
+                    }
 
                     //pck.Save();
                     //filenamesAndUrls[CurrentMarketplace.Name] = templatePath;
@@ -800,7 +1223,7 @@ namespace T_generator.Controllers
             foreach (var kvp in filenamesAndUrls){
 
                 var fileStream = new FileStream(kvp.Value,FileMode.Open);
-                var zipEntry = archive.CreateEntry(kvp.Key + ".xlsx");
+                var zipEntry = archive.CreateEntry(kvp.Key);
 
                 using (Stream zipStream = zipEntry.Open())
                 {
@@ -813,8 +1236,10 @@ namespace T_generator.Controllers
             archive.Dispose();
             memoryStream.Seek(0, SeekOrigin.Begin);
 
-            FileStreamResult result = new FileStreamResult(memoryStream, "application/zip");
-            result.FileDownloadName = "Generated.zip";
+            FileStreamResult result = new FileStreamResult(memoryStream, "application/zip")
+            {
+                FileDownloadName = "Generated.zip"
+            };
 
             // loop over a series of Azure blobs which contain text
             foreach (var kvp in filenamesAndUrls)

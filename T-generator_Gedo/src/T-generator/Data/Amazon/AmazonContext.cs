@@ -23,6 +23,7 @@ namespace T_generator.Data
             modelBuilder.Entity<AmazonBrowseNode>().ToTable("AmazonBrowseNode");
             modelBuilder.Entity<AmazonAccount>().ToTable("AmazonAccount");
             modelBuilder.Entity<AmazonColor>().ToTable("AmazonColor");
+            modelBuilder.Entity<AmazonColorTranslation>().ToTable("AmazonColorTranslation");
             modelBuilder.Entity<AmazonCountry>().ToTable("AmazonCountry");
             modelBuilder.Entity<AmazonCountry>().ToTable("AmazonCountry");
             modelBuilder.Entity<AmazonCurrency>().ToTable("AmazonCurrency");
@@ -41,6 +42,7 @@ namespace T_generator.Data
             modelBuilder.Entity<AmazonItem>().ToTable("AmazonItem");
             modelBuilder.Entity<AmazonItemSingle>().ToTable("AmazonItemSingle");
             modelBuilder.Entity<AmazonListing>().ToTable("AmazonListing");
+            modelBuilder.Entity<AmazonTemplate>().ToTable("AmazonTemplate");
 
 
 
@@ -50,17 +52,22 @@ namespace T_generator.Data
                 .HasKey(c => new { c.SizeID, c.ProductID });
             modelBuilder.Entity<AccountMarketplaces>()
                 .HasKey(c => new { c.MarketplaceID, c.AccountID });
+            modelBuilder.Entity<TemplateTypes>()
+                .HasKey(c => new { c.TemplateID, c.TypeID });
+            modelBuilder.Entity<DesignMarketplaces>()
+                .HasKey(c => new { c.DesignID, c.MarketplaceID });
+            modelBuilder.Entity<AmazonColorTranslation>()
+                .HasKey(c => new { c.AmazonColorID, c.AmazonMarketplaceID });
 
         }
 
-        public AmazonContext(DbContextOptions<AmazonContext> options) 
-            : base(options)
+        public AmazonContext(DbContextOptions<AmazonContext> options) : base(options)
         {
         }
 
         public AmazonContext()
         {
-            
+
         }
 
         public DbSet<AmazonBrowseNode> AmazonBrowseNodes { get; set; }
@@ -68,6 +75,8 @@ namespace T_generator.Data
         public DbSet<AmazonAccount> AmazonAccounts { get; set; }
 
         public DbSet<AmazonColor> AmazonColors { get; set; }
+
+        public DbSet<AmazonColorTranslation> AmazonColorTranslations { get; set; }
 
         public DbSet<AmazonCountry> AmazonCountries { get; set; }
 
@@ -106,6 +115,12 @@ namespace T_generator.Data
         public DbSet<AmazonListing> AmazonListings { get; set; }
 
         public DbSet<AccountMarketplaces> AccountMarketplaces { get; set; }
+
+        public DbSet<TemplateTypes> TemplateTypes { get; set; }
+
+        public DbSet<AmazonTemplate> AmazonTemplates { get; set; }
+
+        public DbSet<DesignMarketplaces> DesignMarketplaces { get; set; }
 
 
 

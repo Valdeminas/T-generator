@@ -20,10 +20,13 @@ namespace T_generator.Services.Amazon
 
         public static Image MergeImages(BackPicture background, FrontPicture frontImage)
             {
-            int resizedWidth = background.m_topRightPoint.X - background.m_topLeftPoint.X;
-            int resizedHeght = frontImage.m_frontImage.Height * resizedWidth / frontImage.m_frontImage.Width;
+            int resizedWidth_byPoints = background.m_topRightPoint.X - background.m_topLeftPoint.X;
+            int resizedHeight_byPoints = background.m_botLeftPoint.Y - background.m_topLeftPoint.Y;
+            float coeff = MathF.Min((float)resizedWidth_byPoints / (float)frontImage.m_frontImage.Width, (float)resizedHeight_byPoints / (float)frontImage.m_frontImage.Height);
+            int resizedHeght = (int)(frontImage.m_frontImage.Height * coeff);
+            int resizedWidth = (int)(frontImage.m_frontImage.Width * coeff);
             return background.m_backgroundImage.Blend(frontImage.m_frontImage.Resize(resizedWidth, resizedHeght).Pad(
-                background.m_topLeftPoint.X * 2 + resizedWidth, background.m_topLeftPoint.Y * 2 + resizedHeght), frontImage.m_opacity) as Image;
+                background.m_topLeftPoint.X * 2 +  resizedWidth_byPoints, background.m_topLeftPoint.Y * 2 + resizedHeight_byPoints), frontImage.m_opacity) as Image;
             }
 
         //public static void Test()
